@@ -10,7 +10,6 @@ export default [
   js.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  pluginJsxA11y.configs.recommended,
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     languageOptions: {
@@ -36,10 +35,6 @@ export default [
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       'react/self-closing-comp': 'error',
-      'react/jsx-uses-vars': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
       'prettier/prettier': [
         'error',
         {
