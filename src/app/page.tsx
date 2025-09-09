@@ -1,4 +1,8 @@
-// Dashboard.tsx
+'use client';
+
+import React from 'react';
+import Button from '@/components/common/Button';
+
 export default function Dashboard() {
   return (
     <div className="min-h-screen p-6">
@@ -62,6 +66,15 @@ export default function Dashboard() {
           <h3 className="lowercase">abcdefghijklmnopqrstuvwxyz</h3>
           <h4 className="uppercase">abcdefghijklmnopqrstuvwxyz</h4>
         </div>
+
+        <div>
+          <Button text='Continuar' variant='primary' onClick={() => alert("Teste!")}/>
+        </div>
+
+        <div>
+          <Button text='Continuar' variant='secondary' onClick={() => alert("Teste!")}/>
+        </div>
+
       </section>
     </div>
   );
