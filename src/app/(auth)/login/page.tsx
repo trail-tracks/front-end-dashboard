@@ -14,9 +14,9 @@ function Login() {
 
   return (
     <div className="flex flex-row max-h-screen">
-      <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen w-7/12" />
+      <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen md:w-7/12" />
 
-      <div className="flex bg-white min-h-screen w-5/12 justify-center items-center">
+      <div className="flex bg-white min-h-screen w-full lg:w-5/12 justify-center items-center">
         <div className="flex flex-col justify-center items-center pb-15 w-10/12">
           <img
             src="logo.svg"
