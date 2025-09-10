@@ -1,0 +1,64 @@
+'use client';
+
+import Button from '@/components/common/Button';
+import InputCustom from '@/components/common/InputCustom';
+import { useState } from 'react';
+import { LuEye, LuEyeClosed } from 'react-icons/lu';
+
+function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return (
+    <div className="flex flex-row max-h-screen">
+      <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen w-7/12" />
+
+      <div className="flex bg-white min-h-screen w-5/12 justify-center items-center">
+        <div className="flex flex-col justify-center items-center pb-15 w-10/12">
+          <img
+            src="logo.svg"
+            alt="Logo do Sistema parecido com uma bussola"
+            className="mb-8"
+          />
+
+          <div className="w-8/12">
+            <h1 className="font-bold text-primary-dark text-3xl mb-8">
+              Fazer Login
+            </h1>
+
+            <form
+              className="flex flex-col justify-center items-center text-primary-dark"
+              method="POST"
+            >
+              <InputCustom
+                name="Email Institucional"
+                type="email"
+                placeholder="Digite seu email"
+              />
+
+              <InputCustom
+                name="Senha para Acesso"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Digite sua senha"
+                icon={
+                  showPassword ? (
+                    <LuEye size={20} onClick={togglePasswordVisibility} />
+                  ) : (
+                    <LuEyeClosed size={20} onClick={togglePasswordVisibility} />
+                  )
+                }
+              />
+
+              <Button variant="secondary" text="Entrar" className="py-3 mt-8" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
