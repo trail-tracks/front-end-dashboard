@@ -1,19 +1,27 @@
 'use client';
 
+import { useForm, SubmitHandler } from 'react-hook-form';
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
 import { useState } from 'react';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 function Login() {
+  const { register, handleSubmit } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
+  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
-    <div className="flex flex-row max-h-screen">
+    <div className="flex flex-row max-h-screen text-primary-dark">
       <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen md:w-7/12" />
 
       <div className="flex bg-white min-h-screen w-full lg:w-5/12 justify-center items-center">
@@ -25,22 +33,25 @@ function Login() {
           />
 
           <div className="w-8/12">
-            <h1 className="font-bold text-primary-dark text-3xl mb-8">
-              Fazer Login
-            </h1>
+            <h1 className="font-bold text-3xl mb-8">Fazer Login</h1>
 
             <form
-              className="flex flex-col justify-center items-center text-primary-dark"
+              className="flex flex-col justify-center items-center"
               method="POST"
+              onSubmit={handleSubmit(onSubmit)}
             >
               <InputCustom
-                name="Email Institucional"
+                {...register('email')}
+                label="Email Institucional"
+                name="email"
                 type="email"
                 placeholder="Digite seu email"
               />
 
               <InputCustom
-                name="Senha para Acesso"
+                {...register('password')}
+                label="Senha para acesso"
+                name="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Digite sua senha"
                 icon={
@@ -52,9 +63,21 @@ function Login() {
                 }
               />
 
-              <Button variant="secondary" text="Entrar" className="py-3 mt-8" />
+              <Button
+                variant="secondary"
+                text="Entrar"
+                className="py-3 mt-8"
+                type="submit"
+              />
             </form>
           </div>
+          <span className="mb-4">--- ou ---</span>
+          <a
+            href="/register"
+            className="font-normal text-sm text-primary-dark mt-1 text-center hover:underline"
+          >
+            Cadastra-se
+          </a>
         </div>
       </div>
     </div>
