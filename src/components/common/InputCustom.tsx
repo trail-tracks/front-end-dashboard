@@ -1,11 +1,12 @@
 import React from 'react';
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  error?: string;
   label: string;
   icon?: React.ReactNode;
 }
 
 const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, icon, ...props }, ref) => (
+  ({ error, label, icon, ...props }, ref) => (
     <div className="w-full m-2">
       <span>{label}</span>
       <div className="relative mt-1">
@@ -20,6 +21,7 @@ const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
           </div>
         )}
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   ),
 );
