@@ -1,18 +1,38 @@
 'use client';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
 import { useState } from 'react';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
+import { z } from 'zod';
 
-type FormValues = {
-  email: string;
-  password: string;
-};
+const schema = z.object({
+  email: z.email('Email inválido'),
+  password: z
+    .string()
+    .min(8, 'A senha deve ter pelo menos 8 caracteres')
+    .max(20, 'A senha deve ter no máximo 20 caracteres')
+    .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
+    .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
+    .regex(/[0-9]/, 'A senha deve conter pelo menos um número')
+    .regex(
+      /[^a-zA-Z0-9]/,
+      'A senha deve conter pelo menos um caractere especial',
+    ),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 function Login() {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+  });
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
 
@@ -46,6 +66,7 @@ function Login() {
                 name="email"
                 type="email"
                 placeholder="Digite seu email"
+                error={errors.email?.message}
               />
 
               <InputCustom
@@ -61,6 +82,7 @@ function Login() {
                     <LuEyeClosed size={20} onClick={togglePasswordVisibility} />
                   )
                 }
+                error={errors.password?.message}
               />
 
               <Button
