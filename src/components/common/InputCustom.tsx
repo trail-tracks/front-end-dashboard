@@ -1,18 +1,17 @@
-interface InputProps {
-  name: string;
-  type: string;
-  placeholder: string;
+import React from 'react';
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
   icon?: React.ReactNode;
 }
 
-function InputCustom({ name, type, placeholder, icon }: InputProps) {
-  return (
+const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ label, icon, ...props }, ref) => (
     <div className="w-full m-2">
-      <span>{name}</span>
+      <span>{label}</span>
       <div className="relative mt-1">
         <input
-          type={type}
-          placeholder={placeholder}
+          ref={ref}
+          {...props}
           className="border-2 border-primary-dark rounded-md p-2 w-full pr-10"
         />
         {icon && (
@@ -22,7 +21,9 @@ function InputCustom({ name, type, placeholder, icon }: InputProps) {
         )}
       </div>
     </div>
-  );
-}
+  ),
+);
+
+InputCustom.displayName = 'InputCustom';
 
 export default InputCustom;

@@ -3,6 +3,7 @@ interface ButtonProps {
   text?: string;
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
+  type?: 'button' | 'submit' | 'reset';
 }
 
 function Button({
@@ -10,6 +11,7 @@ function Button({
   text,
   onClick,
   variant = 'primary',
+  type = 'button',
 }: ButtonProps) {
   const variants = {
     primary:
@@ -21,6 +23,7 @@ function Button({
     <button
       className={`rounded-2xl p-2 m-2 w-[255px] ${variants[variant]} ${className}`}
       onClick={onClick}
+      type={type}
     >
       {text}
     </button>
