@@ -1,29 +1,16 @@
 'use client';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
+import { loginSchema } from '@/schema/authSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { z } from 'zod';
 
-const schema = z.object({
-  email: z.email('Email inválido'),
-  password: z
-    .string()
-    .min(8, 'A senha deve ter pelo menos 8 caracteres')
-    .max(20, 'A senha deve ter no máximo 20 caracteres')
-    .regex(/[A-Z]/, 'A senha deve conter pelo menos uma letra maiúscula')
-    .regex(/[a-z]/, 'A senha deve conter pelo menos uma letra minúscula')
-    .regex(/[0-9]/, 'A senha deve conter pelo menos um número')
-    .regex(
-      /[^a-zA-Z0-9]/,
-      'A senha deve conter pelo menos um caractere especial',
-    ),
-});
-
-type FormValues = z.infer<typeof schema>;
+type FormValues = z.infer<typeof loginSchema>;
 
 function Login() {
   const {
@@ -31,15 +18,18 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginSchema),
   });
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    console.log(data);
+    router.push('/');
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   return (
     <div className="flex flex-row max-h-screen text-primary-dark">
       <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen md:w-7/12" />
