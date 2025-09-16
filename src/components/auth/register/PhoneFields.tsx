@@ -19,7 +19,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
           {...register('ddi')}
           name="ddi"
           id="ddi"
-          className="border-2 rounded-md w-full border-primary-light bg-transparent h-11"
+          className="border-2 rounded-md text-center w-full border-primary-dark bg-transparent h-11"
           defaultValue="+55"
         >
           <option value="+55" className="text-black">
@@ -37,7 +37,6 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
           type="string"
           placeholder="DDD"
           error={undefined}
-          variant="secondary"
           className="text-center"
           maxLength={3}
         />
@@ -49,7 +48,6 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
           type="tel"
           placeholder="99999-9999"
           error={undefined}
-          variant="secondary"
           className="text-center"
           maxLength={9}
         />

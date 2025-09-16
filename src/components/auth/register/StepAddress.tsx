@@ -24,6 +24,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     formState: { errors },
     watch,
     setValue,
+    clearErrors,
   } = useForm<FormValues>({
     resolver: zodResolver(addressSchema),
   });
@@ -42,13 +43,16 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         if (data.erro) {
           return;
         }
+        setValue('endereco', data.logradouro);
         setValue('complemento', data.complemento);
-        setValue('cidade', data.logradouro);
+        setValue('cidade', data.localidade);
         setValue('estado', data.uf);
+
+        clearErrors(['cidade', 'endereco', 'estado', 'complemento']);
       }
     };
     fetchCep();
-  }, [cep, setValue]);
+  }, [cep, setValue, clearErrors]);
 
   return (
     <form
@@ -56,7 +60,9 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       method="POST"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h1 className="font-bold text-3xl mb-4">Dados de Localização</h1>
+      <h1 className="font-bold text-3xl self-start mb-4">
+        Dados de Localização
+      </h1>
       <div className="flex mb-2 self-start">
         <InputCustom
           {...register('cep')}
@@ -65,11 +71,9 @@ function StepAddress({ onNext }: { onNext: () => void }) {
           type="text"
           placeholder="00000000"
           error={errors.cep?.message}
-          variant="secondary"
           className="w-1/2"
           maxLength={8}
         />
-        ,ma
       </div>
 
       <InputCustom
@@ -79,7 +83,6 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         type="text"
         placeholder="Nucleo Caraguatatuba"
         error={errors.endereco?.message}
-        variant="secondary"
         maxLength={40}
       />
 
@@ -90,7 +93,6 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         type="text"
         placeholder="Apartamento, bloco..."
         error={errors.complemento?.message}
-        variant="secondary"
         maxLength={50}
       />
 
@@ -101,9 +103,8 @@ function StepAddress({ onNext }: { onNext: () => void }) {
             label="Cidade"
             name="cidade"
             type="text"
-            placeholder="São Paulo"
+            placeholder="Caraguatatuba"
             error={undefined}
-            variant="secondary"
             maxLength={25}
           />
         </div>
@@ -111,12 +112,11 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         <div className="col-span-1">
           <InputCustom
             {...register('numero')}
-            label="N"
+            label="N°"
             name="numero"
             type="text"
             placeholder="123"
             error={undefined}
-            variant="secondary"
             className="text-center"
             maxLength={6}
           />
@@ -130,7 +130,6 @@ function StepAddress({ onNext }: { onNext: () => void }) {
             type="text"
             placeholder="SP"
             error={undefined}
-            variant="secondary"
             className="text-center uppercase"
             maxLength={2}
           />
@@ -144,7 +143,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       </div>
 
       <Button
-        variant="primary"
+        variant="secondary"
         text="Continuar"
         className="py-3 mt-8"
         type="submit"

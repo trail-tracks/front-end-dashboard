@@ -40,7 +40,7 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full items-start">
-          <h1 className="font-norma text-md">Numero de Telefone*</h1>
+          <h1 className="font-normal text-md">Numero de Telefone*</h1>
         </div>
         <PhoneFields register={register} errors={errors} />
 
@@ -51,7 +51,6 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           type="string"
           placeholder="Parque Estadual"
           error={errors.name?.message}
-          variant="secondary"
           maxLength={50}
         />
 
@@ -62,7 +61,6 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           type="string"
           placeholder="Núcleo Caraguatatuba"
           error={errors.complemento?.message}
-          variant="secondary"
           maxLength={50}
         />
 
@@ -77,7 +75,6 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           type="email"
           placeholder="Digite seu email"
           error={errors.email?.message}
-          variant="secondary"
           maxLength={50}
         />
 
@@ -95,12 +92,11 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
             )
           }
           error={errors.password?.message}
-          variant="secondary"
           maxLength={20}
         />
 
         <Button
-          variant="primary"
+          variant="secondary"
           text="Continuar"
           className="py-3 mt-8"
           type="submit"
