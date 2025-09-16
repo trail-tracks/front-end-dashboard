@@ -21,7 +21,7 @@ function Button({
 
   return (
     <button
-      className={`rounded-2xl p-2 m-2 w-[255px] ${variants[variant]} ${className}`}
+      className={`rounded-2xl p-2 m-2 w-[255px] cursor-pointer ${variants[variant]} ${className}`}
       onClick={onClick}
       type={type}
     >
