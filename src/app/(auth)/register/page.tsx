@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 function Register() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const route = useRouter();
 
   const handleNextStep = () => {
