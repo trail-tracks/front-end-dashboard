@@ -52,6 +52,7 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           placeholder="Parque Estadual"
           error={errors.name?.message}
           variant="secondary"
+          maxLength={50}
         />
 
         <InputCustom
@@ -62,6 +63,7 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           placeholder="Núcleo Caraguatatuba"
           error={errors.complemento?.message}
           variant="secondary"
+          maxLength={50}
         />
 
         <div className="flex w-full items-start">
@@ -76,6 +78,7 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           placeholder="Digite seu email"
           error={errors.email?.message}
           variant="secondary"
+          maxLength={50}
         />
 
         <InputCustom
@@ -93,6 +96,7 @@ function StepInstitution({ onNext }: { onNext: () => void }) {
           }
           error={errors.password?.message}
           variant="secondary"
+          maxLength={20}
         />
 
         <Button

@@ -31,8 +31,8 @@ function Login() {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="flex flex-row max-h-screen text-primary-dark">
-      <div className="bg-[url('/floresta.svg')] bg-cover bg-center min-h-screen md:w-7/12" />
+    <div className="flex flex-row text-primary-dark">
+      <div className="bg-[url('/floresta.svg')] bg-cover bg-center h-screen md:w-7/12" />
 
       <div className="flex bg-white min-h-screen w-full lg:w-5/12 justify-center items-center">
         <div className="flex flex-col justify-center items-center pb-15 w-10/12">

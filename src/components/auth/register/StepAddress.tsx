@@ -6,14 +6,24 @@ import { addressSchema } from '@/schema/authSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useEffect } from 'react';
 
 type FormValues = z.infer<typeof addressSchema>;
+
+const apiCep = async (cep: string) => {
+  const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+  const data = await response.json();
+  console.log(data);
+  return data;
+};
 
 function StepAddress({ onNext }: { onNext: () => void }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(addressSchema),
   });
@@ -22,6 +32,23 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     console.log(data);
     onNext();
   };
+
+  const cep = watch('cep');
+
+  useEffect(() => {
+    const fetchCep = async () => {
+      if (cep && cep.length === 8) {
+        const data = await apiCep(cep);
+        if (data.erro) {
+          return;
+        }
+        setValue('complemento', data.complemento);
+        setValue('cidade', data.logradouro);
+        setValue('estado', data.uf);
+      }
+    };
+    fetchCep();
+  }, [cep, setValue]);
 
   return (
     <form
@@ -36,11 +63,13 @@ function StepAddress({ onNext }: { onNext: () => void }) {
           label="CEP"
           name="cep"
           type="text"
-          placeholder="00000-000"
+          placeholder="00000000"
           error={errors.cep?.message}
           variant="secondary"
           className="w-1/2"
+          maxLength={8}
         />
+        ,ma
       </div>
 
       <InputCustom
@@ -51,6 +80,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         placeholder="Nucleo Caraguatatuba"
         error={errors.endereco?.message}
         variant="secondary"
+        maxLength={40}
       />
 
       <InputCustom
@@ -61,6 +91,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
         placeholder="Apartamento, bloco..."
         error={errors.complemento?.message}
         variant="secondary"
+        maxLength={50}
       />
 
       <div className="grid grid-cols-5 gap-4 p-0 w-full">
@@ -73,6 +104,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
             placeholder="São Paulo"
             error={undefined}
             variant="secondary"
+            maxLength={25}
           />
         </div>
 
@@ -85,6 +117,8 @@ function StepAddress({ onNext }: { onNext: () => void }) {
             placeholder="123"
             error={undefined}
             variant="secondary"
+            className="text-center"
+            maxLength={6}
           />
         </div>
 
@@ -98,6 +132,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
             error={undefined}
             variant="secondary"
             className="text-center uppercase"
+            maxLength={2}
           />
         </div>
       </div>

@@ -39,6 +39,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
           error={undefined}
           variant="secondary"
           className="text-center"
+          maxLength={3}
         />
       </div>
       <div className="col-span-2">
@@ -50,6 +51,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
           error={undefined}
           variant="secondary"
           className="text-center"
+          maxLength={9}
         />
       </div>
     </div>

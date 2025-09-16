@@ -7,7 +7,7 @@ export const registerSchema = z.object({
     .max(50, 'O nome deve ter no máximo 50 caracteres'),
   complemento: z
     .string()
-    .max(20, 'O complemento deve ter no máximo 20 caracteres')
+    .max(50, 'O complemento deve ter no máximo 20 caracteres')
     .optional(),
   email: z.email('Email inválido'),
   password: z
@@ -36,7 +36,6 @@ export const addressSchema = z.object({
   cep: z
     .string()
     .min(8, 'O CEP deve ter 8 dígitos')
-    .max(9, 'O CEP deve ter no máximo 9 caracteres')
     .regex(/^\d{5}-?\d{3}$/, 'CEP inválido'),
   endereco: z
     .string()
