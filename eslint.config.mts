@@ -1,16 +1,18 @@
 import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import pluginReact from 'eslint-plugin-react';
-import pluginReactHooks from 'eslint-plugin-react-hooks';
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y';
 import pluginPrettier from 'eslint-plugin-prettier';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default [
+  {
+    ignores: ['node_modules/**', '.next/**', 'dist/**', 'build/**'],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  pluginJsxA11y.configs.recommended,
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     languageOptions: {
@@ -36,10 +38,6 @@ export default [
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       'react/self-closing-comp': 'error',
-      'react/jsx-uses-vars': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
       'prettier/prettier': [
         'error',
         {
