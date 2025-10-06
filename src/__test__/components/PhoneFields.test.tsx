@@ -39,8 +39,8 @@ describe('PhoneFields Component', () => {
     );
 
     const ddiSelect = screen.getByDisplayValue('+55');
-    fireEvent.change(ddiSelect, { target: { value: '+1' } });
-    expect(ddiSelect).toHaveValue('+1');
+    fireEvent.change(ddiSelect, { target: { value: '1' } });
+    expect(ddiSelect).toHaveValue('1');
   });
 
   it('permite digitar DDD', () => {

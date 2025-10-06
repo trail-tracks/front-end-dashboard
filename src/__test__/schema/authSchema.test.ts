@@ -106,12 +106,12 @@ describe('Auth Schemas Validation', () => {
   describe('addressSchema', () => {
     it('valida endereço correto', () => {
       const validData = {
-        cep: '12345-678',
-        endereco: 'Rua das Flores',
-        numero: '123',
-        cidade: 'São Paulo',
-        estado: 'SP',
-        complemento: 'Apto 1',
+        zipCode: '11663702',
+        address: 'Rua das Flores',
+        number: '123',
+        city: 'São Paulo',
+        state: 'SP',
+        addressComplement: 'Apto 1',
       };
 
       const result = addressSchema.safeParse(validData);
@@ -120,11 +120,11 @@ describe('Auth Schemas Validation', () => {
 
     it('rejeita CEP inválido', () => {
       const invalidData = {
-        cep: '123',
-        endereco: 'Rua das Flores',
-        numero: '123',
-        cidade: 'São Paulo',
-        estado: 'SP',
+        zipCode: '123',
+        address: 'Rua das Flores',
+        number: '123',
+        city: 'São Paulo',
+        state: 'SP',
       };
 
       const result = addressSchema.safeParse(invalidData);
@@ -136,11 +136,11 @@ describe('Auth Schemas Validation', () => {
 
     it('rejeita estado inválido', () => {
       const invalidData = {
-        cep: '12345-678',
-        endereco: 'Rua das Flores',
-        numero: '123',
-        cidade: 'São Paulo',
-        estado: 'São Paulo',
+        zipCode: '12345-678',
+        address: 'Rua das Flores',
+        number: '123',
+        city: 'São Paulo',
+        state: 'São Paulo',
       };
 
       const result = addressSchema.safeParse(invalidData);
