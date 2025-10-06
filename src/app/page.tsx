@@ -11,6 +11,7 @@ import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { z } from 'zod';
 
 type FormValues = z.infer<typeof loginSchema>;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function Login() {
   const {
@@ -22,9 +23,26 @@ function Login() {
   });
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
-    router.push('/');
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha na autenticação');
+      }
+
+      const result = await response.json();
+      console.log('Login bem-sucedido:', result);
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Erro ao enviar os dados:', error);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -72,7 +90,6 @@ function Login() {
                     <LuEyeClosed size={20} onClick={togglePasswordVisibility} />
                   )
                 }
-                error={errors.password?.message}
               />
 
               <Button
