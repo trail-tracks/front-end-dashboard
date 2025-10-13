@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '@/components/common/Button';
 import { SignupStore, useSignupStore } from '@/store/userStore';
 import { CiCamera } from 'react-icons/ci';
+import { useMutation } from '@tanstack/react-query';
+import { postRepPhoto } from '@/services/postRepPhoto';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const savedData = useSignupStore((state: SignupStore) => state.data);
@@ -14,6 +16,23 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   useEffect(() => {
     console.log(savedData);
   }, [savedData]);
+
+  const { mutateAsync } = useMutation({
+    mutationFn: postRepPhoto,
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      onNext();
+    },
+    onMutate: async (newPost) => {
+      console.log(newPost);
+    },
+    onSettled: (data, error) => {
+      console.log(data, error);
+    },
+  });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -27,19 +46,16 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
     fileInputRef.current?.click();
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (file) {
+      await mutateAsync(file);
       console.log('Enviando arquivo...', file);
     }
     onNext();
   };
 
   return (
-    <div className="flex flex-row h-screen text-gray-800">
-      <div className="hidden md:block md:w-7/12 bg-[url('/floresta.svg')] bg-cover bg-center" />
-
-      <div className="flex bg-white w-full md:w-5/12 justify-center items-center">
-        <div className="flex flex-col items-center w-10/12 max-w-sm text-center">
+        <div className="flex flex-col items-center text-center">
           <div
             className="relative w-48 h-48 bg-gray-200 rounded-lg mb-6 cursor-pointer"
             onClick={handleAttachClick}
@@ -68,7 +84,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
             Formatos aceitos: PNG, JPG, SVG.
           </p>
 
-          <div className="flex flex-col w-full gap-3">
+          <div className="flex flex-col items-center w-3xs gap-3">
             <Button
               variant="secondary"
               text="Anexar arquivo"
@@ -83,10 +99,9 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
               onClick={handleContinue}
               type="button"
             />
+            <Button variant="text" text="Anexar depois"/>
           </div>
         </div>
-      </div>
-    </div>
   );
 }
 

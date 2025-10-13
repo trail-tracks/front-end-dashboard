@@ -15,17 +15,19 @@ export default function Register() {
 
   return (
     <div className="flex flex-row w-full">
-      {step < 4 && (
+      {step <= 4 && (
         <>
           <div className="bg-[url('/floresta.svg')] bg-cover bg-center h-screen lg:w-7/12" />
           <div className="flex flex-col bg-white text-primary-dark justify-center items-center w-full lg:w-5/12  py-15 px-5">
             <div className="w-8/12">
-              {step === 0 && <StepInstitution onNext={handleNextStep} />}
+              {/* {step === 0 && <StepInstitution onNext={handleNextStep} />}
               {step === 1 && <StepAddress onNext={handleNextStep} />}
               {step === 2 && <LogoUploadPage onNext={handleNextStep} />}
               {step === 3 && (
                 <RepresentativePhotoPage onNext={handleNextStep} />
               )}
+              {step === 4 && <StepConfirm/>} */}
+              <RepresentativePhotoPage onNext={handleNextStep} />
             </div>
           </div>
         </>
