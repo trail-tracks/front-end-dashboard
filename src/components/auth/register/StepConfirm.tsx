@@ -12,7 +12,7 @@ export default function StepConfirm() {
       reset();
     }, 5000);
     return () => clearTimeout(timer);
-  }, [router]);
+  }, [router, reset]);
 
   return (
     <div className="flex flex-col justify-center  items-center text-center">

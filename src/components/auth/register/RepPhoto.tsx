@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 
-import Button from "@/components/common/Button";
-import { CiCamera } from "react-icons/ci";
+import Button from '@/components/common/Button';
+import { CiCamera } from 'react-icons/ci';
 
 function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
   const [file, setFile] = useState<File | null>(null);
@@ -12,7 +12,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      console.log("Arquivo selecionado:", selectedFile);
+      console.log('Arquivo selecionado:', selectedFile);
       setFile(selectedFile);
     }
   };
@@ -23,7 +23,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = () => {
     if (file) {
-      console.log("Enviando arquivo...", file);
+      console.log('Enviando arquivo...', file);
     }
     onNext();
   };
@@ -52,7 +52,9 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
       </h1>
       <p className="text-sm text-gray-600 mb-2">
         Essa imagem será usada em tamanho reduzido no mini player do aplicativo,
-        facilitando a identificação.<br/>Preferencialmente imagens sem textos.
+        facilitando a identificação.
+        <br />
+        Preferencialmente imagens sem textos.
       </p>
       <p className="text-xs text-gray-500 mb-8">
         Formatos aceitos: PNG, JPG, SVG.
