@@ -6,7 +6,10 @@ import { persist } from 'zustand/middleware';
 
 export type SignupStore = {
   data: Partial<SignupPayload>;
-  setField: <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) => void;
+  setField: <K extends keyof SignupPayload>(
+    key: K,
+    value: SignupPayload[K],
+  ) => void;
   setAll: (payload: Partial<SignupPayload>) => void;
   reset: () => void;
   getPayload: () => SignupPayload | null;
@@ -25,12 +28,13 @@ export const useSignupStore = create<SignupStore>()(
           },
         })),
 
-        setAll: (payload: Partial<SignupPayload>) => set((state) => ({
-            data: {
-              ...state.data,
-              ...payload,
-            },
-          })),
+      setAll: (payload: Partial<SignupPayload>) =>
+        set((state) => ({
+          data: {
+            ...state.data,
+            ...payload,
+          },
+        })),
 
       reset: () => set({ data: {} }),
 
@@ -55,6 +59,6 @@ export const useSignupStore = create<SignupStore>()(
     }),
     {
       name: 'signup-data',
-    }
-  )
+    },
+  ),
 );

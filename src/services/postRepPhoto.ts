@@ -1,4 +1,4 @@
-import { axiosHttp } from "@/services/axios";
+import { axiosHttp } from '@/services/axios';
 
 export const postRepPhoto = async (file: File) => {
   const formData = new FormData();

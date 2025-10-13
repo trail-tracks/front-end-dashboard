@@ -3,14 +3,14 @@
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
 import { addressSchema } from '@/schema/authSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { useEffect, useState } from 'react';
-import { RiLoaderLine } from 'react-icons/ri';
-import { SignupStore, useSignupStore } from '@/store/userStore';
-import { useMutation } from '@tanstack/react-query';
 import { postSignup } from '@/services/postSignup';
+import { SignupStore, useSignupStore } from '@/store/userStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { RiLoaderLine } from 'react-icons/ri';
+import { z } from 'zod';
 
 type FormValues = z.infer<typeof addressSchema>;
 
@@ -20,11 +20,7 @@ const apiCep = async (cep: string) => {
   return data;
 };
 
-function StepAddress({
-  onNext,
-}: {
-  onNext: () => void;
-}) {
+function StepAddress({ onNext }: { onNext: () => void }) {
   const {
     register,
     handleSubmit,
@@ -38,25 +34,30 @@ function StepAddress({
   });
   const savedData = useSignupStore((state: SignupStore) => state.data);
   const setAll = useSignupStore((state: SignupStore) => state.setAll);
-  const {data, mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
       console.error(error);
     },
     onSuccess: (data) => {
       console.log(data);
+      onNext();
     },
-    onMutate: async (newPost) => {console.log(newPost)},
-    onSettled: (data, error) => {console.log(data, error)},
+    onMutate: async (newPost) => {
+      console.log(newPost);
+    },
+    onSettled: (data, error) => {
+      console.log(data, error);
+    },
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     setAll(data);
-    mutate(data);
+    const fullPayload = { ...savedData, ...data };
+    mutate(fullPayload);
   };
-
   const zipCode = watch('zipCode');
 
   useEffect(() => {
@@ -64,7 +65,6 @@ function StepAddress({
   }, [savedData, reset]);
 
   useEffect(() => {
-    console.log(savedData);
     const fetchCep = async () => {
       if (zipCode && zipCode.length === 8) {
         setIsLoading(true);
