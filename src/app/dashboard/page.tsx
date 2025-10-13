@@ -15,6 +15,7 @@ function DashboardPage() {
       estimatedTime: '2 horas',
       distance: '5 km',
       difficulty: 'Média',
+      interaction: '25',
     },
     {
       imageUrl: 'https://placehold.co/460x200',
@@ -22,6 +23,7 @@ function DashboardPage() {
       estimatedTime: '1.5 horas',
       distance: '3 km',
       difficulty: 'Fácil',
+      interaction: '25',
     },
     {
       imageUrl: 'https://placehold.co/460x200',
@@ -29,6 +31,7 @@ function DashboardPage() {
       estimatedTime: '3 horas',
       distance: '8 km',
       difficulty: 'Difícil',
+      interaction: '25',
     },
     {
       imageUrl: 'https://placehold.co/460x200',
@@ -36,6 +39,7 @@ function DashboardPage() {
       estimatedTime: '4 horas',
       distance: '10 km',
       difficulty: 'Difícil',
+      interaction: '25',
     },
     {
       imageUrl: 'https://placehold.co/460x200',
@@ -43,6 +47,7 @@ function DashboardPage() {
       estimatedTime: '2.5 horas',
       distance: '6 km',
       difficulty: 'Média',
+      interaction: '25',
     },
   ];
 
@@ -75,6 +80,7 @@ function DashboardPage() {
               estimatedTime={trail.estimatedTime}
               distance={trail.distance}
               difficulty={trail.difficulty}
+              interaction={trail.interaction}
             />
           ))}
           <div className="w-full flex justify-center">
