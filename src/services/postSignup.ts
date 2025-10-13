@@ -15,7 +15,7 @@ const transformPayload = (payload: FormPayload) => {
 
   return {
     name: payload.name,
-    name_complement: payload.nameComplement,
+    nameComplement: payload.nameComplement,
     email: payload.email,
     password: payload.password,
     zipCode: payload.zipCode,
@@ -23,7 +23,7 @@ const transformPayload = (payload: FormPayload) => {
     number: payload.number,
     city: payload.city,
     state: payload.state,
-    address_complement: payload.addressComplement,
+    addressComplement: payload.addressComplement,
     phone: phone,
   };
 };
