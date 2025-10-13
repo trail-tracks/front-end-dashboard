@@ -1,26 +1,19 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useState, useRef, useEffect } from 'react';
-import { FaCamera } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/common/Button';
-import { CiCamera } from 'react-icons/ci';
 import { SignupStore, useSignupStore } from '@/store/userStore';
+import { CiCamera } from 'react-icons/ci';
 
-function LogoUploadPage({
-  onNext,
-}: {
-  onNext: () => void;
-}) {
+function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const savedData = useSignupStore((state: SignupStore) => state.data);
-  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    console.log(savedData)
-  },[])
+    console.log(savedData);
+  }, [savedData]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -38,32 +31,24 @@ function LogoUploadPage({
     if (file) {
       console.log('Enviando arquivo...', file);
     }
-    router.push('/sua-proxima-rota');
+    onNext();
   };
 
   return (
     <div className="flex flex-row h-screen text-gray-800">
-      <div 
-        className="hidden md:block md:w-7/12 bg-[url('/floresta.svg')] bg-cover bg-center"
-      />
+      <div className="hidden md:block md:w-7/12 bg-[url('/floresta.svg')] bg-cover bg-center" />
 
       <div className="flex bg-white w-full md:w-5/12 justify-center items-center">
         <div className="flex flex-col items-center w-10/12 max-w-sm text-center">
-        
           <div
-            className="relative w-48 h-48 bg-gray-200 rounded-lg mb-6 cursor-pointer" 
+            className="relative w-48 h-48 bg-gray-200 rounded-lg mb-6 cursor-pointer"
             onClick={handleAttachClick}
           >
-           
-
             <div className="absolute -bottom-4 right-3 w-12 h-12 bg-primary-dark rounded-full flex justify-center items-center shadow-md">
-            <CiCamera 
-            size={25}
-            stroke='white'
-            strokeWidth={1}/>
+              <CiCamera size={25} stroke="white" strokeWidth={1} />
             </div>
           </div>
-          
+
           <input
             type="file"
             ref={fileInputRef}
@@ -76,7 +61,8 @@ function LogoUploadPage({
             Adicione aqui o logotipo da sua instituição.
           </h1>
           <p className="text-sm text-gray-600 mb-2">
-            Ele será exibido em destaque na página da trilha, ajudando os visitantes a reconhecerem sua marca.
+            Ele será exibido em destaque na página da trilha, ajudando os
+            visitantes a reconhecerem sua marca.
           </p>
           <p className="text-xs text-gray-500 mb-8">
             Formatos aceitos: PNG, JPG, SVG.
@@ -98,7 +84,6 @@ function LogoUploadPage({
               type="button"
             />
           </div>
-
         </div>
       </div>
     </div>
