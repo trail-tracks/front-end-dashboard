@@ -21,7 +21,7 @@ export default function Register() {
           <div className="flex flex-col bg-white text-primary-dark justify-center items-center w-full lg:w-5/12  py-15 px-5">
             <div className="w-8/12">
               {step === 0 && <StepInstitution onNext={handleNextStep} />}
-              {step === 1 && <StepAddress onNext={handleNextStep} />}
+              {step === 1 && <StepAddress />}
               {step === 2 && <LogoUploadPage onNext={handleNextStep} />}
               {step === 3 && (
                 <RepresentativePhotoPage onNext={handleNextStep} />
