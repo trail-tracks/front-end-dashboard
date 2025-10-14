@@ -5,7 +5,6 @@ export type UserData = {
   id: string;
   name: string;
   email: string;
-  token: string;
 };
 
 export type UserStore = {
@@ -13,8 +12,7 @@ export type UserStore = {
   setUserData: (payload: Partial<UserData>) => void;
   setUserField: <K extends keyof UserData>(key: K, value: UserData[K]) => void;
   resetUser: () => void;
-  getToken: () => string | null;
-  setToken: (token: string) => void;
+  getUserData: () => Partial<UserData>;
 };
 
 export const useUserStore = create<UserStore>()(
@@ -40,15 +38,7 @@ export const useUserStore = create<UserStore>()(
 
       resetUser: () => set({ userData: {} }),
 
-      getToken: () => get().userData.token ?? null,
-
-      setToken: (token: string) =>
-        set((state) => ({
-          userData: {
-            ...state.userData,
-            token,
-          },
-        })),
+      getUserData: () => get().userData,
     }),
     {
       name: 'user-data',

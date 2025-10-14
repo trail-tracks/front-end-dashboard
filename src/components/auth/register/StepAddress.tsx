@@ -20,7 +20,7 @@ const apiCep = async (cep: string) => {
   return data;
 };
 
-function StepAddress() {
+function StepAddress({ onNext }: { onNext: () => void }) {
   const {
     register,
     handleSubmit,
@@ -33,6 +33,7 @@ function StepAddress() {
   });
   const savedData = useSignupStore((state: SignupStore) => state.data);
   const setAll = useSignupStore((state: SignupStore) => state.setAll);
+  const reset = useSignupStore((state: SignupStore) => state.reset);
   const { mutate } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
@@ -40,6 +41,8 @@ function StepAddress() {
     },
     onSuccess: (data) => {
       console.log(data);
+      reset();
+      onNext();
     },
     onMutate: async (newPost) => {
       console.log(newPost);

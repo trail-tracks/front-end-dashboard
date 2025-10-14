@@ -18,6 +18,7 @@ export const postAttachments = async ({
     `/attachments?type=${type}&entityId=${entityId}`,
     formData,
     {
+      withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
       },
