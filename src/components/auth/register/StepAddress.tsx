@@ -4,7 +4,8 @@ import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
 import { addressSchema } from '@/schema/authSchema';
 import { postSignup } from '@/services/postSignup';
-import { SignupStore, useSignupStore } from '@/store/userStore';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
+import { useUserStore } from '@/store/userStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -34,6 +35,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
   });
   const savedData = useSignupStore((state: SignupStore) => state.data);
   const setAll = useSignupStore((state: SignupStore) => state.setAll);
+  const setToken = useUserStore((state) => state.setToken);
   const { mutate } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
@@ -41,7 +43,6 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     },
     onSuccess: (data) => {
       console.log(data);
-      onNext();
     },
     onMutate: async (newPost) => {
       console.log(newPost);
@@ -59,10 +60,6 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     mutate(fullPayload);
   };
   const zipCode = watch('zipCode');
-
-  useEffect(() => {
-    reset(savedData);
-  }, [savedData, reset]);
 
   useEffect(() => {
     const fetchCep = async () => {

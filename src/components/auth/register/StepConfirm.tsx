@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { PiCheckCircleThin } from 'react-icons/pi';
 import { useRouter } from 'next/navigation';
-import { SignupStore, useSignupStore } from '@/store/userStore';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
 
 export default function StepConfirm() {
   const reset = useSignupStore((state: SignupStore) => state.reset);

@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/common/Button';
-import { SignupStore, useSignupStore } from '@/store/userStore';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
 import { CiCamera } from 'react-icons/ci';
 import { useMutation } from '@tanstack/react-query';
-import { postRepPhoto } from '@/services/postRepPhoto';
+import { postAttachments } from '@/services/postAttachments';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const savedData = useSignupStore((state: SignupStore) => state.data);
@@ -18,7 +18,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   }, [savedData]);
 
   const { mutateAsync } = useMutation({
-    mutationFn: postRepPhoto,
+    mutationFn: postAttachments,
     onError: (error) => {
       console.error(error);
     },
@@ -48,7 +48,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = async () => {
     if (file) {
-      await mutateAsync(file);
+      await mutateAsync({ file, type: 'cover', entityId: 0 });
       console.log('Enviando arquivo...', file);
     }
     onNext();

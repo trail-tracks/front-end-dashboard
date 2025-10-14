@@ -1,64 +1,57 @@
-// src/store/signupStore.ts
-
-import { SignupPayload } from '@/app/entities/signup';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type SignupStore = {
-  data: Partial<SignupPayload>;
-  setField: <K extends keyof SignupPayload>(
-    key: K,
-    value: SignupPayload[K],
-  ) => void;
-  setAll: (payload: Partial<SignupPayload>) => void;
-  reset: () => void;
-  getPayload: () => SignupPayload | null;
+export type UserData = {
+  id: string;
+  name: string;
+  email: string;
+  token: string;
 };
 
-export const useSignupStore = create<SignupStore>()(
+export type UserStore = {
+  userData: Partial<UserData>;
+  setUserData: (payload: Partial<UserData>) => void;
+  setUserField: <K extends keyof UserData>(key: K, value: UserData[K]) => void;
+  resetUser: () => void;
+  getToken: () => string | null;
+  setToken: (token: string) => void;
+};
+
+export const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
-      data: {},
+      userData: {},
 
-      setField: (key, value) =>
+      setUserData: (payload) =>
         set((state) => ({
-          data: {
-            ...state.data,
-            [key]: value,
-          },
-        })),
-
-      setAll: (payload: Partial<SignupPayload>) =>
-        set((state) => ({
-          data: {
-            ...state.data,
+          userData: {
+            ...state.userData,
             ...payload,
           },
         })),
 
-      reset: () => set({ data: {} }),
+      setUserField: (key, value) =>
+        set((state) => ({
+          userData: {
+            ...state.userData,
+            [key]: value,
+          },
+        })),
 
-      getPayload: () => {
-        const data = get().data;
+      resetUser: () => set({ userData: {} }),
 
-        const requiredFields: (keyof SignupPayload)[] = [
-          'name',
-          'email',
-          'password',
-          'zipCode',
-          'address',
-          'number',
-          'city',
-          'state',
-          'phone',
-        ];
+      getToken: () => get().userData.token ?? null,
 
-        const isValid = requiredFields.every((field) => !!data[field]);
-        return isValid ? (data as SignupPayload) : null;
-      },
+      setToken: (token: string) =>
+        set((state) => ({
+          userData: {
+            ...state.userData,
+            token,
+          },
+        })),
     }),
     {
-      name: 'signup-data',
+      name: 'user-data',
     },
   ),
 );

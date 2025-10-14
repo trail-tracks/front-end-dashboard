@@ -10,7 +10,7 @@ import { z } from 'zod';
 import PhoneFields from '@/components/auth/register/PhoneFields';
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
-import { SignupStore, useSignupStore } from '@/store/userStore';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
 
 type FormValues = z.infer<typeof registerSchema>;
 
