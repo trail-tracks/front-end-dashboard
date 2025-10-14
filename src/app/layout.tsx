@@ -1,3 +1,4 @@
+import { Toaster } from 'sonner';
 import ClientProvider from './ClientProvider';
 
 export const metadata = {
@@ -14,6 +15,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClientProvider>{children}</ClientProvider>
+        <Toaster />
       </body>
     </html>
   );

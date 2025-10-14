@@ -7,11 +7,26 @@ import { SignupStore, useSignupStore } from '@/store/signupStore';
 import { CiCamera } from 'react-icons/ci';
 import { useMutation } from '@tanstack/react-query';
 import { postAttachments } from '@/services/postAttachments';
+import { toast } from 'sonner';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const savedData = useSignupStore((state: SignupStore) => state.data);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+
+      return () => {
+        URL.revokeObjectURL(url);
+        setPreviewUrl(null);
+      };
+    }
+  }, [file]);
 
   useEffect(() => {
     console.log(savedData);
@@ -19,11 +34,13 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
 
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
+      toast('Ocorreu um erro no envio da imagem', {
+        description: 'Tente novamente',
+      });
     },
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
+      toast('Imagem enviada com sucesso');
       onNext();
     },
     onMutate: async (newPost) => {
@@ -48,7 +65,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = async () => {
     if (file) {
-      await mutateAsync({ file, type: 'cover', entityId: 0 });
+      await mutateAsync({ file, type: 'cover' });
       console.log('Enviando arquivo...', file);
     }
     onNext();
@@ -57,9 +74,19 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div
-        className="relative w-48 h-48 bg-gray-200 rounded-lg mb-6 cursor-pointer"
+        className="relative w-48 h-48 mb-6 cursor-pointer rounded-lg flex items-center justify-center"
         onClick={handleAttachClick}
       >
+        {previewUrl ? (
+          <img
+            src={previewUrl}
+            alt="Uploaded Logo"
+            className="w-full h-full rounded-lg overflow-hidden"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 rounded-lg" />
+        )}
+
         <div className="absolute -bottom-4 right-3 w-12 h-12 bg-primary-dark rounded-full flex justify-center items-center shadow-md">
           <CiCamera size={25} stroke="white" strokeWidth={1} />
         </div>

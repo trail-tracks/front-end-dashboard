@@ -10,6 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RiLoaderLine } from 'react-icons/ri';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 type FormValues = z.infer<typeof addressSchema>;
@@ -37,10 +38,12 @@ function StepAddress({ onNext }: { onNext: () => void }) {
   const { mutate } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
+      toast.error('Falha no registro');
       console.error(error);
     },
     onSuccess: (data) => {
       console.log(data);
+      toast.success('Usuário registrado com sucesso');
       reset();
       onNext();
     },
