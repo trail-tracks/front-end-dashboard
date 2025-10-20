@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import StepAddress from '@/components/auth/register/StepAddress';
 
-describe('StepAddress (básico)', () => {
+describe('StepAddress', () => {
   it('renderiza campos e botão Continuar', () => {
     const onNext = jest.fn();
     const onData = jest.fn();

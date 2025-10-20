@@ -10,4 +10,7 @@ describe('NavItem (básico)', () => {
   });
 });
 
+// Testa se rendeiza o item com texto e href
+// Apos, testa se o link gerado tem correspondecia com o href passado
+
 
