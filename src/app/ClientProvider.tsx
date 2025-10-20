@@ -1,7 +1,7 @@
 'use client';
 
-import { Geist, Geist_Mono, Gabarito } from 'next/font/google';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Gabarito, Geist, Geist_Mono } from 'next/font/google';
 import { useState } from 'react';
 import './globals.css';
 
@@ -21,7 +21,11 @@ const gabarito = Gabarito({
   weight: ['400', '500', '600', '700'],
 });
 
-export default function ClientProvider({ children }: { children: React.ReactNode }) {
+export default function ClientProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (

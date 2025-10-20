@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { registerSchema } from '@/schema/authSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { LuEye, LuEyeClosed } from 'react-icons/lu';
 import { z } from 'zod';
 
 import PhoneFields from '@/components/auth/register/PhoneFields';
-import InputCustom from '@/components/common/InputCustom';
 import Button from '@/components/common/Button';
-import { SignupStore, useSignupStore } from '@/store/userStore';
+import InputCustom from '@/components/common/InputCustom';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
 
 type FormValues = z.infer<typeof registerSchema>;
 
@@ -29,7 +29,7 @@ export default function StepInstitution({ onNext }: StepInstitutionProps) {
     reset,
   } = useForm<FormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: savedData as any,
+    defaultValues: savedData as Partial<FormValues>,
   });
 
   // Sync form with stored data when it changes

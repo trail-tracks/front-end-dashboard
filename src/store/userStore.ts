@@ -1,60 +1,47 @@
-// src/store/signupStore.ts
-
-import { SignupPayload } from '@/app/entities/signup';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type SignupStore = {
-  data: Partial<SignupPayload>;
-  setField: <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) => void;
-  setAll: (payload: Partial<SignupPayload>) => void;
-  reset: () => void;
-  getPayload: () => SignupPayload | null;
+export type UserData = {
+  id: string;
+  name: string;
+  email: string;
 };
 
-export const useSignupStore = create<SignupStore>()(
+export type UserStore = {
+  userData: Partial<UserData>;
+  setUserData: (payload: Partial<UserData>) => void;
+  setUserField: <K extends keyof UserData>(key: K, value: UserData[K]) => void;
+  resetUser: () => void;
+  getUserData: () => Partial<UserData>;
+};
+
+export const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
-      data: {},
+      userData: {},
 
-      setField: (key, value) =>
+      setUserData: (payload) =>
         set((state) => ({
-          data: {
-            ...state.data,
+          userData: {
+            ...state.userData,
+            ...payload,
+          },
+        })),
+
+      setUserField: (key, value) =>
+        set((state) => ({
+          userData: {
+            ...state.userData,
             [key]: value,
           },
         })),
 
-        setAll: (payload: Partial<SignupPayload>) => set((state) => ({
-            data: {
-              ...state.data,
-              ...payload,
-            },
-          })),
+      resetUser: () => set({ userData: {} }),
 
-      reset: () => set({ data: {} }),
-
-      getPayload: () => {
-        const data = get().data;
-
-        const requiredFields: (keyof SignupPayload)[] = [
-          'name',
-          'email',
-          'password',
-          'zipCode',
-          'address',
-          'number',
-          'city',
-          'state',
-          'phone',
-        ];
-
-        const isValid = requiredFields.every((field) => !!data[field]);
-        return isValid ? (data as SignupPayload) : null;
-      },
+      getUserData: () => get().userData,
     }),
     {
-      name: 'signup-data',
-    }
-  )
+      name: 'user-data',
+    },
+  ),
 );
