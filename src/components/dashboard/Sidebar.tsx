@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from '@/components/ui/sidebar';
+import Link from 'next/link';
 import Image from 'next/image';
 import { CiLogout } from 'react-icons/ci';
 import { IoAnalyticsOutline, IoTrailSignOutline } from 'react-icons/io5';
@@ -26,17 +27,17 @@ const menuItems = [
   {
     title: 'Gerenciar Trilhas',
     icon: IoTrailSignOutline,
-    url: '/gerenciar-trilhas',
+    url: '/dashboard/gerenciar-trilhas',
   },
   {
     title: 'Gerenciar Pontos de Interesse',
     icon: IoAnalyticsOutline,
-    url: '/pontos-interesse',
+    url: '/dashboard/pontos-interesse',
   },
   {
     title: 'Perfil da Instituição',
     icon: MdManageAccounts,
-    url: '/perfil',
+    url: '/dashboard/perfil',
   },
 ];
 
@@ -44,7 +45,7 @@ const settingsItems = [
   {
     title: 'Configurações de acesso',
     icon: TbSettings2,
-    url: '/configuracoes',
+    url: '/dashboard/configuracoes',
   },
   {
     title: 'Encerrar Sessão',
@@ -85,10 +86,10 @@ export function AppSidebar() {
                     size={'lg'}
                     className="hover:bg-primary-medium/25"
                   >
-                    <a href={item.url} className="flex items-center gap-3">
+                    <Link href={item.url} className="flex items-center gap-3">
                       <item.icon className="text-primary-dark w-7 h-7 min-w-7 min-h-7" />
                       <span className="font-semibold ">{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -108,7 +109,7 @@ export function AppSidebar() {
                     className="hover:bg-primary-medium/25"
                     size={'lg'}
                   >
-                    <a href={item.url} className="flex items-center gap-3 ">
+                    <Link href={item.url} className="flex items-center gap-3 ">
                       <item.icon
                         className={
                           item.className ||
@@ -116,7 +117,7 @@ export function AppSidebar() {
                         }
                       />
                       <span className="font-semibold">{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

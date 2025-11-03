@@ -99,7 +99,7 @@ function DashboardPage() {
             <Button
               text={'VER TODOS'}
               className="flex w-1/6 mt-2 justify-center bg-white border border-yellow-400 text-yellow-400"
-              onClick={() => router.push('/gerenciar-trilhas')}
+              onClick={() => router.push('dashboard/gerenciar-trilhas')}
             />
           </div>
         </div>

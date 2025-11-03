@@ -26,7 +26,6 @@ export default function Register() {
               {step === 3 && (
                 <RepresentativePhotoPage onNext={handleNextStep} />
               )}
-              {step === 4 && <StepConfirm />}
             </div>
           </div>
         </>
