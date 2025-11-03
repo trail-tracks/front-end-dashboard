@@ -1,10 +1,11 @@
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
+import Image from 'next/image';
 import Button from '../common/Button';
 
 interface TrailCardProps {
-  imageUrl?: string;
+  imageUrl: string;
   title?: string;
   estimatedTime?: string;
   distance?: string;
@@ -21,12 +22,15 @@ function TrailCard({
   interaction,
 }: TrailCardProps) {
   return (
-    <div className="flex flex-col bg-white p-4 m-1 rounded-3xl border-1 border-primary-medium/25 w-full sm:w-[calc(50%-0.625rem)] lg:w-full text-primary-dark">
-      <div className="w-full mb-4">
-        <img
+    <div className="flex flex-col bg-white p-4 m-1 rounded-3xl border-1 border-primary-medium/25 w-full min-w-full sm:w-[calc(50%-0.625rem)] lg:w-full text-primary-dark">
+      <div className="w-full mb-2">
+        <Image
           src={imageUrl}
           alt=""
           className="object-cover rounded-lg h-10 w-full"
+          width={352}
+          height={40}
+          quality={95}
         />
       </div>
       <div />
@@ -50,7 +54,7 @@ function TrailCard({
         </div>
 
         <div className="flex justify-end mr-2 ">
-          <div className="flex flex-col justify-center items-center w-30 h-30 ring-1 ring-primary-medium/25 rounded-2xl p-4">
+          <div className="flex flex-col justify-center items-center ring-1 ring-primary-medium/25 rounded-2xl p-4">
             <span className="text-3xl font-bold">{interaction}</span>
             <span className="text-sm font-bold text-black">
               Interações <br /> c/ usuários
