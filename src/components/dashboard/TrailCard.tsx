@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import Button from '../common/Button';
 
 interface TrailCardProps {
+  id: string;
   imageUrl: string;
   title?: string;
   estimatedTime?: string;
@@ -17,6 +18,7 @@ interface TrailCardProps {
 }
 
 function TrailCard({
+  id,
   imageUrl,
   title,
   estimatedTime,
@@ -70,7 +72,7 @@ function TrailCard({
         <Button
           text="Ver mais detalhes"
           className="w-full"
-          onClick={() => router.push('/dashboard/gerenciar-trilhas/1')}
+          onClick={() => router.push(`/dashboard/gerenciar-trilhas/${id}`)}
         />
       </div>
     </div>

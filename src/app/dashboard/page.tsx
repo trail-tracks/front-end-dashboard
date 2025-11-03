@@ -10,6 +10,7 @@ function DashboardPage() {
   const router = useRouter();
   const trails = [
     {
+      id: '1',
       imageUrl:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
       title: 'Trilha Exemplo 1',
@@ -19,6 +20,7 @@ function DashboardPage() {
       interaction: '25',
     },
     {
+      id: '2',
       imageUrl:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
       title: 'Trilha Exemplo 2',
@@ -28,6 +30,7 @@ function DashboardPage() {
       interaction: '25',
     },
     {
+      id: '3',
       imageUrl:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
       title: 'Trilha Exemplo 3',
@@ -37,6 +40,7 @@ function DashboardPage() {
       interaction: '25',
     },
     {
+      id: '4',
       imageUrl:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
       title: 'Trilha Exemplo 4',
@@ -46,6 +50,7 @@ function DashboardPage() {
       interaction: '25',
     },
     {
+      id: '5',
       imageUrl:
         'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
       title: 'Trilha Exemplo 5',
@@ -87,6 +92,7 @@ function DashboardPage() {
           {trails.slice(0, 2).map((trail, index) => (
             <TrailCard
               key={index}
+              id={trail.id}
               imageUrl={trail.imageUrl}
               title={trail.title}
               estimatedTime={trail.estimatedTime}
