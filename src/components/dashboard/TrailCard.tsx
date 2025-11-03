@@ -1,7 +1,10 @@
+'use client';
+
+import Image from 'next/image';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Button from '../common/Button';
 
 interface TrailCardProps {
@@ -21,6 +24,7 @@ function TrailCard({
   difficulty,
   interaction,
 }: TrailCardProps) {
+  const router = useRouter();
   return (
     <div className="flex flex-col bg-white p-4 m-1 rounded-3xl border-1 border-primary-medium/25 w-full min-w-full sm:w-[calc(50%-0.625rem)] lg:w-full text-primary-dark">
       <div className="w-full mb-2">
@@ -63,7 +67,11 @@ function TrailCard({
         </div>
       </div>
       <div className="flex w-full justify-center items-center">
-        <Button text="Ver mais detalhes" className="w-full" />
+        <Button
+          text="Ver mais detalhes"
+          className="w-full"
+          onClick={() => router.push('/dashboard/gerenciar-trilhas/1')}
+        />
       </div>
     </div>
   );
