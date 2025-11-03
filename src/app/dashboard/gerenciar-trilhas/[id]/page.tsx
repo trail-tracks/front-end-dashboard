@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { GoShield } from 'react-icons/go';
@@ -121,10 +122,10 @@ async function page({ params }: PageProps) {
           Formatos aceitos: PNG, JPG, SVG.
         </div>
         <div className="flex flex-col w-40">
-          <Button size="lg" variant="default" className="mt-6">
+          <Button size="lg" variant="primary" className="mt-6">
             Sobre a Trilha
           </Button>
-          <Button size="lg" variant="default" className="mt-6">
+          <Button size="lg" className="mt-6">
             Pontos de Interesse
           </Button>
         </div>
