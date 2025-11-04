@@ -1,5 +1,8 @@
+'use client';
+
 import TrailCard from '@/components/dashboard/TrailCard';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const trails = [
   {
@@ -65,13 +68,19 @@ const trails = [
 ];
 
 function GerenciarTrilhas() {
+  const router = useRouter();
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-6 w-full min-h-full">
       <div className="flex justify-between items-center flex-row">
         <h1 className="text-2xl font-bold text-primary-dark">
           Gerenciamento de Trilhas
         </h1>
-        <Button size="xl" variant="default" className="w-1/5">
+        <Button
+          size="xl"
+          variant="default"
+          className="w-1/5"
+          onClick={() => router.push('/dashboard/gerenciar-trilhas/add-trilha')}
+        >
           Criar Trilha
         </Button>
       </div>
