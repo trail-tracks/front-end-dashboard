@@ -1,5 +1,4 @@
 'use client';
-import { Input } from '@/components/ui/input';
 import { usePhoto } from '@/hooks/use-photo';
 import { HiUpload } from 'react-icons/hi';
 import { useForm } from 'react-hook-form';
@@ -9,8 +8,13 @@ import { HiMiniTrash } from 'react-icons/hi2';
 import Image from 'next/image';
 import { createTrailSchema, CreateTrailDto } from '@/schema/createTrail';
 import { createTrail } from '@/services/trails';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import InputCustom from '@/components/common/InputCustom';
+import FormError from '@/components/common/FormError';
 
 function Page() {
+  const router = useRouter();
   const { photos, handleFileChange, removePhoto } = usePhoto();
   const {
     register,
@@ -35,9 +39,12 @@ function Page() {
       console.log('Uploaded Photos:', photos);
 
       const response = await createTrail(data);
-      console.log('Trilha criada com sucesso:', response);
+      if (response.ok) {
+        toast.success('Trilha criada com sucesso!');
+        router.push('/dashboard/gerenciar-trilhas');
+      }
     } catch (error) {
-      console.error('Erro ao enviar o formulário:', error);
+      toast.error('Erro ao enviar o formulário:' + error);
     }
   };
 
@@ -45,7 +52,7 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-3 gap-5 h-40">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
             <div className="rounded-lg p-4 cursor-pointer bg-[#E8E8E8] hover:border-gray-600 transition-colors flex items-center justify-center h-full col-span-1">
               <label
@@ -90,67 +97,58 @@ function Page() {
               ))}
             </>
           )}
-          <div className="flex flex-col col-span-2 gap-2">
+          <div className="flex flex-col col-span-2 gap-2 mt-2 justify-center">
             <label htmlFor="name" className="font-bold text-sm">
               Nome da Trilha
             </label>
-            <Input
+            <InputCustom
               id="name"
               type="text"
               placeholder="Nome da Trilha"
               className="w-full"
               {...register('name')}
             />
-            {errors.name && (
-              <span className="text-red-500 text-xs">
-                {errors.name.message}
-              </span>
-            )}
+            {errors.name && <FormError message={errors.name?.message} />}
           </div>
         </div>
         <div className="w-full">
           <label
             htmlFor="shortDescription"
-            className="text-2xl font-bold text-primary-dark"
+            className="text-lg md:text-2xl font-bold text-primary-dark"
           >
             Breve descrição sobre a Trilha
           </label>
-          <Input
+          <textarea
             id="shortDescription"
-            type="text"
             placeholder="Breve descrição sobre a Trilha"
-            className="flex w-full h-24 justify-self-start"
+            className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
             {...register('shortDescription')}
           />
           {errors.shortDescription && (
-            <span className="text-red-500 text-xs">
-              {errors.shortDescription.message}
-            </span>
+            <FormError message={errors.shortDescription?.message} />
           )}
         </div>
-        <div className="grid grid-cols-2 gap-5">
-          <div className="flex flex-col gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="flex flex-col gap-2 md:gap-5">
             <div>
               <label htmlFor="duration" className="font-bold text-sm">
                 Tempo Estimado (em Min.)
               </label>
-              <Input
+              <InputCustom
                 id="duration"
                 type="number"
                 placeholder="Tempo Estimado"
                 {...register('duration', { valueAsNumber: true })}
               />
               {errors.duration && (
-                <span className="text-red-500 text-xs">
-                  {errors.duration.message}
-                </span>
+                <FormError message={errors.duration.message} />
               )}
             </div>
             <div>
               <label htmlFor="distance" className="font-bold text-sm">
                 Distância aproximada (em Km)
               </label>
-              <Input
+              <InputCustom
                 id="distance"
                 type="number"
                 step="0.1"
@@ -158,9 +156,7 @@ function Page() {
                 {...register('distance', { valueAsNumber: true })}
               />
               {errors.distance && (
-                <span className="text-red-500 text-xs">
-                  {errors.distance.message}
-                </span>
+                <FormError message={errors.distance?.message} />
               )}
             </div>
             <div>
@@ -169,7 +165,7 @@ function Page() {
               </label>
               <select
                 id="difficulty"
-                className="w-full border border-gray-300 rounded-lg p-2"
+                className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
                 {...register('difficulty')}
               >
                 <option value="facil">Fácil</option>
@@ -178,9 +174,7 @@ function Page() {
                 <option value="muito_dificil">Muito Difícil</option>
               </select>
               {errors.difficulty && (
-                <span className="text-red-500 text-xs">
-                  {errors.difficulty.message}
-                </span>
+                <FormError message={errors.difficulty?.message} />
               )}
             </div>
           </div>
@@ -190,24 +184,22 @@ function Page() {
             </label>
             <textarea
               id="safetyTips"
-              className="w-full h-full border border-gray-300 rounded-lg p-2"
+              className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
               placeholder="Digite as dicas de segurança aqui"
               {...register('safetyTips')}
             />
             {errors.safetyTips && (
-              <span className="text-red-500 text-xs">
-                {errors.safetyTips.message}
-              </span>
+              <FormError message={errors.safetyTips?.message} />
             )}
           </div>
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="bg-primary-dark text-white px-4 py-2 rounded-lg w-1/5 mt-4"
+          className="bg-primary-dark text-white px-4 py-2 rounded-lg lg:w-2/5 mt-4"
         >
           Cadastrar
-        </button>
+        </Button>
       </form>
     </div>
   );
