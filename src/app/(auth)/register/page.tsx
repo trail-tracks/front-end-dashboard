@@ -15,7 +15,7 @@ export default function Register() {
 
   return (
     <div className="flex flex-row w-full">
-      {step <= 4 && (
+      {step < 4 && (
         <>
           <div className="bg-[url('/floresta.jpeg')] bg-cover bg-center h-screen lg:w-7/12" />
           <div className="flex flex-col bg-white text-primary-dark justify-center items-center w-full lg:w-5/12  py-15 px-5">

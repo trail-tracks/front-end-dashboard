@@ -4,7 +4,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Toaster } from 'sonner';
 import HeaderClient from './HeaderClient';
 
 export default function DashboardLayout({
@@ -15,7 +14,6 @@ export default function DashboardLayout({
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="flex min-h-screen w-full bg-white p-4 md:p-6 md:gap-6 lg:p-10 lg:gap-10">
-        <Toaster position="top-right" richColors />
         <AppSidebar />
         <SidebarInset className="flex flex-col flex-1 min-w-0">
           <div className="flex flex-col h-full gap-6">

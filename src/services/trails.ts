@@ -37,3 +37,13 @@ export const createTrail = async ({
 
   return response.data;
 };
+
+export const getTrails = async () => {
+  const response = await axiosHttp.get('/trails');
+  return response.data;
+};
+
+export const getTrailById = async (id: string) => {
+  const response = await axiosHttp.get(`/trails/${id}`);
+  return response.data;
+};

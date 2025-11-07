@@ -5,6 +5,7 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'text' | 'icon';
   type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 function Button({
@@ -14,6 +15,7 @@ function Button({
   variant = 'primary',
   type = 'button',
   icon,
+  disabled = false,
 }: ButtonProps) {
   const variants = {
     primary:
@@ -26,9 +28,10 @@ function Button({
 
   return (
     <button
-      className={`cursor-pointer ${variants[variant]} ${className}`}
+      className={`cursor-pointer ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       onClick={onClick}
       type={type}
+      disabled={disabled}
     >
       {text}
       {icon && <span className="mr-2">{icon}</span>}

@@ -122,7 +122,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
           onClick={handleContinue}
           type="button"
         />
-        <Button variant="text" text="Anexar depois" />
+        <Button variant="text" text="Anexar depois" onClick={handleContinue} />
       </div>
     </div>
   );

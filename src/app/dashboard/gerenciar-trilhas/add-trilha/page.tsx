@@ -1,17 +1,17 @@
 'use client';
-import { usePhoto } from '@/hooks/use-photo';
-import { HiUpload } from 'react-icons/hi';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import { HiMiniTrash } from 'react-icons/hi2';
-import Image from 'next/image';
-import { createTrailSchema, CreateTrailDto } from '@/schema/createTrail';
-import { createTrail } from '@/services/trails';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import InputCustom from '@/components/common/InputCustom';
 import FormError from '@/components/common/FormError';
+import InputCustom from '@/components/common/InputCustom';
+import { Button } from '@/components/ui/button';
+import { usePhoto } from '@/hooks/use-photo';
+import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
+import { createTrail } from '@/services/trails';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { HiUpload } from 'react-icons/hi';
+import { HiMiniTrash } from 'react-icons/hi2';
+import { toast } from 'sonner';
 
 function Page() {
   const router = useRouter();
@@ -38,11 +38,9 @@ function Page() {
       console.log('Form Data:', data);
       console.log('Uploaded Photos:', photos);
 
-      const response = await createTrail(data);
-      if (response.ok) {
-        toast.success('Trilha criada com sucesso!');
-        router.push('/dashboard/gerenciar-trilhas');
-      }
+      await createTrail(data);
+      toast.success('Trilha criada com sucesso!');
+      router.push('/dashboard/gerenciar-trilhas');
     } catch (error) {
       toast.error('Erro ao enviar o formulário:' + error);
     }
@@ -52,7 +50,7 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:gap-6 md:h-40">
+        <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
             <div className="rounded-lg p-4 cursor-pointer bg-[#E8E8E8] hover:border-gray-600 transition-colors flex items-center justify-center h-full col-span-1">
               <label

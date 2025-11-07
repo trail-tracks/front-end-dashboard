@@ -68,6 +68,22 @@ const trails = [
 ];
 
 function GerenciarTrilhas() {
+  //const [trails, setTrails] = useState<Trail[]>([]);
+  //useEffect(() => {
+  //let isMounted = true;
+  //   const fetchTrails = async () => {
+  //     try {
+  //       const data = await getTrails();
+  //       //if (isMounted) setTrails(data);
+  //     } catch (error) {
+  //       console.error('Erro ao buscar trilhas:', error);
+  //     }
+  //   };
+  //   fetchTrails();
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, []);
   const router = useRouter();
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-6 w-full min-h-full">

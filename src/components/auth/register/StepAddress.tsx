@@ -35,10 +35,10 @@ function StepAddress({ onNext }: { onNext: () => void }) {
   const savedData = useSignupStore((state: SignupStore) => state.data);
   const setAll = useSignupStore((state: SignupStore) => state.setAll);
   const reset = useSignupStore((state: SignupStore) => state.reset);
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
-      toast.error('Falha no registro');
+      toast.error(error.message);
       console.error(error);
     },
     onSuccess: (data) => {
@@ -184,9 +184,10 @@ function StepAddress({ onNext }: { onNext: () => void }) {
 
       <Button
         variant="secondary"
-        text="Continuar"
+        text={isPending ? 'Registrando...' : 'Continuar'}
         className="py-3 mt-8"
         type="submit"
+        disabled={isPending}
       />
     </form>
   );

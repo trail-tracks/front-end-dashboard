@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/common/Button';
-import { SignupStore, useSignupStore } from '@/store/signupStore';
-import { CiCamera } from 'react-icons/ci';
-import { useMutation } from '@tanstack/react-query';
 import { postAttachments } from '@/services/postAttachments';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
+import { useMutation } from '@tanstack/react-query';
+import { CiCamera } from 'react-icons/ci';
 import { toast } from 'sonner';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
@@ -126,7 +126,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
           onClick={handleContinue}
           type="button"
         />
-        <Button variant="text" text="Anexar depois" />
+        <Button variant="text" text="Anexar depois" onClick={handleContinue} />
       </div>
     </div>
   );

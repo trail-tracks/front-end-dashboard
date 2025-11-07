@@ -1,4 +1,7 @@
+import { postAttachments } from '@/services/postAttachments';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 type UsePhotoOptions = {
   maxPhotos?: number;
@@ -34,8 +37,27 @@ export function usePhoto(options: UsePhotoOptions = {}) {
       } else {
         alert(`Você pode adicionar no máximo ${maxPhotos} fotos.`);
       }
+
+      uploadPhoto(file);
     }
   };
+
+  const uploadPhoto = async (file: File) => {
+    mutate({
+      file,
+      type: 'galery',
+    });
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: postAttachments,
+    onError: (error) => {
+      toast.error(error.message || 'Erro ao fazer upload da foto');
+    },
+    onSuccess: () => {
+      toast.success('Foto enviada com sucesso!');
+    },
+  });
 
   const removePhoto = (index: number) => {
     setPhotos(photos.filter((_, i) => i !== index));

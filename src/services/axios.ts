@@ -7,6 +7,7 @@ export const axiosHttp = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 // Optional: Add interceptors (e.g., for auth)
@@ -23,7 +24,16 @@ axiosHttp.interceptors.request.use(
 axiosHttp.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error?.response || error.message);
-    return Promise.reject(error);
+    const { data, status } = error?.response || {};
+    const errorMessage =
+      data?.error?.message ||
+      data?.message ||
+      error?.message ||
+      'Erro desconhecido';
+    const statusCode = data?.error?.statusCode || status || 500;
+
+    console.error('API Error:', { message: errorMessage, statusCode });
+
+    return Promise.reject({ message: errorMessage, statusCode });
   },
 );
