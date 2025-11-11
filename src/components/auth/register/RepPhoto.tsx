@@ -33,7 +33,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
     },
     onSuccess: () => {
       toast.success('Imagem enviada com sucesso');
-    }
+    },
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

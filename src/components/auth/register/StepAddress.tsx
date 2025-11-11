@@ -40,11 +40,11 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     onError: (error) => {
       toast.error(error.message || 'Erro ao fazer login');
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success('Usuário registrado com sucesso');
       reset();
       onNext();
-    }
+    },
   });
 
   const [isLoading, setIsLoading] = useState(false);

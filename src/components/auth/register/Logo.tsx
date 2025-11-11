@@ -4,13 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/common/Button';
 import { postAttachments } from '@/services/postAttachments';
-import { SignupStore, useSignupStore } from '@/store/signupStore';
 import { useMutation } from '@tanstack/react-query';
 import { CiCamera } from 'react-icons/ci';
 import { toast } from 'sonner';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
-  const savedData = useSignupStore((state: SignupStore) => state.data);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +33,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
     },
     onSuccess: () => {
       toast('Imagem enviada com sucesso');
-    }
+    },
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
