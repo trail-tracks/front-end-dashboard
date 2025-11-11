@@ -38,21 +38,13 @@ function StepAddress({ onNext }: { onNext: () => void }) {
   const { mutate, isPending } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
-      toast.error(error.message);
-      console.error(error);
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: (data) => {
-      console.log(data);
       toast.success('Usuário registrado com sucesso');
       reset();
       onNext();
-    },
-    onMutate: async (newPost) => {
-      console.log(newPost);
-    },
-    onSettled: (data, error) => {
-      console.log(data, error);
-    },
+    }
   });
 
   const [isLoading, setIsLoading] = useState(false);

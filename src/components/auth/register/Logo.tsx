@@ -28,32 +28,19 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
     }
   }, [file]);
 
-  useEffect(() => {
-    console.log(savedData);
-  }, [savedData]);
-
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
-    onError: () => {
-      toast('Ocorreu um erro no envio da imagem', {
-        description: 'Tente novamente',
-      });
+    onError: (error) => {
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
       toast('Imagem enviada com sucesso');
-    },
-    onMutate: async (newPost) => {
-      console.log(newPost);
-    },
-    onSettled: (data, error) => {
-      console.log(data, error);
-    },
+    }
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      console.log('Arquivo selecionado:', selectedFile);
       setFile(selectedFile);
     }
   };
@@ -65,7 +52,6 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const handleContinue = async () => {
     if (file) {
       await mutateAsync({ file, type: 'cover' });
-      console.log('Enviando arquivo...', file);
     }
     onNext();
   };

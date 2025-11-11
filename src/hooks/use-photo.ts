@@ -52,7 +52,7 @@ export function usePhoto(options: UsePhotoOptions = {}) {
   const { mutate } = useMutation({
     mutationFn: postAttachments,
     onError: (error) => {
-      toast.error(error.message || 'Erro ao fazer upload da foto');
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
       toast.success('Foto enviada com sucesso!');
