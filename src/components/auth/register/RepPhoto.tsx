@@ -35,7 +35,6 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
     },
     onSuccess: () => {
       toast.success('Imagem enviada com sucesso');
-      onNext();
     },
     onMutate: async (newPost) => {
       console.log(newPost);

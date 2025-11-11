@@ -41,7 +41,6 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
     },
     onSuccess: () => {
       toast('Imagem enviada com sucesso');
-      onNext();
     },
     onMutate: async (newPost) => {
       console.log(newPost);
