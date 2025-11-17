@@ -3,14 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 
 import Button from '@/components/common/Button';
-import { SignupStore, useSignupStore } from '@/store/signupStore';
-import { CiCamera } from 'react-icons/ci';
-import { useMutation } from '@tanstack/react-query';
 import { postAttachments } from '@/services/postAttachments';
+import { useMutation } from '@tanstack/react-query';
+import { CiCamera } from 'react-icons/ci';
 import { toast } from 'sonner';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
-  const savedData = useSignupStore((state: SignupStore) => state.data);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -28,33 +26,19 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
     }
   }, [file]);
 
-  useEffect(() => {
-    console.log(savedData);
-  }, [savedData]);
-
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
-    onError: () => {
-      toast('Ocorreu um erro no envio da imagem', {
-        description: 'Tente novamente',
-      });
+    onError: (error) => {
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
       toast('Imagem enviada com sucesso');
-      onNext();
-    },
-    onMutate: async (newPost) => {
-      console.log(newPost);
-    },
-    onSettled: (data, error) => {
-      console.log(data, error);
     },
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      console.log('Arquivo selecionado:', selectedFile);
       setFile(selectedFile);
     }
   };
@@ -66,7 +50,6 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const handleContinue = async () => {
     if (file) {
       await mutateAsync({ file, type: 'cover' });
-      console.log('Enviando arquivo...', file);
     }
     onNext();
   };
@@ -126,7 +109,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
           onClick={handleContinue}
           type="button"
         />
-        <Button variant="text" text="Anexar depois" />
+        <Button variant="text" text="Anexar depois" onClick={handleContinue} />
       </div>
     </div>
   );

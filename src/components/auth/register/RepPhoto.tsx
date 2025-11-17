@@ -28,27 +28,17 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
 
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
-    onError: () => {
-      toast.error('Ocorreu um erro no envio da imagem', {
-        description: 'Tente novamente',
-      });
+    onError: (error) => {
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
       toast.success('Imagem enviada com sucesso');
-      onNext();
-    },
-    onMutate: async (newPost) => {
-      console.log(newPost);
-    },
-    onSettled: (data, error) => {
-      console.log(data, error);
     },
   });
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      console.log('Arquivo selecionado:', selectedFile);
       setFile(selectedFile);
     }
   };
@@ -60,7 +50,6 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
   const handleContinue = () => {
     if (file) {
       mutateAsync({ file, type: 'galery' });
-      console.log('Enviando arquivo...', file);
     }
     onNext();
   };
@@ -122,7 +111,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
           onClick={handleContinue}
           type="button"
         />
-        <Button variant="text" text="Anexar depois" />
+        <Button variant="text" text="Anexar depois" onClick={handleContinue} />
       </div>
     </div>
   );

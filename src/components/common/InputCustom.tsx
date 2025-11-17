@@ -8,7 +8,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const variants = {
-  primary: 'border-primary-dark',
+  primary:
+    'border-primary-dark outline-none focus:ring-2 focus:ring-primary-dark/70 ',
   secondary: 'border-primary-light text-secondary-cream ',
 };
 

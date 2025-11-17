@@ -3,15 +3,17 @@
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
 import { loginSchema } from '@/schema/authSchema';
+import { postLogin } from '@/services/login';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { LuEye, LuEyeClosed } from 'react-icons/lu';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 type FormValues = z.infer<typeof loginSchema>;
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 function Login() {
   const {
@@ -24,30 +26,24 @@ function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        throw new Error('Falha na autenticação');
-      }
-
-      const result = await response.json();
-      console.log('Login bem-sucedido:', result);
+  const { mutate, isPending } = useMutation({
+    mutationFn: postLogin,
+    onError: (error) => {
+      toast.error(error.message || 'Erro ao fazer login');
+    },
+    onSuccess: () => {
       router.push('/dashboard');
-    } catch (error) {
-      console.error('Erro ao enviar os dados:', error);
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    mutate(data);
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <div className="flex flex-row text-primary-dark">
       <div className="bg-[url('/floresta.jpeg')] bg-cover bg-center h-screen md:w-7/12" />
@@ -75,6 +71,7 @@ function Login() {
                 type="email"
                 placeholder="Digite seu email"
                 error={errors.email?.message}
+                disabled={isPending}
               />
 
               <InputCustom
@@ -90,13 +87,16 @@ function Login() {
                     <LuEyeClosed size={20} onClick={togglePasswordVisibility} />
                   )
                 }
+                error={errors.password?.message}
+                disabled={isPending}
               />
 
               <Button
                 variant="secondary"
-                text="Entrar"
+                text={isPending ? 'Entrando...' : 'Entrar'}
                 className="py-3 mt-8"
                 type="submit"
+                disabled={isPending}
               />
             </form>
           </div>

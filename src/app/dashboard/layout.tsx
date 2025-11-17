@@ -1,5 +1,10 @@
-import NavBar from '@/components/dashboard/NavBar';
-import Header from '@/components/dashboard/Header';
+import { AppSidebar } from '@/components/dashboard/Sidebar';
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
+import HeaderClient from './HeaderClient';
 
 export default function DashboardLayout({
   children,
@@ -7,14 +12,21 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col lg:flex-row gap-8 bg-white text-black min-h-dvh w-full p-4 md:p-6 lg:p-8 box-border overflow-hidden">
-      <div className="w-full lg:w-auto">
-        <NavBar />
+    <SidebarProvider defaultOpen={true}>
+      <div className="flex min-h-screen w-full bg-white p-4 md:p-6 md:gap-6 lg:p-10 lg:gap-10">
+        <AppSidebar />
+        <SidebarInset className="flex flex-col flex-1 min-w-0">
+          <div className="flex flex-col h-full gap-6">
+            <SidebarTrigger size="icon-2xl" className="md:hidden p-5" />
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <HeaderClient />
+              </div>
+            </div>
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
+        </SidebarInset>
       </div>
-      <div className="flex flex-col flex-1 gap-2 min-w-0 min-h-0">
-        <Header />
-        <main className="flex-1 overflow-auto">{children}</main>
-      </div>
-    </div>
+    </SidebarProvider>
   );
 }
