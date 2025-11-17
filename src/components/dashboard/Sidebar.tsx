@@ -30,11 +30,6 @@ const menuItems = [
     url: '/dashboard/gerenciar-trilhas',
   },
   {
-    title: 'Gerenciar Pontos de Interesse',
-    icon: IoAnalyticsOutline,
-    url: '/dashboard/pontos-interesse',
-  },
-  {
     title: 'Perfil da Instituição',
     icon: MdManageAccounts,
     url: '/dashboard/perfil',
