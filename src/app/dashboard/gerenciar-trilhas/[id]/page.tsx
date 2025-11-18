@@ -12,6 +12,8 @@ import { TfiPlus } from 'react-icons/tfi';
 import { usePhoto } from '@/hooks/use-photo';
 import { use } from 'react';
 import { HiMiniTrash } from 'react-icons/hi2';
+import { useRouter } from 'next/navigation';
+
 
 type PageProps = {
   params: Promise<{
@@ -47,6 +49,7 @@ function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
   const trail = trailData[id];
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
+  const router = useRouter();
 
   if (!trail) {
     return <div>Trilha não encontrada</div>;
@@ -153,7 +156,12 @@ function TrailDetails({ params }: PageProps) {
             <IoMdInformationCircle className="m-2" />
             Sobre a Trilha
           </Button>
-          <Button size="lg" variant="primary" className="flex mt-4">
+          <Button 
+            size="lg" 
+            variant="primary" 
+            className="flex mt-4"
+            onClick={() => router.push('/dashboard/gerenciar-trilhas/${id}/pontos-interesse')}
+          >
             <IoAnalyticsOutline className="m-2" size={20} />
             Pontos de Interesse
           </Button>
