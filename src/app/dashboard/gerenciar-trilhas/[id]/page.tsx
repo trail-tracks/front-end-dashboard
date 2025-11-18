@@ -12,6 +12,7 @@ import { TfiPlus } from 'react-icons/tfi';
 import { usePhoto } from '@/hooks/use-photo';
 import { use } from 'react';
 import { HiMiniTrash } from 'react-icons/hi2';
+import { useRouter } from 'next/navigation';
 
 type PageProps = {
   params: Promise<{
@@ -44,6 +45,7 @@ const trailData: Record<string, Trail> = {
 };
 
 function TrailDetails({ params }: PageProps) {
+  const router = useRouter();
   const { id } = use(params);
   const trail = trailData[id];
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
@@ -59,7 +61,14 @@ function TrailDetails({ params }: PageProps) {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <div className="flex justify-between items-center flex-row">
         <h1 className="text-2xl font-bold text-primary-dark">{title}</h1>
-        <Button size="xl" variant="primary" className="w-1/5 rounded-2xl">
+        <Button
+          size="xl"
+          variant="primary"
+          className="w-1/5 rounded-2xl"
+          onClick={() =>
+            router.push(`/dashboard/gerenciar-trilhas/${id}/editar`)
+          }
+        >
           Editar Informações
         </Button>
       </div>
