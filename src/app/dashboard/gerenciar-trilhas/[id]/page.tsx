@@ -1,18 +1,20 @@
 'use client';
 export const runtime = 'edge';
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import { Button } from '@/components/ui/button';
+import { usePhoto } from '@/hooks/use-photo';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { use } from 'react';
 import { GoShield } from 'react-icons/go';
+import { HiQrcode } from 'react-icons/hi';
+import { HiMiniTrash } from 'react-icons/hi2';
+import { IoMdInformationCircle } from 'react-icons/io';
+import { IoAnalyticsOutline } from 'react-icons/io5';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
-import { IoAnalyticsOutline } from 'react-icons/io5';
-import { IoMdInformationCircle } from 'react-icons/io';
 import { TfiPlus } from 'react-icons/tfi';
-import { usePhoto } from '@/hooks/use-photo';
-import { use } from 'react';
-import { HiMiniTrash } from 'react-icons/hi2';
 
 
 type PageProps = {
@@ -60,18 +62,38 @@ function TrailDetails({ params }: PageProps) {
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
+      <AppBreadcrumb
+        items={[
+          { label: 'Home', href: '/dashboard' },
+          {
+            label: 'Gerenciar Trilhas',
+            href: '/dashboard/gerenciar-trilhas',
+          },
+          { label: title },
+        ]}
+      />
       <div className="flex justify-between items-center flex-row">
         <h1 className="text-2xl font-bold text-primary-dark">{title}</h1>
-        <Button size="xl" variant="primary" className="w-1/5 rounded-2xl">
-          Editar Informações
-        </Button>
+        <div className="flex w-1/2 justify-end items-center gap-4">
+          <Button size="xl" className="w-1/2 lg:w-1/3 rounded-2xl">
+            Gerar QR Code
+            <HiQrcode className="mr-2" />
+          </Button>
+          <Button
+            size="xl"
+            variant="primary"
+            className="w-1/2 lg:w-1/3 rounded-2xl"
+          >
+            Editar Informações
+          </Button>
+        </div>
       </div>
 
       <div>
         <Image
           src={imageUrl}
           alt={title}
-          className="object-cover rounded-lg h-40 w-full"
+          className="object-fill rounded-lg h-85 w-full"
           width={800}
           height={400}
           quality={95}
@@ -152,7 +174,13 @@ function TrailDetails({ params }: PageProps) {
           Formatos aceitos: PNG, JPG, SVG.
         </div>
         <div className="flex flex-col w-50">
-          <Button size="lg" className="flex mt-4">
+          <Button
+            size="lg"
+            className="flex mt-4"
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/sobre-trilha`)
+            }
+          >
             <IoMdInformationCircle className="m-2" />
             Sobre a Trilha
           </Button>
@@ -161,7 +189,7 @@ function TrailDetails({ params }: PageProps) {
             variant="primary"
             className="flex mt-4"
             onClick={() =>
-              router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`)
+              router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-interesse`)
             }
           >
             <IoAnalyticsOutline className="m-2" size={20} />
@@ -169,8 +197,8 @@ function TrailDetails({ params }: PageProps) {
           </Button>
         </div>
       </div>
-      <div>
-        <h2 className="flex flex-row items-center font-bold text-lg mb-2 gap-2">
+      <div className="flex flex-col">
+        <h2 className="flex flex-row items-center justify-center font-bold text-lg mb-2 gap-2">
           <GoShield color="red" /> Dica de Segurança
         </h2>
         <p>

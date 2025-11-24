@@ -1,4 +1,5 @@
 'use client';
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import FormError from '@/components/common/FormError';
 import InputCustom from '@/components/common/InputCustom';
 import { Button } from '@/components/ui/button';
@@ -48,6 +49,16 @@ function Page() {
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
+      <AppBreadcrumb
+        items={[
+          { label: 'Home', href: '/dashboard' },
+          {
+            label: 'Gerenciar Trilhas',
+            href: '/dashboard/gerenciar-trilhas',
+          },
+          { label: 'Criar Trilha' },
+        ]}
+      />
       <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
