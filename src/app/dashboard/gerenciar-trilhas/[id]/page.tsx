@@ -4,6 +4,7 @@ import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { use } from 'react';
 import { GoShield } from 'react-icons/go';
 import { HiQrcode } from 'react-icons/hi';
@@ -49,6 +50,7 @@ function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
   const trail = trailData[id];
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
+  const router = useRouter();
 
   if (!trail) {
     return <div>Trilha não encontrada</div>;
@@ -171,11 +173,24 @@ function TrailDetails({ params }: PageProps) {
           Formatos aceitos: PNG, JPG, SVG.
         </div>
         <div className="flex flex-col w-50">
-          <Button size="lg" className="flex mt-4">
+          <Button
+            size="lg"
+            className="flex mt-4"
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/sobre-trilha`)
+            }
+          >
             <IoMdInformationCircle className="m-2" />
             Sobre a Trilha
           </Button>
-          <Button size="lg" variant="primary" className="flex mt-4">
+          <Button
+            size="lg"
+            variant="primary"
+            className="flex mt-4"
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-interesse`)
+            }
+          >
             <IoAnalyticsOutline className="m-2" size={20} />
             Pontos de Interesse
           </Button>
