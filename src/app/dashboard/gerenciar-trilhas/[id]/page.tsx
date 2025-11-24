@@ -2,6 +2,7 @@
 export const runtime = 'edge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { GoShield } from 'react-icons/go';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
@@ -12,7 +13,6 @@ import { TfiPlus } from 'react-icons/tfi';
 import { usePhoto } from '@/hooks/use-photo';
 import { use } from 'react';
 import { HiMiniTrash } from 'react-icons/hi2';
-import { useRouter } from 'next/navigation';
 
 
 type PageProps = {
@@ -156,11 +156,13 @@ function TrailDetails({ params }: PageProps) {
             <IoMdInformationCircle className="m-2" />
             Sobre a Trilha
           </Button>
-          <Button 
-            size="lg" 
-            variant="primary" 
+          <Button
+            size="lg"
+            variant="primary"
             className="flex mt-4"
-            onClick={() => router.push('/dashboard/gerenciar-trilhas/${id}/pontos-interesse')}
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`)
+            }
           >
             <IoAnalyticsOutline className="m-2" size={20} />
             Pontos de Interesse
