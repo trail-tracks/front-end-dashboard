@@ -1,15 +1,15 @@
 'use client';
 
+import { useEffect, useMemo, use } from 'react';
 import FormError from '@/components/common/FormError';
 import InputCustom from '@/components/common/InputCustom';
+import { PointImageUpload } from '@/components/pontos-interesse/PointImageUpload';
+import { PointsIntro } from '@/components/pontos-interesse/PointsIntro';
+import { PointsRichTextToolbar } from '@/components/pontos-interesse/PointsRichTextToolbar';
 import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import Image from 'next/image';
-import { HiUpload } from 'react-icons/hi';
-import { HiMiniTrash } from 'react-icons/hi2';
-import { use } from 'react';
 
 type CreatePointForm = {
   name: string;
@@ -46,17 +46,25 @@ function CreatePointPage({ params }: PageProps) {
     router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`);
   };
 
+  const coverPreview = useMemo(() => {
+    if (!photos[0]) return null;
+    return URL.createObjectURL(photos[0]);
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      if (coverPreview) {
+        URL.revokeObjectURL(coverPreview);
+      }
+    };
+  }, [coverPreview]);
+
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark bg-white">
-      <div className="flex flex-col gap-1">
-        <p className="text-sm text-primary-dark/70">
-          Você está em: Home &gt; Gerenciar Trilhas &gt; {id} &gt; Pontos de
-          Interesse &gt; Criar Ponto de Interesse
-        </p>
-        <h1 className="text-2xl font-bold text-primary-dark">
-          Criar Ponto de Interesse
-        </h1>
-      </div>
+      <PointsIntro
+        breadcrumb={`Você está em: Home > Gerenciar Trilhas > ${id} > Pontos de Interesse > Criar Ponto de Interesse`}
+        title="Criar Ponto de Interesse"
+      />
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
         <section className="flex flex-col gap-4">
@@ -65,45 +73,12 @@ function CreatePointPage({ params }: PageProps) {
           </label>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/4">
-              {photos.length === 0 ? (
-                <div className="rounded-2xl p-6 cursor-pointer bg-[#E8E8E8] hover:border hover:border-primary-dark transition-colors flex flex-col items-center justify-center h-full">
-                  <label
-                    htmlFor="file-upload-point"
-                    className="cursor-pointer flex flex-col items-center gap-2 w-full h-full text-center"
-                  >
-                    <span className="text-4xl text-white bg-primary-dark rounded-full p-3">
-                      <HiUpload />
-                    </span>
-                    <span className="text-sm text-primary-dark">
-                      Subir imagem
-                    </span>
-                  </label>
-                  <input
-                    id="file-upload-point"
-                    type="file"
-                    accept="image/png,image/jpeg,image/jpg,image/svg+xml"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                </div>
-              ) : (
-                <div className="relative rounded-2xl border border-primary-medium/25 h-40 overflow-hidden">
-                  <Image
-                    src={URL.createObjectURL(photos[0])}
-                    alt="Imagem do Ponto"
-                    fill
-                    className="object-cover"
-                  />
-                  <Button
-                    type="button"
-                    size="icon"
-                    className="absolute top-2 right-2 rounded-full bg-white text-primary-dark hover:bg-gray-100"
-                    onClick={() => removePhoto(0)}
-                  >
-                    <HiMiniTrash />
-                  </Button>
-                </div>
-              )}
+              <PointImageUpload
+                imagePreview={coverPreview}
+                inputId="file-upload-point"
+                onFileChange={handleFileChange}
+                onRemove={photos.length ? () => removePhoto(0) : undefined}
+              />
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <label htmlFor="name" className="text-sm font-semibold">
@@ -145,21 +120,7 @@ function CreatePointPage({ params }: PageProps) {
             Descrição sobre o ponto
           </label>
           <div className="flex flex-col rounded-2xl border border-primary-medium/25 overflow-hidden">
-            <div className="flex flex-wrap items-center gap-2 px-4 py-2 bg-[#F2F5EA] text-primary-dark/80 text-sm">
-              {toolbarActions.map((action) =>
-                action === '-' ? (
-                  <span key={action} className="h-5 w-px bg-primary-dark/20" />
-                ) : (
-                  <button
-                    key={action}
-                    type="button"
-                    className="px-2 py-1 rounded-md hover:bg-white/70 transition-colors"
-                  >
-                    {action}
-                  </button>
-                ),
-              )}
-            </div>
+            <PointsRichTextToolbar actions={toolbarActions} />
             <textarea
               id="description"
               className="w-full min-h-48 p-4 bg-white focus:outline-none focus:ring-2 focus:ring-primary-dark/40"

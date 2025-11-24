@@ -3,8 +3,10 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
-import { TfiPlus } from 'react-icons/tfi';
 
+import { PointsFooter } from '@/components/pontos-interesse/PointsFooter';
+import { PointsGallery } from '@/components/pontos-interesse/PointsGallery';
+import { PointsIntro } from '@/components/pontos-interesse/PointsIntro';
 import { Button } from '@/components/ui/button';
 
 type PageProps = {
@@ -57,33 +59,25 @@ function PointDetailPage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark bg-white">
-      <div className="flex flex-col gap-1">
-        <p className="text-sm text-primary-dark/70">
-          Você está em: Home &gt; Gerenciar Trilhas &gt; {id} &gt; Pontos de
-          interesse &gt; {point.name}
-        </p>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-primary-dark">
-              Ponto de Interesse
-            </h1>
-            <p className="text-lg font-semibold text-primary-dark">
-              {point.name}
-            </p>
-          </div>
-          <Button
-            size="xl"
-            variant="primary"
-            className="rounded-2xl"
-            onClick={() =>
-              router.push(
-                `/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse/${pointId}/editar`,
-              )
-            }
-          >
-            Editar Informações
-          </Button>
-        </div>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <PointsIntro
+          breadcrumb={`Você está em: Home > Gerenciar Trilhas > ${id} > Pontos de interesse > ${point.name}`}
+          title="Ponto de Interesse"
+        >
+          <p className="text-lg font-semibold text-primary-dark">{point.name}</p>
+        </PointsIntro>
+        <Button
+          size="xl"
+          variant="primary"
+          className="rounded-2xl"
+          onClick={() =>
+            router.push(
+              `/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse/${pointId}/editar`,
+            )
+          }
+        >
+          Editar Informações
+        </Button>
       </div>
 
       <section className="flex gap-6 flex-col md:flex-row">
@@ -110,53 +104,17 @@ function PointDetailPage({ params }: PageProps) {
         </p>
       </section>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-lg font-semibold">Imagens do Ponto</h2>
-          <p className="text-sm text-primary-dark/70">
-            Essas imagens irão aparecer quando o usuário for visualizar o ponto
-            de interesse
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full md:w-2/3">
-          {point.gallery.map((imageSrc, index) => (
-            <div
-              key={imageSrc}
-              className="relative rounded-2xl border border-primary-medium/25 h-44 overflow-hidden"
-            >
-              <Image
-                src={imageSrc}
-                alt={`${point.name} ${index + 1}`}
-                fill
-                className="object-cover"
-              />
-            </div>
-          ))}
-          <button
-            type="button"
-            className="rounded-3xl border-2 border-dashed border-primary-medium/40 bg-[#F7F8F2] hover:border-primary-dark hover:text-primary-dark transition-colors flex items-center justify-center h-44"
-          >
-            <span className="text-5xl text-primary-dark/60">
-              <TfiPlus />
-            </span>
-          </button>
-        </div>
-        <span className="text-sm text-primary-dark/70">
-          Formatos aceitos: PNG, JPG, SVG.
-        </span>
-      </section>
+      <PointsGallery
+        images={point.gallery}
+        onAddImage={() => console.log('Adicionar imagem do ponto')}
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Button
-          size="lg"
-          className="rounded-2xl bg-primary-dark text-white hover:bg-primary-dark/90"
-          onClick={() =>
-            router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`)
-          }
-        >
-          Gerenciar Pontos
-        </Button>
-      </div>
+      <PointsFooter
+        onConclude={() =>
+          router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`)
+        }
+        concludeLabel="Gerenciar Pontos"
+      />
     </div>
   );
 }
