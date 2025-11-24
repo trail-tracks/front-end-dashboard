@@ -13,10 +13,10 @@ export const postAttachments = async ({
   formData.append('attachment', file);
 
   const response = await axiosHttp.post(`/attachments?type=${type}`, formData, {
-    withCredentials: true,
     headers: {
       'Content-Type': 'multipart/form-data',
     },
+    withCredentials: true,
   });
 
   return response.data;

@@ -1,5 +1,6 @@
 'use client';
 
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import TrailCard from '@/components/dashboard/TrailCard';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
@@ -86,8 +87,17 @@ function GerenciarTrilhas() {
   // }, []);
   const router = useRouter();
   return (
-    <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-6 w-full min-h-full">
-      <div className="flex justify-between items-center flex-row">
+    <div className="flex flex-col gap-4 border rounded-3xl border-primary-medium/25 py-6 w-full min-h-full">
+      <div className="px-5 sm:px-20">
+        <AppBreadcrumb
+          items={[
+            { label: 'Home', href: '/dashboard' },
+            { label: 'Gerenciar Trilhas' },
+          ]}
+        />
+      </div>
+
+      <div className="flex justify-between items-center flex-row px-5 sm:px-20">
         <h1 className="text-2xl font-bold text-primary-dark">
           Gerenciamento de Trilhas
         </h1>
@@ -100,7 +110,7 @@ function GerenciarTrilhas() {
           Criar Trilha
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center">
         {trails.map((trail, index) => (
           <TrailCard
             key={index}
