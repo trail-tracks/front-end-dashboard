@@ -84,7 +84,7 @@ function DashboardPage() {
       <div className="flex flex-col w-full lg:w-1/2 h-min-full items-center justify-center border border-primary-medium/25 rounded-3xl px-6">
         <Button
           text="Trilhas Populares"
-          className="font-bold w-full h-15 text-2xl px-4"
+          className="font-bold w-full h-11 text-2xl px-6"
           icon={<FaAngleLeft className="rotate-270 justify-end text-red-500" />}
           variant={'icon'}
         />
