@@ -2,6 +2,7 @@
 export const runtime = 'edge';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { GoShield } from 'react-icons/go';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
@@ -47,6 +48,7 @@ function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
   const trail = trailData[id];
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
+  const router = useRouter();
 
   if (!trail) {
     return <div>Trilha não encontrada</div>;
@@ -153,7 +155,14 @@ function TrailDetails({ params }: PageProps) {
             <IoMdInformationCircle className="m-2" />
             Sobre a Trilha
           </Button>
-          <Button size="lg" variant="primary" className="flex mt-4">
+          <Button
+            size="lg"
+            variant="primary"
+            className="flex mt-4"
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-de-interesse`)
+            }
+          >
             <IoAnalyticsOutline className="m-2" size={20} />
             Pontos de Interesse
           </Button>
