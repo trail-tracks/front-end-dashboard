@@ -13,6 +13,7 @@ export default function AlterarSenhaPage() {
       <AccessFormWrapper
         breadcrumbText="Você está em: Home > Configurações de acesso > Alterar senha"
         title="Alterar senha"
+        breadcrumbItems={breadcrumbItems}
       >
         <ChangePasswordForm />
       </AccessFormWrapper>

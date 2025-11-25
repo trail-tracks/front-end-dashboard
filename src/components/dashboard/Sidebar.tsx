@@ -45,7 +45,7 @@ const settingsItems = [
   {
     title: 'Configurações de acesso',
     icon: TbSettings2,
-    url: '/dashboard/configuracoes',
+    url: '/dashboard/config-acesso',
   },
   {
     title: 'Encerrar Sessão',

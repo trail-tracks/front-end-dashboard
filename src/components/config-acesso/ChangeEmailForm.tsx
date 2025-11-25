@@ -4,7 +4,11 @@ import InputCustom from '@/components/common/InputCustom';
 import { Button } from '@/components/ui/button';
 import { FormEvent } from 'react';
 
-export function ChangeEmailForm() {
+interface ChangeEmailFormProps {
+  userEmail: string;
+}
+
+export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
@@ -20,6 +24,7 @@ export function ChangeEmailForm() {
         placeholder="Email atual"
         type="email"
         autoComplete="email"
+        defaultValue={userEmail}
         required
       />
       <InputCustom

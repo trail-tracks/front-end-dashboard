@@ -20,13 +20,13 @@ export default function ConfiguracoesDeAcessoPage() {
           title="Alterar senha"
           description="Altere a senha quando quiser"
           buttonLabel="Alterar senha"
-          href="/dashboard/configuracoes/alterar-senha"
+          href="/dashboard/config-acesso/alterar-senha"
         />
         <AccessSettingsCard
           title="Alterar email"
           description={`Email atual: ${currentEmail}`}
           buttonLabel="Alterar email"
-          href="/dashboard/configuracoes/alterar-email"
+          href="/dashboard/config-acesso/alterar-email"
         />
       </AccessSettingsPanel>
   );
