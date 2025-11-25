@@ -4,88 +4,48 @@ import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import TrailCard from '@/components/dashboard/TrailCard';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { getTrails } from '@/services/trails';
+import { toast } from 'sonner';
 
-const trails = [
-  {
-    id: '1',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 1',
-    estimatedTime: '2 horas',
-    distance: '5 km',
-    difficulty: 'Média',
-    interaction: '25',
-  },
-  {
-    id: '2',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 2',
-    estimatedTime: '1.5 horas',
-    distance: '3 km',
-    difficulty: 'Fácil',
-    interaction: '25',
-  },
-  {
-    id: '3',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 3',
-    estimatedTime: '3 horas',
-    distance: '8 km',
-    difficulty: 'Difícil',
-    interaction: '25',
-  },
-  {
-    id: '4',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 4',
-    estimatedTime: '4 horas',
-    distance: '10 km',
-    difficulty: 'Difícil',
-    interaction: '25',
-  },
-  {
-    id: '5',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 5',
-    estimatedTime: '2.5 horas',
-    distance: '6 km',
-    difficulty: 'Média',
-    interaction: '25',
-  },
-  {
-    id: '6',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 6',
-    estimatedTime: '3.5 horas',
-    distance: '7 km',
-    difficulty: 'Média',
-    interaction: '25',
-  },
-];
+type Trail = {
+  imageUrl: string;
+  id: string;
+  title: string;
+  estimatedTime: string;
+  distance: string;
+  difficulty: string;
+  interaction: string;
+  information: string;
+  duration: string;
+  name: string;
+};
 
 function GerenciarTrilhas() {
-  //const [trails, setTrails] = useState<Trail[]>([]);
-  //useEffect(() => {
-  //let isMounted = true;
-  //   const fetchTrails = async () => {
-  //     try {
-  //       const data = await getTrails();
-  //       //if (isMounted) setTrails(data);
-  //     } catch (error) {
-  //       console.error('Erro ao buscar trilhas:', error);
-  //     }
-  //   };
-  //   fetchTrails();
-  //   return () => {
-  //     isMounted = false;
-  //   };
-  // }, []);
+  const [trails, setTrails] = useState<Trail[]>([]);
   const router = useRouter();
+  useEffect(() => {
+    let isMounted = true;
+    const fetchTrails = async () => {
+      try {
+        const data = await getTrails();
+        const trailsArray = Array.isArray(data)
+          ? data
+          : data.trails || data.data || [];
+        if (isMounted) setTrails(trailsArray);
+      } catch (error) {
+        toast.error('Erro ao buscar trilhas: ' + error);
+      }
+    };
+    fetchTrails();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (!trails || trails.length === 0) {
+    return <div>Não há trilhas disponíveis.</div>;
+  }
   return (
     <div className="flex flex-col gap-4 border rounded-3xl border-primary-medium/25 py-6 w-full min-h-full">
       <div className="px-5 sm:px-20">
@@ -115,11 +75,14 @@ function GerenciarTrilhas() {
           <TrailCard
             key={index}
             id={trail.id}
-            imageUrl={trail.imageUrl}
-            title={trail.title}
-            estimatedTime={trail.estimatedTime}
-            distance={trail.distance}
-            difficulty={trail.difficulty}
+            imageUrl={
+              trail.imageUrl ||
+              'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
+            }
+            title={trail.name}
+            estimatedTime={`${trail.duration} Min`}
+            distance={`${trail.distance} Km`}
+            difficulty={trail.difficulty.toUpperCase()}
             interaction={trail.interaction}
           />
         ))}
