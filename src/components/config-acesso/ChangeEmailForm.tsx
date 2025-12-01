@@ -55,5 +55,3 @@ export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
     </form>
   );
 }
-
-

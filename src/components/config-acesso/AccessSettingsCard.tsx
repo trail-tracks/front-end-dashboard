@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface AccessSettingsCardProps {
   title: string;
@@ -42,4 +42,3 @@ export function AccessSettingsCard({
     </div>
   );
 }
-
