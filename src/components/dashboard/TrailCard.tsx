@@ -10,8 +10,8 @@ import Button from '../common/Button';
 interface TrailCardProps {
   id: string;
   imageUrl: string;
-  title?: string;
-  estimatedTime?: string;
+  name?: string;
+  duration?: string;
   distance?: string;
   difficulty?: string;
   interaction?: string;
@@ -20,8 +20,8 @@ interface TrailCardProps {
 function TrailCard({
   id,
   imageUrl,
-  title,
-  estimatedTime,
+  name,
+  duration,
   distance,
   difficulty,
 }: TrailCardProps) {
@@ -41,11 +41,11 @@ function TrailCard({
         </div>
 
         <div className="flex flex-col justify-center items-start">
-          <h2 className="font-bold">{title}</h2>
+          <h2 className="font-bold">{name}</h2>
           <div className="my-2">
             <p className="flex items-center gap-2">
               <MdAccessTimeFilled color="red" />
-              {estimatedTime}
+              {duration}
             </p>
             <p className="flex items-center gap-2">
               <PiMapPinAreaFill color="red" />

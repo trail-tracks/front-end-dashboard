@@ -1,8 +1,8 @@
 type Trail = {
   id: string;
+  name: string;
+  duration: number;
   imageUrl: string;
-  title: string;
-  estimatedTime: string;
   distance: string;
   difficulty: string;
   interaction: string;

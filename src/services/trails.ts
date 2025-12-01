@@ -40,7 +40,7 @@ export const createTrail = async ({
 
 export const getTrails = async () => {
   const response = await axiosHttp.get('/trails');
-  return response.data;
+  return response.data.trails;
 };
 
 export const getTrailById = async (id: string) => {

@@ -3,71 +3,30 @@
 import Button from '@/components/common/Button';
 import Card from '@/components/dashboard/Card';
 import TrailCard from '@/components/dashboard/TrailCard';
+import { getHome } from '@/services/home';
+import { Trail } from '@/types/trail';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { FaAngleLeft } from 'react-icons/fa6';
 
 function DashboardPage() {
   const router = useRouter();
-  const trails = [
-    {
-      id: '1',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-      title: 'Trilha Exemplo 1',
-      estimatedTime: '2 horas',
-      distance: '5 km',
-      difficulty: 'Média',
-      interaction: '25',
-    },
-    {
-      id: '2',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-      title: 'Trilha Exemplo 2',
-      estimatedTime: '1.5 horas',
-      distance: '3 km',
-      difficulty: 'Fácil',
-      interaction: '25',
-    },
-    {
-      id: '3',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-      title: 'Trilha Exemplo 3',
-      estimatedTime: '3 horas',
-      distance: '8 km',
-      difficulty: 'Difícil',
-      interaction: '25',
-    },
-    {
-      id: '4',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-      title: 'Trilha Exemplo 4',
-      estimatedTime: '4 horas',
-      distance: '10 km',
-      difficulty: 'Difícil',
-      interaction: '25',
-    },
-    {
-      id: '5',
-      imageUrl:
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-      title: 'Trilha Exemplo 5',
-      estimatedTime: '2.5 horas',
-      distance: '6 km',
-      difficulty: 'Média',
-      interaction: '25',
-    },
-  ];
+
+  const { data: homeData } = useQuery({
+    queryKey: ['home'],
+    queryFn: getHome,
+  });
 
   return (
     <div className="w-full min-h-full flex flex-col lg:flex-row gap-6">
       <div className="flex flex-col w-full lg:w-1/2 items-center justify-center">
         <div className="flex flex-col sm:flex-row gap-5 gap-h-full w-full h-auto sm:h-1/3 mb-6">
-          <Card value="5" label="Trilhas cadastradas" className="h-auto" />
           <Card
-            value="16"
+            value={homeData?.trailsCount || 0}
+            label="Trilhas cadastradas"
+            className="h-auto"
+          />
+          <Card
+            value={homeData?.poisCount || 0}
             label="Pontos de interesse cadastrados"
             className="h-auto"
           />
@@ -81,33 +40,43 @@ function DashboardPage() {
           <Card value="45" label="Usuários ativos" className="border-none" />
         </div>
       </div>
-      <div className="flex flex-col w-full lg:w-1/2 h-min-full items-center justify-center border border-primary-medium/25 rounded-3xl px-6">
+      <div className="flex flex-col w-full lg:w-1/2 h-min-full border border-primary-medium/25 rounded-3xl p-6">
         <Button
-          text="Trilhas Populares"
-          className="font-bold w-full h-11 text-2xl px-6"
-          icon={<FaAngleLeft className="rotate-270 justify-end text-red-500" />}
+          text="Trilhas Recentes"
+          className="font-bold w-full h-11 text-2xl px-6 pointer-events-none"
           variant={'icon'}
         />
         <div className="flex flex-col w-full items-center justify-center">
-          {trails.slice(0, 2).map((trail, index) => (
-            <TrailCard
-              key={index}
-              id={trail.id}
-              imageUrl={trail.imageUrl}
-              title={trail.title}
-              estimatedTime={trail.estimatedTime}
-              distance={trail.distance}
-              difficulty={trail.difficulty}
-              interaction={trail.interaction}
-            />
-          ))}
-          <div className="w-full flex justify-center">
-            <Button
-              text={'VER TODOS'}
-              className="flex w-1/6 mt-2 justify-center bg-white border border-yellow-400 text-yellow-400"
-              onClick={() => router.push('dashboard/gerenciar-trilhas')}
-            />
-          </div>
+          {!homeData?.lastTrails || homeData.lastTrails.length === 0 ? (
+            <p className="text-primary-dark my-10 font-bold text-2xl">
+              Nenhuma trilha recente
+            </p>
+          ) : (
+            <>
+              {homeData.lastTrails.map((trail: Trail, index: number) => (
+                <TrailCard
+                  key={index}
+                  id={trail.id}
+                  imageUrl={
+                    trail.imageUrl ||
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
+                  }
+                  name={trail.name}
+                  duration={`${trail.duration} Min`}
+                  distance={`${trail.distance} Km`}
+                  difficulty={trail.difficulty.toUpperCase()}
+                />
+              ))}
+
+              <div className="w-full flex justify-center">
+                <Button
+                  text={'VER TODOS'}
+                  className="flex w-1/6 mt-2 justify-center bg-white border border-yellow-400 text-yellow-400"
+                  onClick={() => router.push('dashboard/gerenciar-trilhas')}
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

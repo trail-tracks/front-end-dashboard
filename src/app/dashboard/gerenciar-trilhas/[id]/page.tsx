@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { use } from 'react';
 import { GoShield } from 'react-icons/go';
 import { HiQrcode } from 'react-icons/hi';
 import { HiMiniTrash } from 'react-icons/hi2';
@@ -16,6 +16,7 @@ import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
 import { TfiPlus } from 'react-icons/tfi';
 import { getTrailById } from '@/services/trails';
+import { useQuery } from '@tanstack/react-query';
 
 type PageProps = {
   params: Promise<{
@@ -23,51 +24,25 @@ type PageProps = {
   }>;
 };
 
-type TrailResponse = {
-  id: string;
-  name: string;
-  description: string;
-  shortDescription: string;
-  duration: string;
-  distance: string;
-  difficulty: 'facil' | 'moderado' | 'dificil' | 'muito_dificil';
-  safetyTips: string;
-  coverUrl: string | null;
-};
-
-const difficultyMap = {
-  facil: 'Fácil',
-  moderado: 'Moderado',
-  dificil: 'Difícil',
-  muito_dificil: 'Muito Difícil',
-};
-
 function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
   const router = useRouter();
-  const [trail, setTrail] = useState<TrailResponse | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTrail = async () => {
-      try {
-        const data = await getTrailById(id);
-        setTrail(data);
-      } catch (error) {
-        console.error('Erro ao buscar trilha:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTrail();
-  }, [id]);
+  const {
+    data: trail,
+    isLoading: loading,
+    isError,
+  } = useQuery({
+    queryKey: ['trail', id],
+    queryFn: () => getTrailById(id),
+  });
 
   if (loading) {
     return <div>Carregando...</div>;
   }
 
-  if (!trail) {
+  if (isError || !trail) {
     return <div>Trilha não encontrada</div>;
   }
 
@@ -124,7 +99,7 @@ function TrailDetails({ params }: PageProps) {
             </p>
             <p className="flex items-center gap-2">
               <RiVipDiamondLine color="red" />
-              {difficultyMap[trail.difficulty]}
+              {trail.difficulty}
             </p>
           </div>
         </div>
