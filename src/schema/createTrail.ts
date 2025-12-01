@@ -39,6 +39,13 @@ export const createTrailSchema = z.object({
     .max(2000, 'Dicas de segurança muito longas')
     .nullable()
     .optional(),
+
+ 
+  extraInfo: z
+    .string()
+    .max(10000, 'Conteúdo adicional muito longo') 
+    .nullable()
+    .optional(),
 });
 
 export type CreateTrailDto = z.infer<typeof createTrailSchema>;
