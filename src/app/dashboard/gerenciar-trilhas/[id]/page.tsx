@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import { GoShield } from 'react-icons/go';
 import { HiQrcode } from 'react-icons/hi';
 import { HiMiniTrash } from 'react-icons/hi2';
@@ -15,6 +15,7 @@ import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
 import { TfiPlus } from 'react-icons/tfi';
+import { getTrailById } from '@/services/trails';
 
 type PageProps = {
   params: Promise<{
@@ -22,42 +23,53 @@ type PageProps = {
   }>;
 };
 
-type Trail = {
-  imageUrl: string;
-  title: string;
-  estimatedTime: string;
+type TrailResponse = {
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  duration: string;
   distance: string;
-  difficulty: string;
-  interaction: string;
-  information: string;
+  difficulty: 'facil' | 'moderado' | 'dificil' | 'muito_dificil';
+  safetyTips: string;
+  coverUrl: string | null;
 };
 
-const trailData: Record<string, Trail> = {
-  '1': {
-    imageUrl:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop',
-    title: 'Trilha Exemplo 1',
-    estimatedTime: '2 horas',
-    distance: '5 km',
-    difficulty: 'Média',
-    interaction: '25',
-    information:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
-  },
+const difficultyMap = {
+  facil: 'Fácil',
+  moderado: 'Moderado',
+  dificil: 'Difícil',
+  muito_dificil: 'Muito Difícil',
 };
 
 function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
-  const trail = trailData[id];
   const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
   const router = useRouter();
+  const [trail, setTrail] = useState<TrailResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTrail = async () => {
+      try {
+        const data = await getTrailById(id);
+        setTrail(data);
+      } catch (error) {
+        console.error('Erro ao buscar trilha:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTrail();
+  }, [id]);
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   if (!trail) {
     return <div>Trilha não encontrada</div>;
   }
-
-  const { imageUrl, title, estimatedTime, distance, difficulty, information } =
-    trail;
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
@@ -68,11 +80,11 @@ function TrailDetails({ params }: PageProps) {
             label: 'Gerenciar Trilhas',
             href: '/dashboard/gerenciar-trilhas',
           },
-          { label: title },
+          { label: trail.name },
         ]}
       />
       <div className="flex justify-between items-center flex-row">
-        <h1 className="text-2xl font-bold text-primary-dark">{title}</h1>
+        <h1 className="text-2xl font-bold text-primary-dark">{trail.name}</h1>
         <div className="flex w-1/2 justify-end items-center gap-4">
           <Button size="xl" className="w-1/2 lg:w-1/3 rounded-2xl">
             Gerar QR Code
@@ -90,8 +102,11 @@ function TrailDetails({ params }: PageProps) {
 
       <div>
         <Image
-          src={imageUrl}
-          alt={title}
+          src={
+            trail.coverUrl ||
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
+          }
+          alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
           width={800}
           height={400}
@@ -101,22 +116,22 @@ function TrailDetails({ params }: PageProps) {
           <div className="my-2">
             <p className="flex items-center gap-2">
               <MdAccessTimeFilled color="red" />
-              {estimatedTime}
+              {trail.duration} Min
             </p>
             <p className="flex items-center gap-2">
               <PiMapPinAreaFill color="red" />
-              {distance}
+              {trail.distance} Km
             </p>
             <p className="flex items-center gap-2">
               <RiVipDiamondLine color="red" />
-              {difficulty}
+              {difficultyMap[trail.difficulty]}
             </p>
           </div>
         </div>
 
         <div className="mt-4">
           <h2 className="font-bold text-lg mb-2">Mais Informações</h2>
-          <p>{information}</p>
+          <p>{trail.description || trail.shortDescription}</p>
         </div>
 
         <div className="mt-4">
@@ -200,15 +215,7 @@ function TrailDetails({ params }: PageProps) {
         <h2 className="flex flex-row items-center justify-center font-bold text-lg mb-2 gap-2">
           <GoShield color="red" /> Dica de Segurança
         </h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum
-        </p>
+        <p>{trail.safetyTips || 'Nenhuma dica de segurança disponível.'}</p>
       </div>
     </div>
   );

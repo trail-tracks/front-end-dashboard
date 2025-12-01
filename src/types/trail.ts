@@ -7,4 +7,17 @@ type Trail = {
   difficulty: string;
   interaction: string;
 };
-export type { Trail };
+
+type TrailResponse = {
+  id: string;
+  name: string;
+  description: string;
+  shortDescription: string;
+  duration: number;
+  distance: number;
+  difficulty: 'facil' | 'moderado' | 'dificil' | 'muito_dificil';
+  safetyTips: string;
+  coverUrl: string | null;
+};
+
+export type { Trail, TrailResponse };
