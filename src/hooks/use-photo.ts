@@ -1,7 +1,7 @@
-import { postAttachments } from '@/services/postAttachments';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { postAttachments } from "@/services/postAttachments";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type UsePhotoOptions = {
   maxPhotos?: number;
@@ -13,7 +13,7 @@ export function usePhoto(options: UsePhotoOptions = {}) {
   const {
     maxPhotos = 3,
     maxSizeInMB = 5,
-    acceptedFormats = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
+    acceptedFormats = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"],
   } = options;
 
   const [photos, setPhotos] = useState<File[]>([]);
@@ -28,7 +28,7 @@ export function usePhoto(options: UsePhotoOptions = {}) {
       }
 
       if (!acceptedFormats.includes(file.type)) {
-        alert('Formato de arquivo não suportado.');
+        alert("Formato de arquivo não suportado.");
         return;
       }
 
@@ -45,17 +45,17 @@ export function usePhoto(options: UsePhotoOptions = {}) {
   const uploadPhoto = async (file: File) => {
     mutate({
       file,
-      type: 'galery',
+      type: "galery",
     });
   };
 
   const { mutate } = useMutation({
     mutationFn: postAttachments,
     onError: (error) => {
-      toast.error(error.message || 'Erro ao fazer login');
+      toast.error(error.message || "Erro ao fazer login");
     },
     onSuccess: () => {
-      toast.success('Foto enviada com sucesso!');
+      toast.success("Foto enviada com sucesso!");
     },
   });
 

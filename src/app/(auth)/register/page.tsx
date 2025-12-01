@@ -1,10 +1,10 @@
-'use client';
-import LogoUploadPage from '@/components/auth/register/Logo';
-import RepresentativePhotoPage from '@/components/auth/register/RepPhoto';
-import StepAddress from '@/components/auth/register/StepAddress';
-import StepConfirm from '@/components/auth/register/StepConfirm';
-import StepInstitution from '@/components/auth/register/StepInstitution';
-import { useState } from 'react';
+"use client";
+import LogoUploadPage from "@/components/auth/register/Logo";
+import RepresentativePhotoPage from "@/components/auth/register/RepPhoto";
+import StepAddress from "@/components/auth/register/StepAddress";
+import StepConfirm from "@/components/auth/register/StepConfirm";
+import StepInstitution from "@/components/auth/register/StepInstitution";
+import { useState } from "react";
 
 export default function Register() {
   const [step, setStep] = useState(0);

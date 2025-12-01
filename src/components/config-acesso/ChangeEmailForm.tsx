@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import InputCustom from '@/components/common/InputCustom';
-import { Button } from '@/components/ui/button';
-import { FormEvent } from 'react';
+import InputCustom from "@/components/common/InputCustom";
+import { Button } from "@/components/ui/button";
+import { FormEvent } from "react";
 
 interface ChangeEmailFormProps {
   userEmail: string;

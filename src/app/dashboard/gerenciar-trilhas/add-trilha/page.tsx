@@ -1,18 +1,18 @@
-'use client';
-import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
-import FormError from '@/components/common/FormError';
-import InputCustom from '@/components/common/InputCustom';
-import { Button } from '@/components/ui/button';
-import { usePhoto } from '@/hooks/use-photo';
-import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
-import { createTrail } from '@/services/trails';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { HiUpload } from 'react-icons/hi';
-import { HiMiniTrash } from 'react-icons/hi2';
-import { toast } from 'sonner';
+"use client";
+import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
+import FormError from "@/components/common/FormError";
+import InputCustom from "@/components/common/InputCustom";
+import { Button } from "@/components/ui/button";
+import { usePhoto } from "@/hooks/use-photo";
+import { CreateTrailDto, createTrailSchema } from "@/schema/createTrail";
+import { createTrail } from "@/services/trails";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { HiUpload } from "react-icons/hi";
+import { HiMiniTrash } from "react-icons/hi2";
+import { toast } from "sonner";
 
 function Page() {
   const router = useRouter();
@@ -24,26 +24,26 @@ function Page() {
   } = useForm<CreateTrailDto>({
     resolver: zodResolver(createTrailSchema),
     defaultValues: {
-      name: '',
+      name: "",
       description: null,
-      shortDescription: '',
+      shortDescription: "",
       duration: 0,
       distance: 0,
-      difficulty: 'facil',
+      difficulty: "facil",
       safetyTips: null,
     },
   });
 
   const onSubmit = async (data: CreateTrailDto) => {
     try {
-      console.log('Form Data:', data);
-      console.log('Uploaded Photos:', photos);
+      console.log("Form Data:", data);
+      console.log("Uploaded Photos:", photos);
 
       await createTrail(data);
-      toast.success('Trilha criada com sucesso!');
-      router.push('/dashboard/gerenciar-trilhas');
+      toast.success("Trilha criada com sucesso!");
+      router.push("/dashboard/gerenciar-trilhas");
     } catch (error) {
-      toast.error('Erro ao enviar o formulário:' + error);
+      toast.error("Erro ao enviar o formulário:" + error);
     }
   };
 
@@ -51,12 +51,12 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: 'Home', href: '/dashboard' },
+          { label: "Home", href: "/dashboard" },
           {
-            label: 'Gerenciar Trilhas',
-            href: '/dashboard/gerenciar-trilhas',
+            label: "Gerenciar Trilhas",
+            href: "/dashboard/gerenciar-trilhas",
           },
-          { label: 'Criar Trilha' },
+          { label: "Criar Trilha" },
         ]}
       />
       <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
@@ -115,7 +115,7 @@ function Page() {
               type="text"
               placeholder="Nome da Trilha"
               className="w-full"
-              {...register('name')}
+              {...register("name")}
             />
             {errors.name && <FormError message={errors.name?.message} />}
           </div>
@@ -131,7 +131,7 @@ function Page() {
             id="shortDescription"
             placeholder="Breve descrição sobre a Trilha"
             className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
-            {...register('shortDescription')}
+            {...register("shortDescription")}
           />
           {errors.shortDescription && (
             <FormError message={errors.shortDescription?.message} />
@@ -147,7 +147,7 @@ function Page() {
                 id="duration"
                 type="number"
                 placeholder="Tempo Estimado"
-                {...register('duration', { valueAsNumber: true })}
+                {...register("duration", { valueAsNumber: true })}
               />
               {errors.duration && (
                 <FormError message={errors.duration.message} />
@@ -162,7 +162,7 @@ function Page() {
                 type="number"
                 step="0.1"
                 placeholder="Distância Aproximada"
-                {...register('distance', { valueAsNumber: true })}
+                {...register("distance", { valueAsNumber: true })}
               />
               {errors.distance && (
                 <FormError message={errors.distance?.message} />
@@ -175,7 +175,7 @@ function Page() {
               <select
                 id="difficulty"
                 className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-                {...register('difficulty')}
+                {...register("difficulty")}
               >
                 <option value="facil">Fácil</option>
                 <option value="moderado">Moderado</option>
@@ -195,7 +195,7 @@ function Page() {
               id="safetyTips"
               className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
               placeholder="Digite as dicas de segurança aqui"
-              {...register('safetyTips')}
+              {...register("safetyTips")}
             />
             {errors.safetyTips && (
               <FormError message={errors.safetyTips?.message} />

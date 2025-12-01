@@ -1,8 +1,8 @@
 // src/store/signupStore.ts
 
-import { SignupPayload } from '@/app/entities/signup';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { SignupPayload } from "@/app/entities/signup";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type SignupStore = {
   data: Partial<SignupPayload>;
@@ -42,15 +42,15 @@ export const useSignupStore = create<SignupStore>()(
         const data = get().data;
 
         const requiredFields: (keyof SignupPayload)[] = [
-          'name',
-          'email',
-          'password',
-          'zipCode',
-          'address',
-          'number',
-          'city',
-          'state',
-          'phone',
+          "name",
+          "email",
+          "password",
+          "zipCode",
+          "address",
+          "number",
+          "city",
+          "state",
+          "phone",
         ];
 
         const isValid = requiredFields.every((field) => !!data[field]);
@@ -58,7 +58,7 @@ export const useSignupStore = create<SignupStore>()(
       },
     }),
     {
-      name: 'signup-data',
+      name: "signup-data",
     },
   ),
 );

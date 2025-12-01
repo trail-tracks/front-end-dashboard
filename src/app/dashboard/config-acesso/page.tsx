@@ -1,7 +1,7 @@
-import { AccessSettingsCard } from '@/components/config-acesso/AccessSettingsCard';
-import { AccessSettingsPanel } from '@/components/config-acesso/AccessSettingsPanel';
+import { AccessSettingsCard } from "@/components/config-acesso/AccessSettingsCard";
+import { AccessSettingsPanel } from "@/components/config-acesso/AccessSettingsPanel";
 
-const currentEmail = 'fulanodetal@gmail.com'; // TODO: obter do backend
+const currentEmail = "fulanodetal@gmail.com"; // TODO: obter do backend
 
 export default function ConfiguracoesDeAcessoPage() {
   return (

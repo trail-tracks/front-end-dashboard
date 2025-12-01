@@ -1,23 +1,20 @@
+"use client";
+import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
+import FormError from "@/components/common/FormError";
+import InputCustom from "@/components/common/InputCustom";
+import { Button } from "@/components/ui/button";
+import { usePhoto } from "@/hooks/use-photo";
+import { CreateTrailDto, createTrailSchema } from "@/schema/createTrail";
+import { createTrail } from "@/services/trails";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { HiUpload } from "react-icons/hi";
+import { HiMiniTrash } from "react-icons/hi2";
+import { toast } from "sonner";
 
-
-'use client';
-import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
-import FormError from '@/components/common/FormError';
-import InputCustom from '@/components/common/InputCustom';
-import { Button } from '@/components/ui/button';
-import { usePhoto } from '@/hooks/use-photo';
-import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
-import { createTrail } from '@/services/trails';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { HiUpload } from 'react-icons/hi';
-import { HiMiniTrash } from 'react-icons/hi2';
-import { toast } from 'sonner';
-
-
-import LexicalEditor from '@/components/common/LexicalEditor'; 
+import LexicalEditor from "@/components/common/LexicalEditor";
 
 function Page() {
   const router = useRouter();
@@ -32,27 +29,27 @@ function Page() {
   } = useForm<CreateTrailDto>({
     resolver: zodResolver(createTrailSchema),
     defaultValues: {
-      name: '',
+      name: "",
       description: null,
-      shortDescription: '',
+      shortDescription: "",
       duration: 0,
       distance: 0,
-      difficulty: 'facil',
+      difficulty: "facil",
       safetyTips: null,
-      extraInfo: null, 
+      extraInfo: null,
     },
   });
 
   const onSubmit = async (data: CreateTrailDto) => {
     try {
-      console.log('Form Data:', data);
-      console.log('Uploaded Photos:', photos);
+      console.log("Form Data:", data);
+      console.log("Uploaded Photos:", photos);
 
-      await createTrail(data); 
-      toast.success('Ponto de Interesse criado com sucesso!');
-      router.push('/dashboard/gerenciar-trilhas');
+      await createTrail(data);
+      toast.success("Ponto de Interesse criado com sucesso!");
+      router.push("/dashboard/gerenciar-trilhas");
     } catch (error) {
-      toast.error('Erro ao enviar o formulário:' + error);
+      toast.error("Erro ao enviar o formulário:" + error);
     }
   };
 
@@ -60,19 +57,20 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: 'Home', href: '/dashboard' },
+          { label: "Home", href: "/dashboard" },
           {
-            label: 'Gerenciar Pontos de Interesse', 
-            href: '/dashboard/gerenciar-trilhas', 
+            label: "Gerenciar Pontos de Interesse",
+            href: "/dashboard/gerenciar-trilhas",
           },
-          { label: 'Criar Ponto de Interesse' }, 
+          { label: "Criar Ponto de Interesse" },
         ]}
       />
 
-      <h1 className="text-2xl font-bold text-primary-dark">Criar Ponto de Interesse</h1>
+      <h1 className="text-2xl font-bold text-primary-dark">
+        Criar Ponto de Interesse
+      </h1>
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-
         {/* UPLOAD + NOME */}
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
@@ -129,7 +127,7 @@ function Page() {
               type="text"
               placeholder="Nome do Ponto de Interesse"
               className="w-full"
-              {...register('name')}
+              {...register("name")}
             />
             {errors.name && <FormError message={errors.name?.message} />}
           </div>
@@ -147,7 +145,7 @@ function Page() {
             id="shortDescription"
             placeholder="Breve descrição sobre o Ponto de Interesse"
             className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
-            {...register('shortDescription')}
+            {...register("shortDescription")}
           />
           {errors.shortDescription && (
             <FormError message={errors.shortDescription?.message} />
@@ -173,12 +171,12 @@ function Page() {
           </label>
 
           <LexicalEditor
-            value={watch('extraInfo') ?? ''}
-            onChange={(val) => setValue('extraInfo', val)}
+            value={watch("extraInfo") ?? ""}
+            onChange={(val) => setValue("extraInfo", val)}
           />
 
           {/* O extraInfo.message funcionará agora que o campo está no Schema */}
-          {errors.extraInfo && ( 
+          {errors.extraInfo && (
             <FormError message={errors.extraInfo?.message} />
           )}
         </div>

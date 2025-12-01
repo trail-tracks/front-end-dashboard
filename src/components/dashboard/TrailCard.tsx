@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { MdAccessTimeFilled } from 'react-icons/md';
-import { PiMapPinAreaFill } from 'react-icons/pi';
-import { RiVipDiamondLine } from 'react-icons/ri';
-import Button from '../common/Button';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { MdAccessTimeFilled } from "react-icons/md";
+import { PiMapPinAreaFill } from "react-icons/pi";
+import { RiVipDiamondLine } from "react-icons/ri";
+import Button from "../common/Button";
 
 interface TrailCardProps {
   id: string;

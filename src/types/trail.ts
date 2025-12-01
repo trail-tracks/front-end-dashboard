@@ -15,7 +15,7 @@ type TrailResponse = {
   shortDescription: string;
   duration: number;
   distance: number;
-  difficulty: 'facil' | 'moderado' | 'dificil' | 'muito_dificil';
+  difficulty: "facil" | "moderado" | "dificil" | "muito_dificil";
   safetyTips: string;
   coverUrl: string | null;
 };

@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   label?: string;
   icon?: React.ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: "primary" | "secondary";
   className?: string;
 }
 
 const variants = {
   primary:
-    'border-primary-dark outline-none focus:ring-2 focus:ring-primary-dark/70 ',
-  secondary: 'border-primary-light text-secondary-cream ',
+    "border-primary-dark outline-none focus:ring-2 focus:ring-primary-dark/70 ",
+  secondary: "border-primary-light text-secondary-cream ",
 };
 
 const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ error, label, icon, variant = 'primary', className, ...props }, ref) => (
+  ({ error, label, icon, variant = "primary", className, ...props }, ref) => (
     <div className="w-full my-2">
       <span>{label}</span>
       <div className="relative mt-1">
@@ -34,6 +34,6 @@ const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
   ),
 );
 
-InputCustom.displayName = 'InputCustom';
+InputCustom.displayName = "InputCustom";
 
 export default InputCustom;
