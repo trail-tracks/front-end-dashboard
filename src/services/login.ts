@@ -6,6 +6,6 @@ export interface LoginPayload {
 }
 
 export const postLogin = async (payload: LoginPayload) => {
-  const response = await axiosHttp.post("/auth/login", payload);
+  const response = await axiosHttp.post("/auth/login", payload, {withCredentials: true});
   return response.data;
 };
