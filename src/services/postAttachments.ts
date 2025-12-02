@@ -1,4 +1,4 @@
-import { axiosHttp } from '@/services/axios';
+import { axiosHttp } from "@/services/axios";
 
 type PostAttachmentsParams = {
   file: File;
@@ -10,11 +10,11 @@ export const postAttachments = async ({
   type,
 }: PostAttachmentsParams) => {
   const formData = new FormData();
-  formData.append('attachment', file);
+  formData.append("attachment", file);
 
   const response = await axiosHttp.post(`/attachments?type=${type}`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
     withCredentials: true,
   });

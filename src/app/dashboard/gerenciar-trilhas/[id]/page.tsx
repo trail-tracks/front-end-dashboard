@@ -1,22 +1,22 @@
-'use client';
-export const runtime = 'edge';
-import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
-import { Button } from '@/components/ui/button';
-import { usePhoto } from '@/hooks/use-photo';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { use } from 'react';
-import { GoShield } from 'react-icons/go';
-import { HiQrcode } from 'react-icons/hi';
-import { HiMiniTrash } from 'react-icons/hi2';
-import { IoMdInformationCircle } from 'react-icons/io';
-import { IoAnalyticsOutline } from 'react-icons/io5';
-import { MdAccessTimeFilled } from 'react-icons/md';
-import { PiMapPinAreaFill } from 'react-icons/pi';
-import { RiVipDiamondLine } from 'react-icons/ri';
-import { TfiPlus } from 'react-icons/tfi';
-import { getTrailById } from '@/services/trails';
-import { useQuery } from '@tanstack/react-query';
+"use client";
+export const runtime = "edge";
+import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
+import { Button } from "@/components/ui/button";
+import { usePhoto } from "@/hooks/use-photo";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { use } from "react";
+import { GoShield } from "react-icons/go";
+import { HiQrcode } from "react-icons/hi";
+import { HiMiniTrash } from "react-icons/hi2";
+import { IoMdInformationCircle } from "react-icons/io";
+import { IoAnalyticsOutline } from "react-icons/io5";
+import { MdAccessTimeFilled } from "react-icons/md";
+import { PiMapPinAreaFill } from "react-icons/pi";
+import { RiVipDiamondLine } from "react-icons/ri";
+import { TfiPlus } from "react-icons/tfi";
+import { getTrailById } from "@/services/trails";
+import { useQuery } from "@tanstack/react-query";
 
 type PageProps = {
   params: Promise<{
@@ -34,7 +34,7 @@ function TrailDetails({ params }: PageProps) {
     isLoading: loading,
     isError,
   } = useQuery({
-    queryKey: ['trail', id],
+    queryKey: ["trail", id],
     queryFn: () => getTrailById(id),
   });
 
@@ -50,10 +50,10 @@ function TrailDetails({ params }: PageProps) {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: 'Home', href: '/dashboard' },
+          { label: "Home", href: "/dashboard" },
           {
-            label: 'Gerenciar Trilhas',
-            href: '/dashboard/gerenciar-trilhas',
+            label: "Gerenciar Trilhas",
+            href: "/dashboard/gerenciar-trilhas",
           },
           { label: trail.name },
         ]}
@@ -79,7 +79,7 @@ function TrailDetails({ params }: PageProps) {
         <Image
           src={
             trail.coverUrl ||
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
           }
           alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
@@ -190,7 +190,7 @@ function TrailDetails({ params }: PageProps) {
         <h2 className="flex flex-row items-center justify-center font-bold text-lg mb-2 gap-2">
           <GoShield color="red" /> Dica de Segurança
         </h2>
-        <p>{trail.safetyTips || 'Nenhuma dica de segurança disponível.'}</p>
+        <p>{trail.safetyTips || "Nenhuma dica de segurança disponível."}</p>
       </div>
     </div>
   );

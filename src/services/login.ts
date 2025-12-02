@@ -1,4 +1,4 @@
-import { axiosHttp } from '@/services/axios';
+import { axiosHttp } from "@/services/axios";
 
 export interface LoginPayload {
   email: string;
@@ -6,6 +6,6 @@ export interface LoginPayload {
 }
 
 export const postLogin = async (payload: LoginPayload) => {
-  const response = await axiosHttp.post('/auth/login', payload);
+  const response = await axiosHttp.post("/auth/login", payload);
   return response.data;
 };

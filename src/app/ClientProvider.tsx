@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Gabarito, Geist, Geist_Mono } from 'next/font/google';
-import { useState } from 'react';
-import './globals.css';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Gabarito, Geist, Geist_Mono } from "next/font/google";
+import { useState } from "react";
+import "./globals.css";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 const gabarito = Gabarito({
-  variable: '--font-gabarito',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  variable: "--font-gabarito",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export default function ClientProvider({

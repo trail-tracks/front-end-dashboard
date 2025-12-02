@@ -1,4 +1,4 @@
-import { axiosHttp } from '@/services/axios';
+import { axiosHttp } from "@/services/axios";
 
 export interface homePayload {
   success: boolean;
@@ -20,6 +20,6 @@ export interface homePayload {
 }
 
 export const getHome = async () => {
-  const response = await axiosHttp.get('/entities/home');
+  const response = await axiosHttp.get("/entities/home");
   return response.data;
 };

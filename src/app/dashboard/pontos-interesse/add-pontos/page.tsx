@@ -14,12 +14,17 @@ import { HiUpload } from "react-icons/hi";
 import { HiMiniTrash } from "react-icons/hi2";
 import { toast } from "sonner";
 
+import LexicalEditor from "@/components/common/LexicalEditor";
+
 function Page() {
   const router = useRouter();
   const { photos, handleFileChange, removePhoto } = usePhoto();
+
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<CreateTrailDto>({
     resolver: zodResolver(createTrailSchema),
@@ -31,6 +36,7 @@ function Page() {
       distance: 0,
       difficulty: "facil",
       safetyTips: null,
+      extraInfo: null,
     },
   });
 
@@ -40,7 +46,7 @@ function Page() {
       console.log("Uploaded Photos:", photos);
 
       await createTrail(data);
-      toast.success("Trilha criada com sucesso!");
+      toast.success("Ponto de Interesse criado com sucesso!");
       router.push("/dashboard/gerenciar-trilhas");
     } catch (error) {
       toast.error("Erro ao enviar o formulário:" + error);
@@ -53,14 +59,19 @@ function Page() {
         items={[
           { label: "Home", href: "/dashboard" },
           {
-            label: "Gerenciar Trilhas",
+            label: "Gerenciar Pontos de Interesse",
             href: "/dashboard/gerenciar-trilhas",
           },
-          { label: "Criar Trilha" },
+          { label: "Criar Ponto de Interesse" },
         ]}
       />
-      <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
+
+      <h1 className="text-2xl font-bold text-primary-dark">
+        Criar Ponto de Interesse
+      </h1>
+
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+        {/* UPLOAD + NOME */}
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
             <div className="rounded-lg p-4 cursor-pointer bg-[#E8E8E8] hover:border-gray-600 transition-colors flex items-center justify-center h-full col-span-1">
@@ -89,7 +100,7 @@ function Page() {
                 >
                   <Image
                     src={URL.createObjectURL(photo)}
-                    alt={`Preview ${index + 1}`}
+                    alt={`Preview ${index + 1}`} // 🚨 CORRIGIDO: Sintaxe da Template Literal
                     className="object-cover rounded-lg h-full w-full"
                     width={400}
                     height={200}
@@ -106,30 +117,33 @@ function Page() {
               ))}
             </>
           )}
+
           <div className="flex flex-col col-span-2 gap-2 mt-2 justify-center">
             <label htmlFor="name" className="font-bold text-sm">
-              Nome da Trilha
+              Nome do Ponto de Interesse
             </label>
             <InputCustom
               id="name"
               type="text"
-              placeholder="Nome da Trilha"
+              placeholder="Nome do Ponto de Interesse"
               className="w-full"
               {...register("name")}
             />
             {errors.name && <FormError message={errors.name?.message} />}
           </div>
         </div>
+
+        {/* SHORT DESCRIPTION */}
         <div className="w-full">
           <label
             htmlFor="shortDescription"
             className="text-lg md:text-2xl font-bold text-primary-dark"
           >
-            Breve descrição sobre a Trilha
+            Breve descrição sobre o Ponto de Interesse
           </label>
           <textarea
             id="shortDescription"
-            placeholder="Breve descrição sobre a Trilha"
+            placeholder="Breve descrição sobre o Ponto de Interesse"
             className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
             {...register("shortDescription")}
           />
@@ -137,77 +151,42 @@ function Page() {
             <FormError message={errors.shortDescription?.message} />
           )}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2 md:gap-5">
-            <div>
-              <label htmlFor="duration" className="font-bold text-sm">
-                Tempo Estimado (em Min.)
-              </label>
-              <InputCustom
-                id="duration"
-                type="number"
-                placeholder="Tempo Estimado"
-                {...register("duration", { valueAsNumber: true })}
-              />
-              {errors.duration && (
-                <FormError message={errors.duration.message} />
-              )}
-            </div>
-            <div>
-              <label htmlFor="distance" className="font-bold text-sm">
-                Distância aproximada (em Km)
-              </label>
-              <InputCustom
-                id="distance"
-                type="number"
-                step="0.1"
-                placeholder="Distância Aproximada"
-                {...register("distance", { valueAsNumber: true })}
-              />
-              {errors.distance && (
-                <FormError message={errors.distance?.message} />
-              )}
-            </div>
-            <div>
-              <label htmlFor="difficulty" className="font-bold text-sm">
-                Nível de dificuldade da Trilha
-              </label>
-              <select
-                id="difficulty"
-                className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-                {...register("difficulty")}
-              >
-                <option value="facil">Fácil</option>
-                <option value="moderado">Moderado</option>
-                <option value="dificil">Difícil</option>
-                <option value="muito_dificil">Muito Difícil</option>
-              </select>
-              {errors.difficulty && (
-                <FormError message={errors.difficulty?.message} />
-              )}
-            </div>
-          </div>
-          <div className="flex flex-col h-full">
-            <label htmlFor="safetyTips" className="font-bold text-sm mb-2">
-              Dicas de Segurança
-            </label>
-            <textarea
-              id="safetyTips"
-              className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-              placeholder="Digite as dicas de segurança aqui"
-              {...register("safetyTips")}
-            />
-            {errors.safetyTips && (
-              <FormError message={errors.safetyTips?.message} />
-            )}
-          </div>
+
+        {/* HIDDEN FIELDS */}
+        <div className="hidden">
+          <input type="number" {...register("duration")} />
+          <input type="number" {...register("distance")} />
+          <select {...register("difficulty")}>
+            <option value="facil">Fácil</option>
+            <option value="medio">Médio</option>
+            <option value="dificil">Difícil</option>
+          </select>
+          <textarea {...register("safetyTips")} />
         </div>
 
+        {/* 🔥 ÁREA DO EDITOR RICH TEXT */}
+        <div className="flex flex-col gap-2">
+          <label className="text-lg md:text-2xl font-bold text-primary-dark">
+            Informações adicionais do Ponto de Interesse
+          </label>
+
+          <LexicalEditor
+            value={watch("extraInfo") ?? ""}
+            onChange={(val) => setValue("extraInfo", val)}
+          />
+
+          {/* O extraInfo.message funcionará agora que o campo está no Schema */}
+          {errors.extraInfo && (
+            <FormError message={errors.extraInfo?.message} />
+          )}
+        </div>
+
+        {/* BOTÃO */}
         <Button
           type="submit"
           className="bg-primary-dark text-white px-4 py-2 rounded-lg lg:w-2/5 mt-4"
         >
-          Cadastrar
+          Criar Ponto de Interesse
         </Button>
       </form>
     </div>

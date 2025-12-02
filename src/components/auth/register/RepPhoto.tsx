@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
-import Button from '@/components/common/Button';
-import { CiCamera } from 'react-icons/ci';
-import { useMutation } from '@tanstack/react-query';
-import { postAttachments } from '@/services/postAttachments';
-import { toast } from 'sonner';
+import Button from "@/components/common/Button";
+import { CiCamera } from "react-icons/ci";
+import { useMutation } from "@tanstack/react-query";
+import { postAttachments } from "@/services/postAttachments";
+import { toast } from "sonner";
 
 function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
   const [file, setFile] = useState<File | null>(null);
@@ -29,10 +29,10 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
     onError: (error) => {
-      toast.error(error.message || 'Erro ao fazer login');
+      toast.error(error.message || "Erro ao fazer login");
     },
     onSuccess: () => {
-      toast.success('Imagem enviada com sucesso');
+      toast.success("Imagem enviada com sucesso");
     },
   });
 
@@ -49,7 +49,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = () => {
     if (file) {
-      mutateAsync({ file, type: 'galery' });
+      mutateAsync({ file, type: "galery" });
     }
     onNext();
   };
