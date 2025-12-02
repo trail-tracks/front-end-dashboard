@@ -1,4 +1,4 @@
-import { axiosHttp } from '@/services/axios';
+import { axiosHttp } from "@/services/axios";
 
 type CreateTrailParams = {
   name: string;
@@ -6,7 +6,7 @@ type CreateTrailParams = {
   shortDescription: string;
   duration: number;
   distance: number;
-  difficulty: 'facil' | 'moderado' | 'dificil' | 'muito_dificil';
+  difficulty: "facil" | "moderado" | "dificil" | "muito_dificil";
   safetyTips?: string | null;
 };
 
@@ -20,7 +20,7 @@ export const createTrail = async ({
   safetyTips,
 }: CreateTrailParams) => {
   const response = await axiosHttp.post(
-    '/trails',
+    "/trails",
     {
       name,
       description,
@@ -39,11 +39,11 @@ export const createTrail = async ({
 };
 
 export const getTrails = async () => {
-  const response = await axiosHttp.get('/trails');
-  return response.data;
+  const response = await axiosHttp.get("/trails");
+  return response.data.trails;
 };
 
 export const getTrailById = async (id: string) => {
-  const response = await axiosHttp.get(`/trails/${id}`);
-  return response.data;
+  const response = await axiosHttp.get(`/trails/trail/${id}`);
+  return response.data.trail;
 };

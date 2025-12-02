@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import Button from '@/components/common/Button';
-import InputCustom from '@/components/common/InputCustom';
-import { loginSchema } from '@/schema/authSchema';
-import { postLogin } from '@/services/login';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { LuEye, LuEyeClosed } from 'react-icons/lu';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import Button from "@/components/common/Button";
+import InputCustom from "@/components/common/InputCustom";
+import { loginSchema } from "@/schema/authSchema";
+import { postLogin } from "@/services/login";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { toast } from "sonner";
+import { z } from "zod";
 
 type FormValues = z.infer<typeof loginSchema>;
 
@@ -29,10 +29,10 @@ function Login() {
   const { mutate, isPending } = useMutation({
     mutationFn: postLogin,
     onError: (error) => {
-      toast.error(error.message || 'Erro ao fazer login');
+      toast.error(error.message || "Erro ao fazer login");
     },
     onSuccess: () => {
-      router.push('/dashboard');
+      router.push("/dashboard");
     },
   });
 
@@ -65,7 +65,7 @@ function Login() {
               onSubmit={handleSubmit(onSubmit)}
             >
               <InputCustom
-                {...register('email')}
+                {...register("email")}
                 label="Email Institucional"
                 name="email"
                 type="email"
@@ -75,10 +75,10 @@ function Login() {
               />
 
               <InputCustom
-                {...register('password')}
+                {...register("password")}
                 label="Senha para acesso"
                 name="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="Digite sua senha"
                 icon={
                   showPassword ? (
@@ -93,7 +93,7 @@ function Login() {
 
               <Button
                 variant="secondary"
-                text={isPending ? 'Entrando...' : 'Entrar'}
+                text={isPending ? "Entrando..." : "Entrar"}
                 className="py-3 mt-8"
                 type="submit"
                 disabled={isPending}

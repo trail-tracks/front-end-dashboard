@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { registerSchema } from '@/schema/authSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { LuEye, LuEyeClosed } from 'react-icons/lu';
-import { z } from 'zod';
+import { registerSchema } from "@/schema/authSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
+import { z } from "zod";
 
-import PhoneFields from '@/components/auth/register/PhoneFields';
-import Button from '@/components/common/Button';
-import InputCustom from '@/components/common/InputCustom';
-import { SignupStore, useSignupStore } from '@/store/signupStore';
+import PhoneFields from "@/components/auth/register/PhoneFields";
+import Button from "@/components/common/Button";
+import InputCustom from "@/components/common/InputCustom";
+import { SignupStore, useSignupStore } from "@/store/signupStore";
 
 type FormValues = z.infer<typeof registerSchema>;
 
@@ -63,7 +63,7 @@ export default function StepInstitution({ onNext }: StepInstitutionProps) {
         <PhoneFields register={register} errors={errors} />
 
         <InputCustom
-          {...register('name')}
+          {...register("name")}
           label="Nome da Instituição*"
           name="name"
           type="string"
@@ -73,7 +73,7 @@ export default function StepInstitution({ onNext }: StepInstitutionProps) {
         />
 
         <InputCustom
-          {...register('nameComplement')}
+          {...register("nameComplement")}
           label="Complemento do nome"
           name="nameComplement"
           type="string"
@@ -87,7 +87,7 @@ export default function StepInstitution({ onNext }: StepInstitutionProps) {
         </div>
 
         <InputCustom
-          {...register('email')}
+          {...register("email")}
           label="Email Institucional*"
           name="email"
           type="email"
@@ -97,10 +97,10 @@ export default function StepInstitution({ onNext }: StepInstitutionProps) {
         />
 
         <InputCustom
-          {...register('password')}
+          {...register("password")}
           label="Senha para acesso*"
           name="password"
-          type={showPassword ? 'text' : 'password'}
+          type={showPassword ? "text" : "password"}
           placeholder="Digite sua senha"
           icon={
             showPassword ? (
