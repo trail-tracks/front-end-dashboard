@@ -33,7 +33,7 @@ function Header({
         <Image
           src={logo || "/logo.svg"}
           alt=""
-          className={size === "md" ? "m-0 md:m-0" : "m-4 md:m-6"}
+          className={size === "md" ? "m-0 md:m-0 rounded-full" : "m-4 md:m-6 rounded-full"}
           height={80}
           width={80}
           quality={95}

@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/dashboard/Header";
 import { useAuth } from "@/contexts/AuthContext";
-import { get } from "http";
 import { getImageUrl } from "@/lib/utils";
 
 export default function HeaderClient() {
