@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/dashboard/Header";
 import { useAuth } from "@/contexts/AuthContext";
+import { get } from "http";
+import { getImageUrl } from "@/lib/utils";
 
 export default function HeaderClient() {
   const pathname = usePathname();
@@ -14,7 +16,7 @@ export default function HeaderClient() {
       size={size} 
       name={user?.name || "Carregando..."} 
       subtitle={user?.nameComplement || ""}
-      logo={user?.logo || ""}
+      logo={getImageUrl(user?.coverUrl) || ""}
     />
   );
 }

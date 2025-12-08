@@ -10,7 +10,7 @@ interface User {
   nameComplement?: string;
   email: string;
   phone: string;
-  logo?: string;
+  coverUrl?: string;
   entityId?: number;
 }
 
