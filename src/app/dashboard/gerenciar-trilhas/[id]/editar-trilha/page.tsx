@@ -5,107 +5,85 @@ import InputCustom from "@/components/common/InputCustom";
 import { Button } from "@/components/ui/button";
 import { usePhoto } from "@/hooks/use-photo";
 import { CreateTrailDto, createTrailSchema } from "@/schema/createTrail";
-import { postAttachments } from "@/services/postAttachments";
-import { createTrail } from "@/services/trails";
+import { editTrail, getTrailById } from "@/services/trails";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { HiUpload } from "react-icons/hi";
 import { HiMiniTrash } from "react-icons/hi2";
 import { toast } from "sonner";
 
-function Page() {
+function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { photos, handleFileChange, removePhoto } = usePhoto();
+
+  const {
+    data: trail,
+    isLoading: loading,
+    isError,
+  } = useQuery({
+    queryKey: ["trail", id],
+    queryFn: () => getTrailById(id),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateTrailDto>({
     resolver: zodResolver(createTrailSchema),
-    defaultValues: {
-      name: "",
-      description: null,
-      shortDescription: "",
-      duration: 0,
-      distance: 0,
-      difficulty: "facil",
-      safetyTips: null,
-    },
   });
 
-  const uploadPhotosMutation = useMutation({
-    mutationFn: async ({
-      trailId,
-      photos,
-    }: {
-      trailId: number;
-      photos: File[];
-    }) => {
-      if (photos.length > 0) {
-        await postAttachments({
-          file: photos[0],
-          type: "cover",
-          trailId,
-        });
-      }
+  useEffect(() => {
+    if (trail) {
+      reset({
+        name: trail.name,
+        description: trail.description,
+        shortDescription: trail.shortDescription,
+        duration: trail.duration,
+        distance: trail.distance,
+        difficulty: trail.difficulty,
+        safetyTips: trail.safetyTips,
+      });
+    }
+  }, [trail, reset]);
 
-      if (photos.length > 1) {
-        for (let i = 1; i < photos.length; i++) {
-          await postAttachments({
-            file: photos[i],
-            type: "galery",
-            trailId,
-          });
-        }
-      }
+  const editMutation = useMutation({
+    mutationFn: (data: CreateTrailDto) =>
+      editTrail({
+        id,
+        ...data,
+      }),
+    onSuccess: () => {
+      toast.success("Trilha editada com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["trail", id] });
+      queryClient.invalidateQueries({ queryKey: ["trails"] });
+      router.push(`/dashboard/gerenciar-trilhas/${id}`);
     },
     onError: (error) => {
-      toast.error("Erro ao fazer upload das fotos: " + error);
-    },
-  });
-
-  const createTrailMutation = useMutation({
-    mutationFn: createTrail,
-    onSuccess: async (data) => {
-      console.log("Trilha criada:", data);
-      const trailId = data?.trail?.id || data?.id;
-
-      if (!trailId) {
-        toast.error("Erro: ID da trilha não foi retornado");
-        return;
-      }
-
-      if (photos.length > 0) {
-        toast.info("Fazendo upload das fotos...");
-        try {
-          await uploadPhotosMutation.mutateAsync({ trailId, photos });
-          toast.success("Trilha criada e fotos enviadas com sucesso!");
-        } catch (error) {
-          toast.warning("Trilha criada, mas houve erro no upload de fotos");
-        }
-      } else {
-        toast.success("Trilha criada com sucesso!");
-      }
-
-      queryClient.invalidateQueries({ queryKey: ["trails"] });
-      router.push("/dashboard/gerenciar-trilhas");
-    },
-    onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || "Erro ao criar a trilha: " + error
-      );
+      toast.error("Erro ao editar a trilha: " + error);
     },
   });
 
   const onSubmit = (data: CreateTrailDto) => {
     console.log("Form Data:", data);
     console.log("Uploaded Photos:", photos);
-    createTrailMutation.mutate(data);
+    editMutation.mutate(data);
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  if (isError || !trail) {
+    return <div>Trilha não encontrada</div>;
+  }
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
@@ -116,10 +94,10 @@ function Page() {
             label: "Gerenciar Trilhas",
             href: "/dashboard/gerenciar-trilhas",
           },
-          { label: "Criar Trilha" },
+          { label: "Editar Trilha" },
         ]}
       />
-      <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
+      <h1 className="text-2xl font-bold text-primary-dark">Editar Trilha</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
@@ -266,15 +244,9 @@ function Page() {
         <Button
           type="submit"
           className="bg-primary-dark text-white px-4 py-2 rounded-lg lg:w-2/5 mt-4"
-          disabled={
-            createTrailMutation.isPending || uploadPhotosMutation.isPending
-          }
+          disabled={editMutation.isPending}
         >
-          {createTrailMutation.isPending
-            ? "Criando trilha..."
-            : uploadPhotosMutation.isPending
-            ? "Enviando fotos..."
-            : "Cadastrar"}
+          {editMutation.isPending ? "Salvando..." : "Salvar Alterações"}
         </Button>
       </form>
     </div>
