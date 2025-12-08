@@ -104,12 +104,12 @@ function TrailDetails({ params }: PageProps) {
         <Image
           src={
             getImageUrl(trail.coverUrl) ||
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop"
           }
           alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
-          width={800}
-          height={400}
+          width={1280}
+          height={720}
           quality={95}
         />
         <div className="flex flex-col justify-center mt-4">

@@ -29,13 +29,13 @@ function TrailCard({
   return (
     <div className="flex flex-col bg-white p-4 m-1 rounded-3xl border-1 border-primary-medium/25 w-4/5 text-primary-dark">
       <div className="grid grid-cols-2 gap-4">
-        <div className="w-full mb-2">
+        <div className="w-full h-35 mb-2">
           <Image
             src={imageUrl}
             alt=""
             className="object-cover rounded-lg h-full w-full"
-            width={352}
-            height={40}
+            width={400}
+            height={200}
             quality={95}
           />
         </div>

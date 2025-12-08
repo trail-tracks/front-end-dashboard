@@ -57,7 +57,7 @@ function GerenciarTrilhas() {
               key={index}
               id={trail.id}
               imageUrl={
-                getImageUrl(trail.imageUrl) ||
+                getImageUrl(trail.coverUrl) ||
                 "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
               }
               name={trail.name}
