@@ -5,13 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getImageUrl(path: string | null | undefined): string | null {
+export function getImageUrl(path: string | null | undefined): string | null { 
   if (!path) return null;
 
   if (path.startsWith("http://") || path.startsWith("https://")) {
     return path;
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8787";
+  const baseUrl = process.env.NEXT_PUBLIC_R2_PUBLIC_URL;
+
   return `${baseUrl}/${path}`;
 }
