@@ -1,4 +1,5 @@
 "use client";
+export const runtime = "edge";
 import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
 import FormError from "@/components/common/FormError";
 import InputCustom from "@/components/common/InputCustom";
