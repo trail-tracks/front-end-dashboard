@@ -1,4 +1,5 @@
 "use client";
+export const runtime = "edge";
 import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
 import FormError from "@/components/common/FormError";
 import InputCustom from "@/components/common/InputCustom";
@@ -9,6 +10,7 @@ import { createTrail } from "@/services/trails";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { use } from "react";
 import { useForm } from "react-hook-form";
 import { HiUpload } from "react-icons/hi";
 import { HiMiniTrash } from "react-icons/hi2";
@@ -16,8 +18,9 @@ import { toast } from "sonner";
 
 import LexicalEditor from "@/components/common/LexicalEditor";
 
-function Page() {
+function Page({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
+  const { id } = use(params);
   const { photos, handleFileChange, removePhoto } = usePhoto();
 
   const {
@@ -57,10 +60,15 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
+
           { label: "Home", href: "/dashboard" },
+          { label: "Gerenciar Trilhas", href: "/dashboard/gerenciar-trilhas" },
           {
-            label: "Gerenciar Pontos de Interesse",
-            href: "/dashboard/gerenciar-pontos",
+            label: "Detalhes da Trilha",
+            href: `/dashboard/gerenciar-trilhas/${id}`,
+          },
+          { label: "Trilha Pontos de Interesse a Trilha",
+            href: `/dashboard/gerenciar-trilhas/${id}/pontos-interesse`
           },
           { label: "Criar Ponto de Interesse" },
         ]}

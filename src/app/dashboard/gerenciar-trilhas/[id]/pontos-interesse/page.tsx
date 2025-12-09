@@ -16,7 +16,7 @@ function PointsOfInterest({ params }: { params: Promise<{ id: string }> }) {
 
   const addPointOfInterest = () => {
     router.push(
-      `/dashboard/gerenciar-trilhas/${id}/pontos-interesse/adicionar`,
+      `/dashboard/gerenciar-trilhas/${id}/pontos-interesse/add-pontos`,
     );
   };
 
