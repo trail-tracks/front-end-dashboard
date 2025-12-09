@@ -2,15 +2,39 @@
 
 import InputCustom from "@/components/common/InputCustom";
 import { Button } from "@/components/ui/button";
+import { authChangeEmail } from "@/services/auth";
+import { useMutation } from "@tanstack/react-query";
 import { FormEvent } from "react";
+import { toast } from "sonner";
 
 interface ChangeEmailFormProps {
   userEmail: string;
 }
 
 export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
+  const changeEmailMutation = useMutation({
+    mutationFn: authChangeEmail,
+    onSuccess: () => {
+      toast.success("Email alterado com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message || "Erro ao alterar email. Verifique seus dados."
+      );
+    },
+  });
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      currentEmail: (formData.get("currentEmail") as string).toLowerCase(),
+      newEmail: (formData.get("newEmail") as string).toLowerCase(),
+      password: formData.get("password") as string,
+    };
+
+    changeEmailMutation.mutate(data);
   };
 
   return (
@@ -48,8 +72,9 @@ export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
         <Button
           type="submit"
           className="w-28 bg-primary-dark text-white hover:bg-secondary-dark"
+          disabled={changeEmailMutation.isPending}
         >
-          Salvar
+          {changeEmailMutation.isPending ? "Salvando..." : "Salvar"}
         </Button>
       </div>
     </form>

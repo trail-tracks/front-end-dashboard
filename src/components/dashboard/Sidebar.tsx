@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { CiLogout } from "react-icons/ci";
-import { IoAnalyticsOutline, IoTrailSignOutline } from "react-icons/io5";
+import { IoTrailSignOutline } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";
 import { TbHome, TbSettings2 } from "react-icons/tb";
 
@@ -28,11 +28,6 @@ const menuItems = [
     title: "Gerenciar Trilhas",
     icon: IoTrailSignOutline,
     url: "/dashboard/gerenciar-trilhas",
-  },
-  {
-    title: "Gerenciar Pontos de Interesse",
-    icon: IoAnalyticsOutline,
-    url: "/dashboard/gerenciar-pontos",
   },
   {
     title: "Perfil da Instituição",

@@ -3,6 +3,7 @@
 import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
 import TrailCard from "@/components/dashboard/TrailCard";
 import { Button } from "@/components/ui/button";
+import { getImageUrl } from "@/lib/utils";
 import { getTrails } from "@/services/trails";
 import { Trail } from "@/types/trail";
 import { useQuery } from "@tanstack/react-query";
@@ -56,7 +57,7 @@ function GerenciarTrilhas() {
               key={index}
               id={trail.id}
               imageUrl={
-                trail.imageUrl ||
+                getImageUrl(trail.coverUrl) ||
                 "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
               }
               name={trail.name}

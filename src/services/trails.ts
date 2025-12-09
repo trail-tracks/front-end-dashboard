@@ -47,3 +47,29 @@ export const getTrailById = async (id: string) => {
   const response = await axiosHttp.get(`/trails/trail/${id}`);
   return response.data.trail;
 };
+
+type EditTrailParams = {
+  id: string;
+  name?: string;
+  description?: string | null;
+  shortDescription?: string;
+  duration?: number;
+  distance?: number;
+  difficulty?: "facil" | "moderado" | "dificil" | "muito_dificil";
+  safetyTips?: string | null;
+};
+
+export const editTrail = async ({
+  id,
+  ...updateData
+}: EditTrailParams) => {
+  const response = await axiosHttp.patch(
+    "/trails/edit",
+    {
+      id: Number(id),
+      ...updateData,
+    },
+  );
+
+  return response.data;
+};

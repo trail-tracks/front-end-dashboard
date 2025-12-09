@@ -3,6 +3,7 @@ type Trail = {
   name: string;
   duration: number;
   imageUrl: string;
+  coverUrl: string | null;
   distance: string;
   difficulty: string;
   interaction: string;

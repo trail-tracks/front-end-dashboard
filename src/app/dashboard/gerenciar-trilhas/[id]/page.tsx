@@ -3,6 +3,10 @@ export const runtime = "edge";
 import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
 import { Button } from "@/components/ui/button";
 import { usePhoto } from "@/hooks/use-photo";
+import { getImageUrl } from "@/lib/utils";
+import { getQRCode } from "@/services/qrcode";
+import { getTrailById } from "@/services/trails";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use } from "react";
@@ -15,8 +19,6 @@ import { MdAccessTimeFilled } from "react-icons/md";
 import { PiMapPinAreaFill } from "react-icons/pi";
 import { RiVipDiamondLine } from "react-icons/ri";
 import { TfiPlus } from "react-icons/tfi";
-import { getTrailById } from "@/services/trails";
-import { useQuery } from "@tanstack/react-query";
 
 type PageProps = {
   params: Promise<{
@@ -36,6 +38,14 @@ function TrailDetails({ params }: PageProps) {
   } = useQuery({
     queryKey: ["trail", id],
     queryFn: () => getTrailById(id),
+  });
+
+  const {
+    data: pdfBlob,
+    isLoading: isLoadingQR,
+  } = useQuery({
+    queryKey: ["qrcode", id],
+    queryFn: () => getQRCode(id),
   });
 
   if (loading) {
@@ -61,14 +71,29 @@ function TrailDetails({ params }: PageProps) {
       <div className="flex justify-between items-center flex-row">
         <h1 className="text-2xl font-bold text-primary-dark">{trail.name}</h1>
         <div className="flex w-1/2 justify-end items-center gap-4">
-          <Button size="xl" className="w-1/2 lg:w-1/3 rounded-2xl">
-            Gerar QR Code
-            <HiQrcode className="mr-2" />
+          <Button
+            size="xl"
+            className="w-1/2 lg:w-1/3 rounded-2xl"
+            asChild
+            disabled={isLoadingQR || !pdfBlob}
+          >
+            <a
+              href={pdfBlob ? URL.createObjectURL(pdfBlob) : "#"}
+              download={`qrcode-${trail.name}.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {isLoadingQR ? "Carregando..." : "Gerar QR Code"}
+              <HiQrcode className="mr-2" />
+            </a>
           </Button>
           <Button
             size="xl"
             variant="primary"
             className="w-1/2 lg:w-1/3 rounded-2xl"
+            onClick={() =>
+              router.push(`/dashboard/gerenciar-trilhas/${id}/editar-trilha`)
+            }
           >
             Editar Informações
           </Button>
@@ -78,13 +103,13 @@ function TrailDetails({ params }: PageProps) {
       <div>
         <Image
           src={
-            trail.coverUrl ||
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+            getImageUrl(trail.coverUrl) ||
+            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop"
           }
           alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
-          width={800}
-          height={400}
+          width={1280}
+          height={720}
           quality={95}
         />
         <div className="flex flex-col justify-center mt-4">
@@ -99,7 +124,7 @@ function TrailDetails({ params }: PageProps) {
             </p>
             <p className="flex items-center gap-2">
               <RiVipDiamondLine color="red" />
-              {trail.difficulty}
+              {trail.difficulty.toUpperCase()}
             </p>
           </div>
         </div>
