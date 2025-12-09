@@ -32,7 +32,7 @@ const menuItems = [
   {
     title: "Gerenciar Pontos de Interesse",
     icon: IoAnalyticsOutline,
-    url: "/dashboard/pontos-interesse",
+    url: "/dashboard/gerenciar-pontos",
   },
   {
     title: "Perfil da Instituição",
