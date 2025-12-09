@@ -47,7 +47,7 @@ function Page() {
 
       await createTrail(data);
       toast.success("Ponto de Interesse criado com sucesso!");
-      router.push("/dashboard/gerenciar-trilhas");
+      router.push("/dashboard/gerenciar-pontos");
     } catch (error) {
       toast.error("Erro ao enviar o formulário:" + error);
     }
@@ -60,7 +60,7 @@ function Page() {
           { label: "Home", href: "/dashboard" },
           {
             label: "Gerenciar Pontos de Interesse",
-            href: "/dashboard/gerenciar-trilhas",
+            href: "/dashboard/gerenciar-pontos",
           },
           { label: "Criar Ponto de Interesse" },
         ]}
@@ -71,7 +71,7 @@ function Page() {
       </h1>
 
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-        {/* UPLOAD + NOME */}
+   
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           {photos.length === 0 ? (
             <div className="rounded-lg p-4 cursor-pointer bg-[#E8E8E8] hover:border-gray-600 transition-colors flex items-center justify-center h-full col-span-1">
@@ -100,7 +100,7 @@ function Page() {
                 >
                   <Image
                     src={URL.createObjectURL(photo)}
-                    alt={`Preview ${index + 1}`} // 🚨 CORRIGIDO: Sintaxe da Template Literal
+                    alt={`Preview ${index + 1}`} 
                     className="object-cover rounded-lg h-full w-full"
                     width={400}
                     height={200}
@@ -133,7 +133,7 @@ function Page() {
           </div>
         </div>
 
-        {/* SHORT DESCRIPTION */}
+   
         <div className="w-full">
           <label
             htmlFor="shortDescription"
@@ -152,7 +152,7 @@ function Page() {
           )}
         </div>
 
-        {/* HIDDEN FIELDS */}
+     
         <div className="hidden">
           <input type="number" {...register("duration")} />
           <input type="number" {...register("distance")} />
@@ -164,7 +164,7 @@ function Page() {
           <textarea {...register("safetyTips")} />
         </div>
 
-        {/* 🔥 ÁREA DO EDITOR RICH TEXT */}
+        
         <div className="flex flex-col gap-2">
           <label className="text-lg md:text-2xl font-bold text-primary-dark">
             Informações adicionais do Ponto de Interesse
@@ -175,13 +175,12 @@ function Page() {
             onChange={(val) => setValue("extraInfo", val)}
           />
 
-          {/* O extraInfo.message funcionará agora que o campo está no Schema */}
+        
           {errors.extraInfo && (
             <FormError message={errors.extraInfo?.message} />
           )}
         </div>
 
-        {/* BOTÃO */}
         <Button
           type="submit"
           className="bg-primary-dark text-white px-4 py-2 rounded-lg lg:w-2/5 mt-4"
