@@ -4,9 +4,11 @@ import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
 import { getImageUrl } from '@/lib/utils';
+import { postAttachments } from '@/services/postAttachments';
 import { getQRCode } from '@/services/qrcode';
 import { getTrailById } from '@/services/trails';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
@@ -19,6 +21,7 @@ import { MdAccessTimeFilled } from 'react-icons/md';
 import { PiMapPinAreaFill } from 'react-icons/pi';
 import { RiVipDiamondLine } from 'react-icons/ri';
 import { TfiPlus } from 'react-icons/tfi';
+import { toast } from 'sonner';
 
 type PageProps = {
   params: Promise<{
@@ -26,10 +29,16 @@ type PageProps = {
   }>;
 };
 
+interface GalleryPhoto {
+  id: string;
+  url: string;
+}
+
 function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
-  const { photos, handleFileChange, removePhoto, canAddMore } = usePhoto();
+  const { handleFileChange, removePhoto, clearPhotos } = usePhoto();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const {
     data: trail,
@@ -45,6 +54,38 @@ function TrailDetails({ params }: PageProps) {
     queryFn: () => getQRCode(id),
   });
 
+  const uploadPhotoMutation = useMutation({
+    mutationFn: async (file: File) => {
+      return postAttachments({
+        file,
+        type: 'gallery',
+        trailId: Number(id),
+      });
+    },
+    onSuccess: () => {
+      toast.success('Foto adicionada com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['trail', id] });
+      clearPhotos();
+    },
+    onError: (error) => {
+      toast.error('Erro ao adicionar foto: ' + error);
+    },
+  });
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentPhotoCount = trail?.gallery?.length || 0;
+    if (currentPhotoCount >= 5) {
+      toast.error('Você já atingiu o limite máximo de 5 fotos.');
+      return;
+    }
+
+    handleFileChange(e);
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      await uploadPhotoMutation.mutateAsync(file);
+    }
+  };
+
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -52,6 +93,9 @@ function TrailDetails({ params }: PageProps) {
   if (isError || !trail) {
     return <div>Trilha não encontrada</div>;
   }
+
+  const currentPhotoCount = trail.gallery?.length || 0;
+  const canAddMore = currentPhotoCount < 5;
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
@@ -137,14 +181,14 @@ function TrailDetails({ params }: PageProps) {
             Essas imagens irão aparecer quando o usuário for visualizar o ponto
             de interesse
           </p>
-          <div className="grid grid-cols-3 gap-4 w-1/2">
-            {photos.map((photo, index) => (
+          <div className="flex flex-wrap gap-4 w-full">
+            {trail.gallery.map((photo: GalleryPhoto, index: number) => (
               <div
                 key={index}
-                className="border border-gray-400 rounded-lg h-32 relative"
+                className="border border-gray-400 rounded-lg h-37 w-43 relative"
               >
                 <Image
-                  src={URL.createObjectURL(photo)}
+                  src={getImageUrl(photo.url)}
                   alt={`Preview ${index + 1}`}
                   className="object-cover rounded-lg h-full w-full"
                   width={400}
@@ -153,7 +197,7 @@ function TrailDetails({ params }: PageProps) {
                 />
                 <Button
                   className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
-                  onClick={() => removePhoto(photo.name)}
+                  onClick={() => removePhoto(photo.id)}
                 >
                   <HiMiniTrash size={20} />
                 </Button>
@@ -161,23 +205,40 @@ function TrailDetails({ params }: PageProps) {
             ))}
             {canAddMore && (
               <div
-                className=" rounded-lg p-4 cursor-pointer bg-[#E8E8E8]
-               hover:border-gray-600 transition-colors flex items-center justify-center h-32"
+                className={`rounded-lg p-4 cursor-pointer bg-[#E8E8E8] hover:border-gray-600 transition-colors flex items-center justify-center w-43 h-37 ${
+                  uploadPhotoMutation.isPending
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ''
+                }`}
               >
                 <label
                   htmlFor="file-upload"
-                  className="cursor-pointer flex flex-col items-center justify-center w-full h-full"
+                  className={`flex flex-col items-center justify-center w-full h-full ${
+                    uploadPhotoMutation.isPending
+                      ? 'cursor-not-allowed'
+                      : 'cursor-pointer'
+                  }`}
                 >
                   <span className="text-4xl text-gray-600">
-                    <TfiPlus />
+                    {uploadPhotoMutation.isPending ? (
+                      <div className="animate-spin">
+                        <Loader2> </Loader2>
+                      </div>
+                    ) : (
+                      <TfiPlus />
+                    )}
                   </span>
+                  {uploadPhotoMutation.isPending && (
+                    <span className="text-xs mt-2">Enviando...</span>
+                  )}
                 </label>
                 <input
                   id="file-upload"
                   type="file"
                   accept="image/png, image/jpeg, image/jpg, image/svg+xml"
                   className="hidden"
-                  onChange={handleFileChange}
+                  onChange={handlePhotoUpload}
+                  disabled={uploadPhotoMutation.isPending}
                 />
               </div>
             )}

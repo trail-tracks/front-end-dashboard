@@ -32,7 +32,9 @@ interface GalleryPhoto {
 
 function PointDetailsPage({ params }: PageProps) {
   const { id: trailId, pointId } = use(params);
-  const { handleFileChange, removePhoto, canAddMore, clearPhotos } = usePhoto();
+  const { handleFileChange, removePhoto, clearPhotos } = usePhoto({
+    maxPhotos: 5,
+  });
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -64,14 +66,18 @@ function PointDetailsPage({ params }: PageProps) {
   });
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentPhotoCount = point?.gallery?.length || 0;
+    if (currentPhotoCount >= 5) {
+      toast.error('Você já atingiu o limite máximo de 5 fotos.');
+      return;
+    }
+
     handleFileChange(e);
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       await uploadPhotoMutation.mutateAsync(file);
     }
   };
-
-  console.log('point data:', point);
 
   if (isLoading) {
     return (
@@ -88,6 +94,9 @@ function PointDetailsPage({ params }: PageProps) {
       </div>
     );
   }
+
+  const currentPhotoCount = point.gallery?.length || 0;
+  const canAddMore = currentPhotoCount < 5;
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
@@ -141,7 +150,7 @@ function PointDetailsPage({ params }: PageProps) {
         <h2 className="text-xl font-semibold mb-2">
           Breve sescrição sobre o ponto
         </h2>
-        <p className="text-gray-700">{point.shortDescription}</p>
+        <p className="text-primary-dark">{point.shortDescription}</p>
       </div>
 
       {point.description && (
@@ -162,9 +171,9 @@ function PointDetailsPage({ params }: PageProps) {
         <h2 className="text-xl font-semibold mb-2">Imagens do Ponto</h2>
         <p className="text-md text-primary-dark mb-4">
           Essas imagens irão aparecer quando o usuário for visualizar o ponto de
-          interesse
+          interesse (máximo de 5 fotos - {currentPhotoCount}/5)
         </p>
-        <div className="flex flex-wrap gap-2 w-1/2">
+        <div className="flex flex-wrap gap-2 w-full">
           {point.gallery.map((photo: GalleryPhoto, index: number) => (
             <div
               key={photo.id ?? index}
