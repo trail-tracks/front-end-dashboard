@@ -49,7 +49,7 @@ function RepresentativePhotoPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = () => {
     if (file) {
-      mutateAsync({ file, type: 'galery' });
+      mutateAsync({ file, type: 'gallery' });
     }
     onNext();
   };
