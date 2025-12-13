@@ -25,7 +25,6 @@ function CardPoints({ name, coverUrl, id }: CardPointsProps) {
             className="absolute top-2 right-2 p-2 rounded-full bg-white cursor-pointer hover:bg-gray-100 transition-colors z-10"
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Delete point:', id);
             }}
           >
             <HiMiniTrash size={20} className="text-primary-dark" />

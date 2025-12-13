@@ -73,8 +73,6 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   });
 
   const onSubmit = (data: CreateTrailDto) => {
-    console.log('Form Data:', data);
-    console.log('Uploaded Photos:', photos);
     editMutation.mutate(data);
   };
 

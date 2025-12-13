@@ -111,8 +111,6 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   });
 
   const onSubmit = (data: CreatePointDto) => {
-    console.log('Form Data:', data);
-    console.log('Uploaded Photos:', photos);
     createPointMutation.mutate({ ...data, trailId: id });
   };
 

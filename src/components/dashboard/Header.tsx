@@ -35,7 +35,7 @@ function Header({
           alt=""
           className={
             size === 'md'
-              ? 'm-0 md:m-0 h-20 object-cover w-20 rounded-full'
+              ? 'm-0 md:m-0 h-15 object-cover w-15 rounded-full'
               : 'm-4 md:m-6 h-20 object-cover w-20 rounded-full'
           }
           height={80}

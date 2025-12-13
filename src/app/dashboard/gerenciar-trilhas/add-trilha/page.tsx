@@ -71,7 +71,6 @@ function Page() {
   const createTrailMutation = useMutation({
     mutationFn: createTrail,
     onSuccess: async (data) => {
-      console.log('Trilha criada:', data);
       const trailId = data?.trail?.id || data?.id;
 
       if (!trailId) {
@@ -102,8 +101,6 @@ function Page() {
   });
 
   const onSubmit = (data: CreateTrailDto) => {
-    console.log('Form Data:', data);
-    console.log('Uploaded Photos:', photos);
     createTrailMutation.mutate(data);
   };
 
