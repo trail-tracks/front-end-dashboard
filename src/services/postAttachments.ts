@@ -37,3 +37,11 @@ export const postAttachments = async ({
 
   return response.data;
 };
+
+export const deleteAttachment = async (attachmentId: string) => {
+  const response = await axiosHttp.delete(`/attachments/${attachmentId}`, {
+    withCredentials: true,
+  });
+
+  return response.data;
+};

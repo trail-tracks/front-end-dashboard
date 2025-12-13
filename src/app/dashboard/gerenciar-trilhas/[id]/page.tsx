@@ -36,7 +36,10 @@ interface GalleryPhoto {
 
 function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
-  const { handleFileChange, removePhoto, clearPhotos } = usePhoto();
+  const { handleFileChange, removePhoto, clearPhotos } = usePhoto({
+    maxPhotos: 5,
+    queryKey: ['trail', id],
+  });
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -198,6 +201,7 @@ function TrailDetails({ params }: PageProps) {
                 <Button
                   className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
                   onClick={() => removePhoto(photo.id)}
+                  disabled={uploadPhotoMutation.isPending}
                 >
                   <HiMiniTrash size={20} />
                 </Button>

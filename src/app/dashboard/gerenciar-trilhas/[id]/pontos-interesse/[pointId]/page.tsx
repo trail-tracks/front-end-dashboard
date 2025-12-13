@@ -34,6 +34,7 @@ function PointDetailsPage({ params }: PageProps) {
   const { id: trailId, pointId } = use(params);
   const { handleFileChange, removePhoto, clearPhotos } = usePhoto({
     maxPhotos: 5,
+    queryKey: ['point', pointId],
   });
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -190,6 +191,7 @@ function PointDetailsPage({ params }: PageProps) {
               <Button
                 className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
                 onClick={() => removePhoto(photo.id)}
+                disabled={uploadPhotoMutation.isPending}
               >
                 <HiMiniTrash size={20} />
               </Button>
