@@ -49,7 +49,7 @@ function PointDetailsPage({ params }: PageProps) {
     mutationFn: async (file: File) => {
       return postAttachments({
         file,
-        type: 'galery',
+        type: 'gallery',
         pointOfInterestId: Number(pointId),
       });
     },

@@ -57,7 +57,7 @@ function Page() {
         for (let i = 1; i < photos.length; i++) {
           await postAttachments({
             file: photos[i],
-            type: 'galery',
+            type: 'gallery',
             trailId,
           });
         }

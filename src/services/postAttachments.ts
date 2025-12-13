@@ -2,7 +2,7 @@ import { axiosHttp } from '@/services/axios';
 
 type PostAttachmentsParams = {
   file: File;
-  type: 'galery' | 'cover';
+  type: 'gallery' | 'cover';
   trailId?: number;
   entityId?: number;
   pointOfInterestId?: number;

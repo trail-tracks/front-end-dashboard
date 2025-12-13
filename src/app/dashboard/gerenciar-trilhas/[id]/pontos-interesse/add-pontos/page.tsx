@@ -61,7 +61,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         for (let i = 1; i < photos.length; i++) {
           await postAttachments({
             file: photos[i],
-            type: 'galery',
+            type: 'gallery',
             pointOfInterestId,
           });
         }
