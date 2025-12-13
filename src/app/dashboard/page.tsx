@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import Button from "@/components/common/Button";
-import Card from "@/components/dashboard/Card";
-import TrailCard from "@/components/dashboard/TrailCard";
-import { getImageUrl } from "@/lib/utils";
-import { getHome } from "@/services/home";
-import { Trail } from "@/types/trail";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import Button from '@/components/common/Button';
+import Card from '@/components/dashboard/Card';
+import TrailCard from '@/components/dashboard/TrailCard';
+import { getImageUrl } from '@/lib/utils';
+import { getHome } from '@/services/home';
+import { Trail } from '@/types/trail';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 function DashboardPage() {
   const router = useRouter();
 
   const { data: homeData } = useQuery({
-    queryKey: ["home"],
+    queryKey: ['home'],
     queryFn: getHome,
   });
 
@@ -45,7 +45,7 @@ function DashboardPage() {
         <Button
           text="Trilhas Recentes"
           className="font-bold w-full h-11 text-2xl px-6 pointer-events-none"
-          variant={"icon"}
+          variant={'icon'}
         />
         <div className="flex flex-col w-full items-center justify-center">
           {!homeData?.lastTrails || homeData.lastTrails.length === 0 ? (
@@ -58,10 +58,7 @@ function DashboardPage() {
                 <TrailCard
                   key={index}
                   id={trail.id}
-                  imageUrl={
-                    getImageUrl(trail.coverUrl) ||
-                    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
-                  }
+                  imageUrl={getImageUrl(trail.coverUrl ?? undefined)}
                   name={trail.name}
                   duration={`${trail.duration} Min`}
                   distance={`${trail.distance} Km`}
@@ -71,9 +68,9 @@ function DashboardPage() {
 
               <div className="w-full flex justify-center">
                 <Button
-                  text={"VER TODOS"}
+                  text={'VER TODOS'}
                   className="flex w-1/6 mt-2 justify-center bg-white border border-yellow-400 text-yellow-400"
-                  onClick={() => router.push("dashboard/gerenciar-trilhas")}
+                  onClick={() => router.push('dashboard/gerenciar-trilhas')}
                 />
               </div>
             </>

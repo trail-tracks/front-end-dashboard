@@ -1,11 +1,11 @@
 // lib/axios.js
-import axios from "axios";
+import axios from 'axios';
 
 export const axiosHttp = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
@@ -29,10 +29,10 @@ axiosHttp.interceptors.response.use(
       data?.error?.message ||
       data?.message ||
       error?.message ||
-      "Erro desconhecido";
+      'Erro desconhecido';
     const statusCode = data?.error?.statusCode || status || 500;
 
-    console.error("API Error:", { message: errorMessage, statusCode });
+    console.error('API Error:', { message: errorMessage, statusCode });
 
     return Promise.reject({ message: errorMessage, statusCode });
   },

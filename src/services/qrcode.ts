@@ -1,8 +1,8 @@
-import { axiosHttp } from "@/services/axios";
+import { axiosHttp } from '@/services/axios';
 
 export const getQRCode = async (id: string) => {
   const response = await axiosHttp.get(`/qrcode/${id}`, {
-    responseType: "blob",
+    responseType: 'blob',
   });
   return response.data;
 };

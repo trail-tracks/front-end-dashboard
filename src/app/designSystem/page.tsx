@@ -1,7 +1,6 @@
-"use client";
+'use client';
 
-import React from "react";
-import Button from "@/components/common/Button";
+import Button from '@/components/common/Button';
 
 export default function Dashboard() {
   return (
@@ -72,7 +71,7 @@ export default function Dashboard() {
           <Button
             text="Continuar"
             variant="primary"
-            onClick={() => alert("Teste!")}
+            onClick={() => alert('Teste!')}
           />
         </div>
 
@@ -80,7 +79,7 @@ export default function Dashboard() {
           <Button
             text="Continuar"
             variant="secondary"
-            onClick={() => alert("Teste!")}
+            onClick={() => alert('Teste!')}
           />
         </div>
       </section>

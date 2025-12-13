@@ -4,15 +4,15 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   label?: string;
   icon?: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: 'primary' | 'secondary';
   className?: string;
   boldLabel?: boolean; // <— new prop
 }
 
 const variants = {
   primary:
-    "border-primary-dark outline-none focus:ring-2 focus:ring-primary-dark/70 ",
-  secondary: "border-primary-light text-secondary-cream ",
+    'border-primary-dark outline-none focus:ring-2 focus:ring-primary-dark/70 ',
+  secondary: 'border-primary-light text-secondary-cream ',
 };
 
 const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
@@ -50,6 +50,6 @@ const InputCustom = React.forwardRef<HTMLInputElement, InputProps>(
   ),
 );
 
-InputCustom.displayName = "InputCustom";
+InputCustom.displayName = 'InputCustom';
 
 export default InputCustom;

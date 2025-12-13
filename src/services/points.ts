@@ -1,34 +1,25 @@
-import { axiosHttp } from "@/services/axios";
+import { axiosHttp } from '@/services/axios';
 
 type CreatePointParams = {
   name: string;
   description?: string | null;
   shortDescription: string;
-  duration: number;
-  distance: number;
-  difficulty: "facil" | "moderado" | "dificil" | "muito_dificil";
-  safetyTips?: string | null;
+  trailId: string;
 };
 
 export const createPoint = async ({
   name,
   description,
   shortDescription,
-  duration,
-  distance,
-  difficulty,
-  safetyTips,
+  trailId,
 }: CreatePointParams) => {
   const response = await axiosHttp.post(
-    "points",
+    '/points-of-interest',
     {
       name,
       description,
       shortDescription,
-      duration,
-      distance,
-      difficulty,
-      safetyTips,
+      trailId: Number(trailId),
     },
     {
       withCredentials: true,
@@ -38,9 +29,14 @@ export const createPoint = async ({
   return response.data;
 };
 
-export const getPoint = async () => {
-  const response = await axiosHttp.get("/points");
-  return response.data.points;
+export const getPoint = async (id: string) => {
+  const response = await axiosHttp.get(`/points-of-interest/${id}`);
+  return response.data.pointOfInterest;
+};
+
+export const getTrailPointById = async (id: string) => {
+  const response = await axiosHttp.get(`/trails/trail/${id}`);
+  return response.data.trail.pointsOfInterest;
 };
 
 export const getPointById = async (id: string) => {

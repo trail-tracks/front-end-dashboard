@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import { PiCheckCircleThin } from "react-icons/pi";
-import { useRouter } from "next/navigation";
-import { SignupStore, useSignupStore } from "@/store/signupStore";
+import { useEffect } from 'react';
+import { PiCheckCircleThin } from 'react-icons/pi';
+import { useRouter } from 'next/navigation';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
 
 export default function StepConfirm() {
   const reset = useSignupStore((state: SignupStore) => state.reset);
   const router = useRouter();
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push("/");
+      router.push('/');
       reset();
     }, 5000);
     return () => clearTimeout(timer);

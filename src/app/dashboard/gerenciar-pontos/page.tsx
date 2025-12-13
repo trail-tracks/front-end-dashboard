@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import TrailCard from "@/components/dashboard/TrailCard";
-import { Button } from "@/components/ui/button";
-import { getPoint } from "@/services/points";
-import { Point } from "@/types/point";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import TrailCard from '@/components/dashboard/TrailCard';
+import { Button } from '@/components/ui/button';
+import { getPoint } from '@/services/points';
+import { Point } from '@/types/point';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 function GerenciarPontos() {
   const router = useRouter();
   const { data: points } = useQuery({
-    queryKey: ["points"],
-    queryFn: getPoint,
+    queryKey: ['points'],
+    queryFn: () => getPoint('1'),
   });
 
   return (
@@ -20,8 +20,8 @@ function GerenciarPontos() {
       <div className="px-5 sm:px-20">
         <AppBreadcrumb
           items={[
-            { label: "Home", href: "/dashboard" },
-            { label: "Gerenciar Pontos" },
+            { label: 'Home', href: '/dashboard' },
+            { label: 'Gerenciar Pontos' },
           ]}
         />
       </div>
@@ -34,13 +34,13 @@ function GerenciarPontos() {
           size="xl"
           variant="default"
           className="w-1/5"
-          onClick={() => router.push("/dashboard/pontos-interesse/add-pontos")}
+          onClick={() => router.push('/dashboard/pontos-interesse/add-pontos')}
         >
           Criar Ponto de Interesse
         </Button>
       </div>
 
-      {!points || points.length === 0 ? (
+      {!points ? (
         <div className="flex px-5 sm:px-20 font-bold text-primary-dark">
           <div
             className="flex justify-center items-center w-full min-h-40
@@ -57,7 +57,7 @@ function GerenciarPontos() {
               id={point.id}
               imageUrl={
                 point.imageUrl ||
-                "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
+                'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop'
               }
               name={point.name}
               duration={`${point.duration} Min`}

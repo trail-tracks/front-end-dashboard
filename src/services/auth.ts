@@ -1,4 +1,4 @@
-import { axiosHttp } from "@/services/axios";
+import { axiosHttp } from '@/services/axios';
 
 type ChangeEmailData = {
   currentEmail: string;
@@ -7,11 +7,11 @@ type ChangeEmailData = {
 };
 
 export const authChangeEmail = async (data: ChangeEmailData) => {
-  const response = await axiosHttp.patch("/auth/change-email", data);
+  const response = await axiosHttp.patch('/auth/change-email', data);
   return response.data;
 };
 
 export const getAuth = async () => {
-  const response = await axiosHttp.get("/auth");
+  const response = await axiosHttp.get('/auth');
   return response.data.entity;
-}
+};

@@ -1,23 +1,23 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 function Header({
-  name = "Parque Estadual da Serra do Mar",
-  subtitle = "Núcleo Caraguatatuba",
-  logo = "",
-  size = "md",
+  name = 'Parque Estadual da Serra do Mar',
+  subtitle = 'Núcleo Caraguatatuba',
+  logo = '',
+  size = 'md',
 }: {
   name?: string;
   subtitle?: string;
   logo?: string;
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
 }) {
   const sizeClasses: Record<string, string> = {
-    sm: "md:h-20",
-    md: "md:h-25",
-    lg: "md:h-1/4 md:p-10",
+    sm: 'md:h-20',
+    md: 'md:h-25',
+    lg: 'md:h-1/4 md:p-10',
   };
 
-  const justifyClass = size === "md" ? "justify-between" : "justify-center";
+  const justifyClass = size === 'md' ? 'justify-between' : 'justify-center';
 
   return (
     <header
@@ -31,9 +31,13 @@ function Header({
 
       <div className="flex bg-white rounded-2xl justify-center items-center">
         <Image
-          src={logo || "/logo.svg"}
+          src={logo || '/logo.svg'}
           alt=""
-          className={size === "md" ? "m-0 md:m-0 h-20 w-20 rounded-full" : "m-4 md:m-6 rounded-full"}
+          className={
+            size === 'md'
+              ? 'm-0 md:m-0 h-20 w-20 rounded-full'
+              : 'm-4 md:m-6 rounded-full'
+          }
           height={80}
           width={80}
           quality={95}

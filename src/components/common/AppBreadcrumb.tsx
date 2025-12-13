@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Breadcrumb,
@@ -7,8 +7,8 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import React from "react";
+} from '@/components/ui/breadcrumb';
+import React from 'react';
 
 export type Crumb = {
   label: string;
@@ -24,10 +24,10 @@ type Props = {
 export function AppBreadcrumb({
   items,
   className,
-  prefixText = "Você está em:",
+  prefixText = 'Você está em:',
 }: Props) {
   return (
-    <div className={`flex items-center gap-2 ${className ?? ""}`}>
+    <div className={`flex items-center gap-2 ${className ?? ''}`}>
       {prefixText && <span className="text-sm font-bold">{prefixText}</span>}
 
       <Breadcrumb>

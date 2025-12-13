@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import Button from "@/components/common/Button";
-import InputCustom from "@/components/common/InputCustom";
-import { addressSchema } from "@/schema/authSchema";
-import { postSignup } from "@/services/postSignup";
-import { SignupStore, useSignupStore } from "@/store/signupStore";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { RiLoaderLine } from "react-icons/ri";
-import { toast } from "sonner";
-import { z } from "zod";
+import Button from '@/components/common/Button';
+import InputCustom from '@/components/common/InputCustom';
+import { addressSchema } from '@/schema/authSchema';
+import { postSignup } from '@/services/postSignup';
+import { SignupStore, useSignupStore } from '@/store/signupStore';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { RiLoaderLine } from 'react-icons/ri';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 type FormValues = z.infer<typeof addressSchema>;
 
@@ -38,10 +38,10 @@ function StepAddress({ onNext }: { onNext: () => void }) {
   const { mutate, isPending } = useMutation({
     mutationFn: postSignup,
     onError: (error) => {
-      toast.error(error.message || "Erro ao fazer login");
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
-      toast.success("Usuário registrado com sucesso");
+      toast.success('Usuário registrado com sucesso');
       reset();
       onNext();
     },
@@ -54,7 +54,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
     const fullPayload = { ...savedData, ...data };
     mutate(fullPayload);
   };
-  const zipCode = watch("zipCode");
+  const zipCode = watch('zipCode');
 
   useEffect(() => {
     const fetchCep = async () => {
@@ -70,12 +70,12 @@ function StepAddress({ onNext }: { onNext: () => void }) {
           setIsLoading(false);
           return;
         }
-        setValue("address", data.logradouro);
-        setValue("addressComplement", data.complemento);
-        setValue("city", data.localidade);
-        setValue("state", data.uf);
+        setValue('address', data.logradouro);
+        setValue('addressComplement', data.complemento);
+        setValue('city', data.localidade);
+        setValue('state', data.uf);
 
-        clearErrors(["city", "address", "state", "addressComplement"]);
+        clearErrors(['city', 'address', 'state', 'addressComplement']);
       }
     };
     fetchCep();
@@ -92,7 +92,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       </h1>
       <div className="flex mb-2 self-start">
         <InputCustom
-          {...register("zipCode")}
+          {...register('zipCode')}
           label="CEP"
           name="zipCode"
           type="text"
@@ -109,7 +109,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       </div>
 
       <InputCustom
-        {...register("address")}
+        {...register('address')}
         label="Endereço"
         name="address"
         type="text"
@@ -119,7 +119,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       />
 
       <InputCustom
-        {...register("addressComplement")}
+        {...register('addressComplement')}
         label="Complemento"
         name="addressComplement"
         type="text"
@@ -131,7 +131,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
       <div className="grid grid-cols-5 gap-4 p-0 w-full">
         <div className="col-span-3">
           <InputCustom
-            {...register("city")}
+            {...register('city')}
             label="Cidade"
             name="city"
             type="text"
@@ -143,7 +143,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
 
         <div className="col-span-1">
           <InputCustom
-            {...register("number")}
+            {...register('number')}
             label="N°"
             name="number"
             type="text"
@@ -156,7 +156,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
 
         <div className="col-span-1">
           <InputCustom
-            {...register("state")}
+            {...register('state')}
             label="Estado"
             name="state"
             type="text"
@@ -176,7 +176,7 @@ function StepAddress({ onNext }: { onNext: () => void }) {
 
       <Button
         variant="secondary"
-        text={isPending ? "Registrando..." : "Continuar"}
+        text={isPending ? 'Registrando...' : 'Continuar'}
         className="py-3 mt-8"
         type="submit"
         disabled={isPending}

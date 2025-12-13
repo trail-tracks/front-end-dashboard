@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type UserData = {
   id: string;
@@ -41,7 +41,7 @@ export const useUserStore = create<UserStore>()(
       getUserData: () => get().userData,
     }),
     {
-      name: "user-data",
+      name: 'user-data',
     },
   ),
 );

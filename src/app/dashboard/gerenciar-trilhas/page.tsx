@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import TrailCard from "@/components/dashboard/TrailCard";
-import { Button } from "@/components/ui/button";
-import { getImageUrl } from "@/lib/utils";
-import { getTrails } from "@/services/trails";
-import { Trail } from "@/types/trail";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import TrailCard from '@/components/dashboard/TrailCard';
+import { Button } from '@/components/ui/button';
+import { getImageUrl } from '@/lib/utils';
+import { getTrails } from '@/services/trails';
+import { Trail } from '@/types/trail';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 function GerenciarTrilhas() {
   const router = useRouter();
   const { data: trails } = useQuery({
-    queryKey: ["trails"],
+    queryKey: ['trails'],
     queryFn: getTrails,
   });
 
@@ -21,8 +21,8 @@ function GerenciarTrilhas() {
       <div className="px-5 sm:px-20">
         <AppBreadcrumb
           items={[
-            { label: "Home", href: "/dashboard" },
-            { label: "Gerenciar Trilhas" },
+            { label: 'Home', href: '/dashboard' },
+            { label: 'Gerenciar Trilhas' },
           ]}
         />
       </div>
@@ -35,7 +35,7 @@ function GerenciarTrilhas() {
           size="xl"
           variant="default"
           className="w-1/5"
-          onClick={() => router.push("/dashboard/gerenciar-trilhas/add-trilha")}
+          onClick={() => router.push('/dashboard/gerenciar-trilhas/add-trilha')}
         >
           Criar Trilha
         </Button>
@@ -56,10 +56,7 @@ function GerenciarTrilhas() {
             <TrailCard
               key={index}
               id={trail.id}
-              imageUrl={
-                getImageUrl(trail.coverUrl) ||
-                "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=400&fit=crop"
-              }
+              imageUrl={getImageUrl(trail.coverUrl ?? undefined)}
               name={trail.name}
               duration={`${trail.duration} Min`}
               distance={`${trail.distance} Km`}

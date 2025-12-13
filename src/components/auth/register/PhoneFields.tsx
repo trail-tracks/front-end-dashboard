@@ -1,8 +1,8 @@
-import InputCustom from "@/components/common/InputCustom";
-import { registerSchema } from "@/schema/authSchema";
-import React from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { z } from "zod";
+import InputCustom from '@/components/common/InputCustom';
+import { registerSchema } from '@/schema/authSchema';
+import React from 'react';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { z } from 'zod';
 
 type FormValues = z.infer<typeof registerSchema>;
 
@@ -16,7 +16,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
     <div className="grid grid-cols-5 gap-2 items-center w-full">
       <div className="col-span-1">
         <select
-          {...register("ddi")}
+          {...register('ddi')}
           name="ddi"
           id="ddi"
           className="border-2 rounded-md text-center w-full border-primary-dark bg-transparent h-11"
@@ -32,7 +32,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
       </div>
       <div className="col-span-1">
         <InputCustom
-          {...register("ddd")}
+          {...register('ddd')}
           name="ddd"
           type="string"
           placeholder="DDD"
@@ -43,7 +43,7 @@ const PhoneFields: React.FC<PhoneFieldsProps> = ({ register, errors }) => (
       </div>
       <div className="col-span-2">
         <InputCustom
-          {...register("telefone")}
+          {...register('telefone')}
           name="telefone"
           type="tel"
           placeholder="99999-9999"

@@ -1,5 +1,5 @@
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import { ReactNode } from "react";
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import { ReactNode } from 'react';
 
 interface AccessFormWrapperProps {
   breadcrumbText: string;

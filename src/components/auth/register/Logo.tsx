@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import Button from "@/components/common/Button";
-import { postAttachments } from "@/services/postAttachments";
-import { useMutation } from "@tanstack/react-query";
-import { CiCamera } from "react-icons/ci";
-import { toast } from "sonner";
+import Button from '@/components/common/Button';
+import { postAttachments } from '@/services/postAttachments';
+import { useMutation } from '@tanstack/react-query';
+import { CiCamera } from 'react-icons/ci';
+import { toast } from 'sonner';
 
 function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const [file, setFile] = useState<File | null>(null);
@@ -29,10 +29,10 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
   const { mutateAsync } = useMutation({
     mutationFn: postAttachments,
     onError: (error) => {
-      toast.error(error.message || "Erro ao fazer login");
+      toast.error(error.message || 'Erro ao fazer login');
     },
     onSuccess: () => {
-      toast("Imagem enviada com sucesso");
+      toast('Imagem enviada com sucesso');
     },
   });
 
@@ -49,7 +49,7 @@ function LogoUploadPage({ onNext }: { onNext: () => void }) {
 
   const handleContinue = async () => {
     if (file) {
-      await mutateAsync({ file, type: "cover" });
+      await mutateAsync({ file, type: 'cover' });
     }
     onNext();
   };

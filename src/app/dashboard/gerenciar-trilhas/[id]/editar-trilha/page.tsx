@@ -1,21 +1,21 @@
-"use client";
-export const runtime = "edge";
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import FormError from "@/components/common/FormError";
-import InputCustom from "@/components/common/InputCustom";
-import { Button } from "@/components/ui/button";
-import { usePhoto } from "@/hooks/use-photo";
-import { CreateTrailDto, createTrailSchema } from "@/schema/createTrail";
-import { editTrail, getTrailById } from "@/services/trails";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { use, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { HiUpload } from "react-icons/hi";
-import { HiMiniTrash } from "react-icons/hi2";
-import { toast } from "sonner";
+'use client';
+export const runtime = 'edge';
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import FormError from '@/components/common/FormError';
+import InputCustom from '@/components/common/InputCustom';
+import { Button } from '@/components/ui/button';
+import { usePhoto } from '@/hooks/use-photo';
+import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
+import { editTrail, getTrailById } from '@/services/trails';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { use, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { HiUpload } from 'react-icons/hi';
+import { HiMiniTrash } from 'react-icons/hi2';
+import { toast } from 'sonner';
 
 function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -28,7 +28,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     isLoading: loading,
     isError,
   } = useQuery({
-    queryKey: ["trail", id],
+    queryKey: ['trail', id],
     queryFn: () => getTrailById(id),
   });
 
@@ -62,19 +62,19 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
         ...data,
       }),
     onSuccess: () => {
-      toast.success("Trilha editada com sucesso!");
-      queryClient.invalidateQueries({ queryKey: ["trail", id] });
-      queryClient.invalidateQueries({ queryKey: ["trails"] });
+      toast.success('Trilha editada com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['trail', id] });
+      queryClient.invalidateQueries({ queryKey: ['trails'] });
       router.push(`/dashboard/gerenciar-trilhas/${id}`);
     },
     onError: (error) => {
-      toast.error("Erro ao editar a trilha: " + error);
+      toast.error('Erro ao editar a trilha: ' + error);
     },
   });
 
   const onSubmit = (data: CreateTrailDto) => {
-    console.log("Form Data:", data);
-    console.log("Uploaded Photos:", photos);
+    console.log('Form Data:', data);
+    console.log('Uploaded Photos:', photos);
     editMutation.mutate(data);
   };
 
@@ -90,12 +90,12 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: "Home", href: "/dashboard" },
+          { label: 'Home', href: '/dashboard' },
           {
-            label: "Gerenciar Trilhas",
-            href: "/dashboard/gerenciar-trilhas",
+            label: 'Gerenciar Trilhas',
+            href: '/dashboard/gerenciar-trilhas',
           },
-          { label: "Editar Trilha" },
+          { label: 'Editar Trilha' },
         ]}
       />
       <h1 className="text-2xl font-bold text-primary-dark">Editar Trilha</h1>
@@ -137,7 +137,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
                   <Button
                     type="button"
                     className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
-                    onClick={() => removePhoto(index)}
+                    onClick={() => removePhoto(photo.name)}
                   >
                     <HiMiniTrash size={20} />
                   </Button>
@@ -154,7 +154,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               type="text"
               placeholder="Nome da Trilha"
               className="w-full"
-              {...register("name")}
+              {...register('name')}
             />
             {errors.name && <FormError message={errors.name?.message} />}
           </div>
@@ -170,7 +170,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             id="shortDescription"
             placeholder="Breve descrição sobre a Trilha"
             className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
-            {...register("shortDescription")}
+            {...register('shortDescription')}
           />
           {errors.shortDescription && (
             <FormError message={errors.shortDescription?.message} />
@@ -186,7 +186,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
                 id="duration"
                 type="number"
                 placeholder="Tempo Estimado"
-                {...register("duration", { valueAsNumber: true })}
+                {...register('duration', { valueAsNumber: true })}
               />
               {errors.duration && (
                 <FormError message={errors.duration.message} />
@@ -201,7 +201,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
                 type="number"
                 step="0.1"
                 placeholder="Distância Aproximada"
-                {...register("distance", { valueAsNumber: true })}
+                {...register('distance', { valueAsNumber: true })}
               />
               {errors.distance && (
                 <FormError message={errors.distance?.message} />
@@ -214,7 +214,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               <select
                 id="difficulty"
                 className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-                {...register("difficulty")}
+                {...register('difficulty')}
               >
                 <option value="facil">Fácil</option>
                 <option value="moderado">Moderado</option>
@@ -234,7 +234,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               id="safetyTips"
               className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
               placeholder="Digite as dicas de segurança aqui"
-              {...register("safetyTips")}
+              {...register('safetyTips')}
             />
             {errors.safetyTips && (
               <FormError message={errors.safetyTips?.message} />
@@ -247,7 +247,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
           className="bg-primary-dark text-white px-4 py-2 rounded-lg lg:w-2/5 mt-4"
           disabled={editMutation.isPending}
         >
-          {editMutation.isPending ? "Salvando..." : "Salvar Alterações"}
+          {editMutation.isPending ? 'Salvando...' : 'Salvar Alterações'}
         </Button>
       </form>
     </div>

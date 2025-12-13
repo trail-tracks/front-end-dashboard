@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { getAuth } from "@/services/auth";
-import { useQuery } from "@tanstack/react-query";
-import { createContext, ReactNode, useContext } from "react";
+import { getAuth } from '@/services/auth';
+import { useQuery } from '@tanstack/react-query';
+import { createContext, ReactNode, useContext } from 'react';
 
 interface User {
   id: number;
@@ -30,7 +30,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["auth"],
+    queryKey: ['auth'],
     queryFn: getAuth,
     staleTime: 5 * 60 * 1000,
     retry: 1,
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
   }
   return context;
 }

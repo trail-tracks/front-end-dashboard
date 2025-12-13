@@ -1,5 +1,5 @@
-import { SignupPayload } from "@/app/entities/signup";
-import { axiosHttp } from "@/services/axios";
+import { SignupPayload } from '@/app/entities/signup';
+import { axiosHttp } from '@/services/axios';
 
 type FormPayload = Partial<SignupPayload> & {
   ddi?: string;
@@ -30,6 +30,6 @@ const transformPayload = (payload: FormPayload) => {
 
 export const postSignup = async (payload: FormPayload) => {
   const transformedPayload = transformPayload(payload);
-  const response = await axiosHttp.post("/auth/signup", transformedPayload);
+  const response = await axiosHttp.post('/auth/signup', transformedPayload);
   return response.data;
 };

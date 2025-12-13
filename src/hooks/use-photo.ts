@@ -1,7 +1,5 @@
-import { postAttachments } from "@/services/postAttachments";
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 type UsePhotoOptions = {
   maxPhotos?: number;
@@ -13,7 +11,7 @@ export function usePhoto(options: UsePhotoOptions = {}) {
   const {
     maxPhotos = 3,
     maxSizeInMB = 5,
-    acceptedFormats = ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"],
+    acceptedFormats = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
   } = options;
 
   const [photos, setPhotos] = useState<File[]>([]);
@@ -23,44 +21,27 @@ export function usePhoto(options: UsePhotoOptions = {}) {
       const file = e.target.files[0];
 
       if (file.size > maxSizeInMB * 1024 * 1024) {
-        alert(`O arquivo excede o tamanho máximo de ${maxSizeInMB}MB.`);
+        toast.error(`O arquivo excede o tamanho máximo de ${maxSizeInMB}MB.`);
         return;
       }
 
       if (!acceptedFormats.includes(file.type)) {
-        alert("Formato de arquivo não suportado.");
+        toast.error('Formato de arquivo não suportado.');
         return;
       }
 
-      if (photos.length < maxPhotos) {
-        setPhotos([...photos, file]);
-      } else {
-        alert(`Você pode adicionar no máximo ${maxPhotos} fotos.`);
+      if (photos.length >= maxPhotos) {
+        toast.error(`Você pode adicionar no máximo ${maxPhotos} fotos.`);
+        return;
       }
 
-      uploadPhoto(file);
+      setPhotos([...photos, file]);
     }
   };
 
-  const uploadPhoto = async (file: File) => {
-    mutate({
-      file,
-      type: "galery",
-    });
-  };
-
-  const { mutate } = useMutation({
-    mutationFn: postAttachments,
-    onError: (error) => {
-      toast.error(error.message || "Erro ao fazer login");
-    },
-    onSuccess: () => {
-      toast.success("Foto enviada com sucesso!");
-    },
-  });
-
-  const removePhoto = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
+  const removePhoto = (id: string) => {
+    setPhotos(photos.filter((photo) => photo.name !== id));
+    toast.success('Foto removida!');
   };
 
   const clearPhotos = () => {

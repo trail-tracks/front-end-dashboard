@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 
-import { EditorState, ParagraphNode, TextNode } from "lexical";
-import { ListItemNode, ListNode } from "@lexical/list";
+import { EditorState, ParagraphNode, TextNode } from 'lexical';
+import { ListItemNode, ListNode } from '@lexical/list';
 
-import ToolbarPlugin from "./LexicalToolbar";
+import ToolbarPlugin from './LexicalToolbar';
 
 interface Props {
   value: string | undefined | null;
@@ -21,19 +21,19 @@ interface Props {
 
 export default function LexicalEditor({ value, onChange }: Props) {
   const editorConfig = {
-    namespace: "TrailEditor",
+    namespace: 'TrailEditor',
     nodes: [ParagraphNode, TextNode, ListNode, ListItemNode],
     theme: {
-      paragraph: "mb-2",
+      paragraph: 'mb-2',
       list: {
-        ul: "list-disc ml-6 my-2",
-        ol: "list-decimal ml-6 my-2",
+        ul: 'list-disc ml-6 my-2',
+        ol: 'list-decimal ml-6 my-2',
       },
-      listitem: "p-0 my-1",
+      listitem: 'p-0 my-1',
       text: {
-        bold: "font-bold",
-        italic: "italic",
-        underline: "underline",
+        bold: 'font-bold',
+        italic: 'italic',
+        underline: 'underline',
       },
     },
     editorState: value && value.length > 0 ? value : undefined,

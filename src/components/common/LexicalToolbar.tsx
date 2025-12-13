@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { FORMAT_TEXT_COMMAND } from "lexical";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { FORMAT_TEXT_COMMAND } from 'lexical';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import {
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-} from "@lexical/list";
+} from '@lexical/list';
 
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
 
-  const formatText = (format: "bold" | "italic" | "underline") => {
+  const formatText = (format: 'bold' | 'italic' | 'underline') => {
     editor.dispatchCommand(FORMAT_TEXT_COMMAND, format);
   };
 
-  const insertList = (listType: "bullet" | "number") => {
-    if (listType === "bullet") {
+  const insertList = (listType: 'bullet' | 'number') => {
+    if (listType === 'bullet') {
       editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
     } else {
       editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
@@ -28,7 +28,7 @@ export default function ToolbarPlugin() {
       <button
         type="button"
         className="px-2 py-1 border rounded hover:bg-gray-200 transition-colors"
-        onClick={() => formatText("bold")}
+        onClick={() => formatText('bold')}
       >
         <b>B</b>
       </button>
@@ -37,7 +37,7 @@ export default function ToolbarPlugin() {
       <button
         type="button"
         className="px-2 py-1 border rounded hover:bg-gray-200 transition-colors"
-        onClick={() => formatText("italic")}
+        onClick={() => formatText('italic')}
       >
         <i>I</i>
       </button>
@@ -46,7 +46,7 @@ export default function ToolbarPlugin() {
       <button
         type="button"
         className="px-2 py-1 border rounded hover:bg-gray-200 transition-colors"
-        onClick={() => formatText("underline")}
+        onClick={() => formatText('underline')}
       >
         <u>U</u>
       </button>
@@ -55,7 +55,7 @@ export default function ToolbarPlugin() {
       <button
         type="button"
         className="px-2 py-1 border rounded hover:bg-gray-200 transition-colors"
-        onClick={() => insertList("bullet")}
+        onClick={() => insertList('bullet')}
       >
         • Lista
       </button>
@@ -64,7 +64,7 @@ export default function ToolbarPlugin() {
       <button
         type="button"
         className="px-2 py-1 border rounded hover:bg-gray-200 transition-colors"
-        onClick={() => insertList("number")}
+        onClick={() => insertList('number')}
       >
         1. Lista
       </button>

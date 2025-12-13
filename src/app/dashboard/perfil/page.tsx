@@ -2,11 +2,8 @@
 import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import Button from '@/components/common/Button';
 import InputCustom from '@/components/common/InputCustom';
-import { useRouter } from 'next/navigation';
 
 export default function EntityProfile() {
-  const router = useRouter();
-
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1 border rounded-3xl border-primary-medium/25 p-6 w-full min-h-full">

@@ -1,11 +1,11 @@
-import { AppSidebar } from "@/components/dashboard/Sidebar";
+import { AppSidebar } from '@/components/dashboard/Sidebar';
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { AuthProvider } from "@/contexts/AuthContext";
-import HeaderClient from "./HeaderClient";
+} from '@/components/ui/sidebar';
+import { AuthProvider } from '@/contexts/AuthContext';
+import HeaderClient from './HeaderClient';
 
 export default function DashboardLayout({
   children,

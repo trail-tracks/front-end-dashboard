@@ -3,7 +3,7 @@ type FormErrorProps = {
   className?: string;
 };
 
-export default function FormError({ message, className = "" }: FormErrorProps) {
+export default function FormError({ message, className = '' }: FormErrorProps) {
   if (!message) return null;
   return (
     <span

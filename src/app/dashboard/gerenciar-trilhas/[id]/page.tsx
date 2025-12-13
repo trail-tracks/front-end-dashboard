@@ -1,24 +1,24 @@
-"use client";
-export const runtime = "edge";
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import { Button } from "@/components/ui/button";
-import { usePhoto } from "@/hooks/use-photo";
-import { getImageUrl } from "@/lib/utils";
-import { getQRCode } from "@/services/qrcode";
-import { getTrailById } from "@/services/trails";
-import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { use } from "react";
-import { GoShield } from "react-icons/go";
-import { HiQrcode } from "react-icons/hi";
-import { HiMiniTrash } from "react-icons/hi2";
-import { IoMdInformationCircle } from "react-icons/io";
-import { IoAnalyticsOutline } from "react-icons/io5";
-import { MdAccessTimeFilled } from "react-icons/md";
-import { PiMapPinAreaFill } from "react-icons/pi";
-import { RiVipDiamondLine } from "react-icons/ri";
-import { TfiPlus } from "react-icons/tfi";
+'use client';
+export const runtime = 'edge';
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import { Button } from '@/components/ui/button';
+import { usePhoto } from '@/hooks/use-photo';
+import { getImageUrl } from '@/lib/utils';
+import { getQRCode } from '@/services/qrcode';
+import { getTrailById } from '@/services/trails';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { use } from 'react';
+import { GoShield } from 'react-icons/go';
+import { HiQrcode } from 'react-icons/hi';
+import { HiMiniTrash } from 'react-icons/hi2';
+import { IoMdInformationCircle } from 'react-icons/io';
+import { IoAnalyticsOutline } from 'react-icons/io5';
+import { MdAccessTimeFilled } from 'react-icons/md';
+import { PiMapPinAreaFill } from 'react-icons/pi';
+import { RiVipDiamondLine } from 'react-icons/ri';
+import { TfiPlus } from 'react-icons/tfi';
 
 type PageProps = {
   params: Promise<{
@@ -36,15 +36,12 @@ function TrailDetails({ params }: PageProps) {
     isLoading: loading,
     isError,
   } = useQuery({
-    queryKey: ["trail", id],
+    queryKey: ['trail', id],
     queryFn: () => getTrailById(id),
   });
 
-  const {
-    data: pdfBlob,
-    isLoading: isLoadingQR,
-  } = useQuery({
-    queryKey: ["qrcode", id],
+  const { data: pdfBlob, isLoading: isLoadingQR } = useQuery({
+    queryKey: ['qrcode', id],
     queryFn: () => getQRCode(id),
   });
 
@@ -60,10 +57,10 @@ function TrailDetails({ params }: PageProps) {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: "Home", href: "/dashboard" },
+          { label: 'Home', href: '/dashboard' },
           {
-            label: "Gerenciar Trilhas",
-            href: "/dashboard/gerenciar-trilhas",
+            label: 'Gerenciar Trilhas',
+            href: '/dashboard/gerenciar-trilhas',
           },
           { label: trail.name },
         ]}
@@ -78,12 +75,12 @@ function TrailDetails({ params }: PageProps) {
             disabled={isLoadingQR || !pdfBlob}
           >
             <a
-              href={pdfBlob ? URL.createObjectURL(pdfBlob) : "#"}
+              href={pdfBlob ? URL.createObjectURL(pdfBlob) : '#'}
               download={`qrcode-${trail.name}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {isLoadingQR ? "Carregando..." : "Gerar QR Code"}
+              {isLoadingQR ? 'Carregando...' : 'Gerar QR Code'}
               <HiQrcode className="mr-2" />
             </a>
           </Button>
@@ -104,7 +101,7 @@ function TrailDetails({ params }: PageProps) {
         <Image
           src={
             getImageUrl(trail.coverUrl) ||
-            "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop"
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop'
           }
           alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
@@ -156,7 +153,7 @@ function TrailDetails({ params }: PageProps) {
                 />
                 <Button
                   className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
-                  onClick={() => removePhoto(index)}
+                  onClick={() => removePhoto(photo.name)}
                 >
                   <HiMiniTrash size={20} />
                 </Button>
@@ -215,7 +212,7 @@ function TrailDetails({ params }: PageProps) {
         <h2 className="flex flex-row items-center justify-center font-bold text-lg mb-2 gap-2">
           <GoShield color="red" /> Dica de Segurança
         </h2>
-        <p>{trail.safetyTips || "Nenhuma dica de segurança disponível."}</p>
+        <p>{trail.safetyTips || 'Nenhuma dica de segurança disponível.'}</p>
       </div>
     </div>
   );

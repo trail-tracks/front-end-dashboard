@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import { EditorState, Klass, LexicalNode } from "lexical";
-import { LexicalComposer } from "@lexical/react/LexicalComposer";
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
-import { ContentEditable } from "@lexical/react/LexicalContentEditable";
-import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { ListPlugin } from "@lexical/react/LexicalListPlugin";
-import { OnChangePlugin } from "@lexical/react/LexicalOnChangePlugin";
-import { HeadingNode, QuoteNode } from "@lexical/rich-text";
-import { ListNode, ListItemNode } from "@lexical/list";
-import { useEffect, useState } from "react";
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
+import { EditorState, Klass, LexicalNode } from 'lexical';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { ListPlugin } from '@lexical/react/LexicalListPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { ListNode, ListItemNode } from '@lexical/list';
+import { useEffect, useState } from 'react';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 
-import ToolbarPlugin from "./ToolbarPlugin";
+import ToolbarPlugin from './ToolbarPlugin';
 
 const theme = {
-  paragraph: "mb-1",
+  paragraph: 'mb-1',
   text: {
-    bold: "font-bold",
-    italic: "italic",
+    bold: 'font-bold',
+    italic: 'italic',
   },
   list: {
-    ul: "list-disc ml-6",
-    ol: "list-decimal ml-6",
+    ul: 'list-disc ml-6',
+    ol: 'list-decimal ml-6',
   },
 };
 
@@ -34,7 +34,7 @@ const editorNodes: Array<Klass<LexicalNode>> = [
 ];
 
 const initialConfig = {
-  namespace: "TrailEditor",
+  namespace: 'TrailEditor',
   theme,
   onError: (error: Error) => {
     console.error(error);

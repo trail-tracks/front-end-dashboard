@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Sidebar,
@@ -10,43 +10,43 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
-} from "@/components/ui/sidebar";
-import Link from "next/link";
-import Image from "next/image";
-import { CiLogout } from "react-icons/ci";
-import { IoTrailSignOutline } from "react-icons/io5";
-import { MdManageAccounts } from "react-icons/md";
-import { TbHome, TbSettings2 } from "react-icons/tb";
+} from '@/components/ui/sidebar';
+import Link from 'next/link';
+import Image from 'next/image';
+import { CiLogout } from 'react-icons/ci';
+import { IoTrailSignOutline } from 'react-icons/io5';
+import { MdManageAccounts } from 'react-icons/md';
+import { TbHome, TbSettings2 } from 'react-icons/tb';
 
 const menuItems = [
   {
-    title: "Início",
+    title: 'Início',
     icon: TbHome,
-    url: "/dashboard",
+    url: '/dashboard',
   },
   {
-    title: "Gerenciar Trilhas",
+    title: 'Gerenciar Trilhas',
     icon: IoTrailSignOutline,
-    url: "/dashboard/gerenciar-trilhas",
+    url: '/dashboard/gerenciar-trilhas',
   },
   {
-    title: "Perfil da Instituição",
+    title: 'Perfil da Instituição',
     icon: MdManageAccounts,
-    url: "/dashboard/perfil",
+    url: '/dashboard/perfil',
   },
 ];
 
 const settingsItems = [
   {
-    title: "Configurações de acesso",
+    title: 'Configurações de acesso',
     icon: TbSettings2,
-    url: "/dashboard/config-acesso",
+    url: '/dashboard/config-acesso',
   },
   {
-    title: "Encerrar Sessão",
+    title: 'Encerrar Sessão',
     icon: CiLogout,
-    url: "/logout",
-    className: "text-red-500  w-7 h-7 min-w-7 min-h-7",
+    url: '/logout',
+    className: 'text-red-500  w-7 h-7 min-w-7 min-h-7',
   },
 ];
 
@@ -78,7 +78,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    size={"lg"}
+                    size={'lg'}
                     className="hover:bg-primary-medium/25"
                   >
                     <Link href={item.url} className="flex items-center gap-3">
@@ -102,13 +102,13 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     asChild
                     className="hover:bg-primary-medium/25"
-                    size={"lg"}
+                    size={'lg'}
                   >
                     <Link href={item.url} className="flex items-center gap-3 ">
                       <item.icon
                         className={
                           item.className ||
-                          "text-primary-dark  w-7 h-7 min-w-7 min-h-7"
+                          'text-primary-dark  w-7 h-7 min-w-7 min-h-7'
                         }
                       />
                       <span className="font-semibold">{item.title}</span>

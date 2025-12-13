@@ -1,20 +1,20 @@
-"use client";
-import { AppBreadcrumb } from "@/components/common/AppBreadcrumb";
-import FormError from "@/components/common/FormError";
-import InputCustom from "@/components/common/InputCustom";
-import { Button } from "@/components/ui/button";
-import { usePhoto } from "@/hooks/use-photo";
-import { CreateTrailDto, createTrailSchema } from "@/schema/createTrail";
-import { postAttachments } from "@/services/postAttachments";
-import { createTrail } from "@/services/trails";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { HiUpload } from "react-icons/hi";
-import { HiMiniTrash } from "react-icons/hi2";
-import { toast } from "sonner";
+'use client';
+import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
+import FormError from '@/components/common/FormError';
+import InputCustom from '@/components/common/InputCustom';
+import { Button } from '@/components/ui/button';
+import { usePhoto } from '@/hooks/use-photo';
+import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
+import { postAttachments } from '@/services/postAttachments';
+import { createTrail } from '@/services/trails';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { HiUpload } from 'react-icons/hi';
+import { HiMiniTrash } from 'react-icons/hi2';
+import { toast } from 'sonner';
 
 function Page() {
   const router = useRouter();
@@ -27,12 +27,12 @@ function Page() {
   } = useForm<CreateTrailDto>({
     resolver: zodResolver(createTrailSchema),
     defaultValues: {
-      name: "",
+      name: '',
       description: null,
-      shortDescription: "",
+      shortDescription: '',
       duration: 0,
       distance: 0,
-      difficulty: "facil",
+      difficulty: 'facil',
       safetyTips: null,
     },
   });
@@ -48,7 +48,7 @@ function Page() {
       if (photos.length > 0) {
         await postAttachments({
           file: photos[0],
-          type: "cover",
+          type: 'cover',
           trailId,
         });
       }
@@ -57,53 +57,53 @@ function Page() {
         for (let i = 1; i < photos.length; i++) {
           await postAttachments({
             file: photos[i],
-            type: "galery",
+            type: 'galery',
             trailId,
           });
         }
       }
     },
     onError: (error) => {
-      toast.error("Erro ao fazer upload das fotos: " + error);
+      toast.error('Erro ao fazer upload das fotos: ' + error);
     },
   });
 
   const createTrailMutation = useMutation({
     mutationFn: createTrail,
     onSuccess: async (data) => {
-      console.log("Trilha criada:", data);
+      console.log('Trilha criada:', data);
       const trailId = data?.trail?.id || data?.id;
 
       if (!trailId) {
-        toast.error("Erro: ID da trilha não foi retornado");
+        toast.error('Erro: ID da trilha não foi retornado');
         return;
       }
 
       if (photos.length > 0) {
-        toast.info("Fazendo upload das fotos...");
+        toast.info('Fazendo upload das fotos...');
         try {
           await uploadPhotosMutation.mutateAsync({ trailId, photos });
-          toast.success("Trilha criada e fotos enviadas com sucesso!");
+          toast.success('Trilha criada e fotos enviadas com sucesso!');
         } catch (error) {
-          toast.warning("Trilha criada, mas houve erro no upload de fotos");
+          toast.warning('Trilha criada, mas houve erro no upload de fotos');
         }
       } else {
-        toast.success("Trilha criada com sucesso!");
+        toast.success('Trilha criada com sucesso!');
       }
 
-      queryClient.invalidateQueries({ queryKey: ["trails"] });
-      router.push("/dashboard/gerenciar-trilhas");
+      queryClient.invalidateQueries({ queryKey: ['trails'] });
+      router.push('/dashboard/gerenciar-trilhas');
     },
     onError: (error: any) => {
       toast.error(
-        error.response?.data?.message || "Erro ao criar a trilha: " + error
+        error.response?.data?.message || 'Erro ao criar a trilha: ' + error,
       );
     },
   });
 
   const onSubmit = (data: CreateTrailDto) => {
-    console.log("Form Data:", data);
-    console.log("Uploaded Photos:", photos);
+    console.log('Form Data:', data);
+    console.log('Uploaded Photos:', photos);
     createTrailMutation.mutate(data);
   };
 
@@ -111,12 +111,12 @@ function Page() {
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
       <AppBreadcrumb
         items={[
-          { label: "Home", href: "/dashboard" },
+          { label: 'Home', href: '/dashboard' },
           {
-            label: "Gerenciar Trilhas",
-            href: "/dashboard/gerenciar-trilhas",
+            label: 'Gerenciar Trilhas',
+            href: '/dashboard/gerenciar-trilhas',
           },
-          { label: "Criar Trilha" },
+          { label: 'Criar Trilha' },
         ]}
       />
       <h1 className="text-2xl font-bold text-primary-dark">Criar Trilha</h1>
@@ -158,7 +158,7 @@ function Page() {
                   <Button
                     type="button"
                     className="rounded-full absolute bottom-2 right-2 p-2 h-8 w-8 text-primary-dark bg-white hover:bg-gray-200"
-                    onClick={() => removePhoto(index)}
+                    onClick={() => removePhoto(photo.name)}
                   >
                     <HiMiniTrash size={20} />
                   </Button>
@@ -175,7 +175,7 @@ function Page() {
               type="text"
               placeholder="Nome da Trilha"
               className="w-full"
-              {...register("name")}
+              {...register('name')}
             />
             {errors.name && <FormError message={errors.name?.message} />}
           </div>
@@ -191,7 +191,7 @@ function Page() {
             id="shortDescription"
             placeholder="Breve descrição sobre a Trilha"
             className="w-full h-24 p-3 border-2 border-primary-dark rounded-lg resize-none text-left outline-none focus:ring-2 focus:ring-primary-dark/70"
-            {...register("shortDescription")}
+            {...register('shortDescription')}
           />
           {errors.shortDescription && (
             <FormError message={errors.shortDescription?.message} />
@@ -207,7 +207,7 @@ function Page() {
                 id="duration"
                 type="number"
                 placeholder="Tempo Estimado"
-                {...register("duration", { valueAsNumber: true })}
+                {...register('duration', { valueAsNumber: true })}
               />
               {errors.duration && (
                 <FormError message={errors.duration.message} />
@@ -222,7 +222,7 @@ function Page() {
                 type="number"
                 step="0.1"
                 placeholder="Distância Aproximada"
-                {...register("distance", { valueAsNumber: true })}
+                {...register('distance', { valueAsNumber: true })}
               />
               {errors.distance && (
                 <FormError message={errors.distance?.message} />
@@ -235,7 +235,7 @@ function Page() {
               <select
                 id="difficulty"
                 className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-                {...register("difficulty")}
+                {...register('difficulty')}
               >
                 <option value="facil">Fácil</option>
                 <option value="moderado">Moderado</option>
@@ -255,7 +255,7 @@ function Page() {
               id="safetyTips"
               className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
               placeholder="Digite as dicas de segurança aqui"
-              {...register("safetyTips")}
+              {...register('safetyTips')}
             />
             {errors.safetyTips && (
               <FormError message={errors.safetyTips?.message} />
@@ -271,10 +271,10 @@ function Page() {
           }
         >
           {createTrailMutation.isPending
-            ? "Criando trilha..."
+            ? 'Criando trilha...'
             : uploadPhotosMutation.isPending
-            ? "Enviando fotos..."
-            : "Cadastrar"}
+              ? 'Enviando fotos...'
+              : 'Cadastrar'}
         </Button>
       </form>
     </div>
