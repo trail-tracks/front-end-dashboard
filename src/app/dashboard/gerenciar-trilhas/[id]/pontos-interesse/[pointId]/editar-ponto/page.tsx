@@ -3,34 +3,37 @@ export const runtime = 'edge';
 import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import FormError from '@/components/common/FormError';
 import InputCustom from '@/components/common/InputCustom';
+import LexicalEditor from '@/components/common/LexicalEditor';
 import { Button } from '@/components/ui/button';
 import { getImageUrl } from '@/lib/utils';
-import { CreateTrailDto, createTrailSchema } from '@/schema/createTrail';
+import { CreatePointDto, createPointSchema } from '@/schema/createPoint';
+import { editPoint, getPoint } from '@/services/points';
 import { postAttachments } from '@/services/postAttachments';
-import { editTrail, getTrailById } from '@/services/trails';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { use, useEffect, useState } from 'react';
+import { use, useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiUpload } from 'react-icons/hi';
 import { HiMiniTrash } from 'react-icons/hi2';
 import { toast } from 'sonner';
 
-function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+function EditPoint({ params }: { params: Promise<{ pointId: string }> }) {
+  const { pointId } = use(params);
   const router = useRouter();
   const queryClient = useQueryClient();
   const [newCoverPhoto, setNewCoverPhoto] = useState<File | null>(null);
+  const [descriptionValue, setDescriptionValue] = useState<string>('');
+  const hasLoadedDataRef = useRef(false);
 
   const {
-    data: trail,
+    data: point,
     isLoading: loading,
     isError,
   } = useQuery({
-    queryKey: ['trail', id],
-    queryFn: () => getTrailById(id),
+    queryKey: ['point', pointId],
+    queryFn: () => getPoint(pointId),
   });
 
   const {
@@ -38,36 +41,45 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<CreateTrailDto>({
-    resolver: zodResolver(createTrailSchema),
+    setValue,
+  } = useForm<CreatePointDto>({
+    resolver: zodResolver(createPointSchema),
   });
 
   useEffect(() => {
-    if (trail) {
+    if (point && !hasLoadedDataRef.current) {
       reset({
-        name: trail.name,
-        description: trail.description,
-        shortDescription: trail.shortDescription,
-        duration: trail.duration,
-        distance: trail.distance,
-        difficulty: trail.difficulty,
-        safetyTips: trail.safetyTips,
+        name: point.name,
+        description: point.description,
+        shortDescription: point.shortDescription,
       });
+      setDescriptionValue(point.description || '');
+      hasLoadedDataRef.current = true;
     }
-  }, [trail, reset]);
+  }, [point, reset]);
+
+  const handleDescriptionChange = useCallback(
+    (val: string) => {
+      setValue('description', val, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+    },
+    [setValue],
+  );
 
   const uploadPhotoMutation = useMutation({
     mutationFn: async (file: File) => {
       return postAttachments({
         file,
         type: 'cover',
-        trailId: Number(id),
+        pointOfInterestId: Number(pointId),
       });
     },
     onSuccess: () => {
       toast.success('Foto atualizada com sucesso!');
-      queryClient.invalidateQueries({ queryKey: ['trail', id] });
-      queryClient.invalidateQueries({ queryKey: ['trails'] });
+      queryClient.invalidateQueries({ queryKey: ['point', pointId] });
+      queryClient.invalidateQueries({ queryKey: ['points'] });
     },
     onError: (error: Error) => {
       toast.error('Erro ao atualizar foto: ' + error.message);
@@ -75,22 +87,22 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   });
 
   const editMutation = useMutation({
-    mutationFn: (data: CreateTrailDto) =>
-      editTrail({
-        id,
+    mutationFn: (data: CreatePointDto) =>
+      editPoint({
+        id: pointId,
         ...data,
       }),
     onSuccess: async () => {
       if (newCoverPhoto) {
         await uploadPhotoMutation.mutateAsync(newCoverPhoto);
       }
-      toast.success('Trilha editada com sucesso!');
-      queryClient.invalidateQueries({ queryKey: ['trail', id] });
-      queryClient.invalidateQueries({ queryKey: ['trails'] });
-      router.push(`/dashboard/gerenciar-trilhas/${id}`);
+      toast.success('Ponto editado com sucesso!');
+      queryClient.invalidateQueries({ queryKey: ['point', pointId] });
+      queryClient.invalidateQueries({ queryKey: ['points'] });
+      router.push(`/dashboard/gerenciar-trilhas/2/pontos-interesse/${pointId}`);
     },
     onError: (error) => {
-      toast.error('Erro ao editar a trilha: ' + error);
+      toast.error('Erro ao editar o ponto: ' + error);
     },
   });
 
@@ -124,7 +136,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     toast.success('Foto removida!');
   };
 
-  const onSubmit = (data: CreateTrailDto) => {
+  const onSubmit = (data: CreatePointDto) => {
     editMutation.mutate(data);
   };
 
@@ -132,8 +144,8 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     return <div>Carregando...</div>;
   }
 
-  if (isError || !trail) {
-    return <div>Trilha não encontrada</div>;
+  if (isError || !point) {
+    return <div>Ponto de Interesse não encontrado</div>;
   }
 
   return (
@@ -145,10 +157,24 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             label: 'Gerenciar Trilhas',
             href: '/dashboard/gerenciar-trilhas',
           },
-          { label: 'Editar Trilha' },
+          {
+            label: 'Detalhes da Trilha',
+            href: `/dashboard/gerenciar-trilhas/${point.trailId}`,
+          },
+          {
+            label: 'Pontos de Interesse',
+            href: `/dashboard/gerenciar-trilhas/${point.trailId}/pontos-interesse`,
+          },
+          {
+            label: `${point.name}`,
+            href: `/dashboard/gerenciar-trilhas/${point.trailId}/pontos-interesse/${point.id}`,
+          },
+          { label: 'Editar Ponto de Interesse' },
         ]}
       />
-      <h1 className="text-2xl font-bold text-primary-dark">Editar Trilha</h1>
+      <h1 className="text-2xl font-bold text-primary-dark">
+        Editar Ponto de Interesse
+      </h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-3 md:gap-2 lg:gap-6 md:h-40">
           <div className="border border-gray-400 rounded-lg h-40 relative">
@@ -156,9 +182,10 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
               src={
                 newCoverPhoto
                   ? URL.createObjectURL(newCoverPhoto)
-                  : getImageUrl(trail.coverUrl)
+                  : getImageUrl(point.coverUrl) ||
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop'
               }
-              alt={`Foto de capa - ${trail.name}`}
+              alt={`Foto de capa - ${point.name}`}
               className="object-cover rounded-lg h-full w-full"
               width={400}
               height={200}
@@ -191,12 +218,12 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
           </div>
           <div className="flex flex-col col-span-2 gap-2 mt-2 justify-center">
             <label htmlFor="name" className="font-bold text-sm">
-              Nome da Trilha
+              Nome do Ponto de Interesse
             </label>
             <InputCustom
               id="name"
               type="text"
-              placeholder="Nome da Trilha"
+              placeholder="Nome do Ponto de Interesse"
               className="w-full"
               {...register('name')}
             />
@@ -208,7 +235,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             htmlFor="shortDescription"
             className="text-lg md:text-2xl font-bold text-primary-dark"
           >
-            Breve descrição sobre a Trilha
+            Breve descrição sobre o ponto
           </label>
           <textarea
             id="shortDescription"
@@ -220,70 +247,20 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             <FormError message={errors.shortDescription?.message} />
           )}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2 md:gap-5">
-            <div>
-              <label htmlFor="duration" className="font-bold text-sm">
-                Tempo Estimado (em Min.)
-              </label>
-              <InputCustom
-                id="duration"
-                type="number"
-                placeholder="Tempo Estimado"
-                {...register('duration', { valueAsNumber: true })}
-              />
-              {errors.duration && (
-                <FormError message={errors.duration.message} />
-              )}
-            </div>
-            <div>
-              <label htmlFor="distance" className="font-bold text-sm">
-                Distância aproximada (em Km)
-              </label>
-              <InputCustom
-                id="distance"
-                type="number"
-                step="0.1"
-                placeholder="Distância Aproximada"
-                {...register('distance', { valueAsNumber: true })}
-              />
-              {errors.distance && (
-                <FormError message={errors.distance?.message} />
-              )}
-            </div>
-            <div>
-              <label htmlFor="difficulty" className="font-bold text-sm">
-                Nível de dificuldade da Trilha
-              </label>
-              <select
-                id="difficulty"
-                className="w-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-                {...register('difficulty')}
-              >
-                <option value="facil">Fácil</option>
-                <option value="moderado">Moderado</option>
-                <option value="dificil">Difícil</option>
-                <option value="muito_dificil">Muito Difícil</option>
-              </select>
-              {errors.difficulty && (
-                <FormError message={errors.difficulty?.message} />
-              )}
-            </div>
-          </div>
-          <div className="flex flex-col h-full">
-            <label htmlFor="safetyTips" className="font-bold text-sm mb-2">
-              Dicas de Segurança
-            </label>
-            <textarea
-              id="safetyTips"
-              className="w-full h-full border-2 border-primary-dark rounded-lg p-2 outline-none focus:ring-2 focus:ring-primary-dark/70"
-              placeholder="Digite as dicas de segurança aqui"
-              {...register('safetyTips')}
-            />
-            {errors.safetyTips && (
-              <FormError message={errors.safetyTips?.message} />
-            )}
-          </div>
+
+        <div className="flex flex-col gap-2">
+          <label className="text-lg md:text-2xl font-bold text-primary-dark">
+            Descricao sobre o ponto
+          </label>
+
+          <LexicalEditor
+            value={descriptionValue}
+            onChange={handleDescriptionChange}
+          />
+
+          {errors.description && (
+            <FormError message={errors.description?.message} />
+          )}
         </div>
 
         <Button
@@ -298,4 +275,4 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
   );
 }
 
-export default Page;
+export default EditPoint;

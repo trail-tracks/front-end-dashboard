@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { use } from 'react';
+import { use, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiUpload } from 'react-icons/hi';
 import { HiMiniTrash } from 'react-icons/hi2';
@@ -30,7 +30,6 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<CreatePointDto>({
     resolver: zodResolver(createPointSchema),
@@ -40,6 +39,16 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
       shortDescription: '',
     },
   });
+
+  const handleDescriptionChange = useCallback(
+    (val: string) => {
+      setValue('description', val, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+    },
+    [setValue],
+  );
 
   const uploadPhotosMutation = useMutation({
     mutationFn: async ({
@@ -91,7 +100,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             photos,
           });
           toast.success('Ponto criado e fotos enviadas com sucesso!');
-        } catch (error) {
+        } catch {
           toast.warning('Ponto criado, mas houve erro no upload de fotos');
         }
       } else {
@@ -102,11 +111,8 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
       queryClient.invalidateQueries({ queryKey: ['trail', id] });
       router.push(`/dashboard/gerenciar-trilhas/${id}/pontos-interesse`);
     },
-    onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          'Erro ao criar o ponto de interesse: ' + error,
-      );
+    onError: (error: Error) => {
+      toast.error('Erro ao criar o ponto de interesse: ' + error.message);
     },
   });
 
@@ -221,10 +227,7 @@ function Page({ params }: { params: Promise<{ id: string }> }) {
             Informações adicionais do Ponto de Interesse
           </label>
 
-          <LexicalEditor
-            value={watch('description') ?? ''}
-            onChange={(val) => setValue('description', val)}
-          />
+          <LexicalEditor value={null} onChange={handleDescriptionChange} />
 
           {errors.description && (
             <FormError message={errors.description?.message} />

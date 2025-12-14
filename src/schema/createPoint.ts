@@ -14,7 +14,7 @@ export const createPointSchema = z.object({
   description: z
     .string()
     .min(10, 'Descrição deve ter pelo menos 10 caracteres')
-    .max(10000, 'Descrição muito longa')
+    .max(5000, 'Descrição muito longa')
     .nullable()
     .optional(),
 });

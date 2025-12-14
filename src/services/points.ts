@@ -7,6 +7,13 @@ type CreatePointParams = {
   trailId: string;
 };
 
+type EditPointParams = {
+  id: string;
+  name?: string;
+  description?: string | null;
+  shortDescription?: string;
+};
+
 export const createPoint = async ({
   name,
   description,
@@ -42,4 +49,13 @@ export const getTrailPointById = async (id: string) => {
 export const getPointById = async (id: string) => {
   const response = await axiosHttp.get(`/point/point/${id}`);
   return response.data.point;
+};
+
+export const editPoint = async ({ id, ...updateData }: EditPointParams) => {
+  const response = await axiosHttp.patch(`/points-of-interest/${id}`, {
+    id: Number(id),
+    ...updateData,
+  });
+
+  return response.data;
 };

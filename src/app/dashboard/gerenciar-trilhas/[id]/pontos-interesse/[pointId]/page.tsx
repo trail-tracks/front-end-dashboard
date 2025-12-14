@@ -120,11 +120,7 @@ function PointDetailsPage({ params }: PageProps) {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Ponto de Interesse</h1>
         <Button
-          onClick={() =>
-            router.push(
-              `/dashboard/gerenciar-trilhas/${trailId}/pontos-interesse/${pointId}/editar`,
-            )
-          }
+          onClick={() => router.push(`${pointId}/editar-ponto`)}
           variant={'primary'}
           className="w-1/5"
           size={'xl'}

@@ -1,16 +1,17 @@
 'use client';
 
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 
-import { EditorState, ParagraphNode, TextNode } from 'lexical';
 import { ListItemNode, ListNode } from '@lexical/list';
+import { EditorState, ParagraphNode, TextNode } from 'lexical';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import ToolbarPlugin from './LexicalToolbar';
 
@@ -19,35 +20,64 @@ interface Props {
   onChange: (value: string) => void;
 }
 
-export default function LexicalEditor({ value, onChange }: Props) {
-  const editorConfig = {
-    namespace: 'TrailEditor',
-    nodes: [ParagraphNode, TextNode, ListNode, ListItemNode],
-    theme: {
-      paragraph: 'mb-2',
-      list: {
-        ul: 'list-disc ml-6 my-2',
-        ol: 'list-decimal ml-6 my-2',
-      },
-      listitem: 'p-0 my-1',
-      text: {
-        bold: 'font-bold',
-        italic: 'italic',
-        underline: 'underline',
-      },
-    },
-    editorState: value && value.length > 0 ? value : undefined,
-    onError(error: Error) {
-      console.error(error);
-    },
-  };
+function InitialStatePlugin({ value }: { value: string | undefined | null }) {
+  const [editor] = useLexicalComposerContext();
+  const hasLoadedRef = useRef(false);
 
-  function handleChange(editorState: EditorState) {
-    editorState.read(() => {
-      const jsonString = JSON.stringify(editorState.toJSON());
-      onChange(jsonString);
-    });
-  }
+  useEffect(() => {
+    if (value && value.length > 0 && !hasLoadedRef.current) {
+      try {
+        const editorState = editor.parseEditorState(value);
+        editor.setEditorState(editorState);
+        hasLoadedRef.current = true;
+      } catch (error) {
+        console.error('Error parsing editor state:', error);
+      }
+    }
+  }, [editor, value]);
+
+  return null;
+}
+
+const LexicalEditor = memo(function LexicalEditor({ value, onChange }: Props) {
+  const editorConfig = useMemo(
+    () => ({
+      namespace: 'TrailEditor',
+      nodes: [ParagraphNode, TextNode, ListNode, ListItemNode],
+      theme: {
+        paragraph: 'mb-2',
+        list: {
+          ul: 'list-disc ml-6 my-2',
+          ol: 'list-decimal ml-6 my-2',
+        },
+        listitem: 'p-0 my-1',
+        text: {
+          bold: 'font-bold',
+          italic: 'italic',
+          underline: 'underline',
+        },
+      },
+      onError(error: Error) {
+        console.error(error);
+      },
+    }),
+    [],
+  );
+
+  const lastValueRef = useRef<string>('');
+
+  const handleChange = useCallback(
+    (editorState: EditorState) => {
+      editorState.read(() => {
+        const jsonString = JSON.stringify(editorState.toJSON());
+        if (jsonString !== lastValueRef.current) {
+          lastValueRef.current = jsonString;
+          onChange(jsonString);
+        }
+      });
+    },
+    [onChange],
+  );
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
@@ -59,7 +89,7 @@ export default function LexicalEditor({ value, onChange }: Props) {
             <ContentEditable className="p-3 min-h-40 focus:outline-none" />
           }
           placeholder={
-            <div className="text-gray-400 absolute top-14 left-3 pointer-events-none">
+            <div className="text-gray-400 mt-2 absolute top-14 left-3 pointer-events-none">
               Digite aqui…
             </div>
           }
@@ -67,10 +97,12 @@ export default function LexicalEditor({ value, onChange }: Props) {
         />
 
         <HistoryPlugin />
-        <AutoFocusPlugin />
         <ListPlugin />
         <OnChangePlugin onChange={handleChange} />
+        <InitialStatePlugin value={value} />
       </div>
     </LexicalComposer>
   );
-}
+});
+
+export default LexicalEditor;
