@@ -16,6 +16,13 @@ import {
   SELECTION_CHANGE_COMMAND,
 } from 'lexical';
 import { useCallback, useEffect, useState } from 'react';
+import {
+  FaList,
+  FaListOl,
+  FaBold,
+  FaUnderline,
+  FaItalic,
+} from 'react-icons/fa6';
 
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -103,7 +110,7 @@ export default function ToolbarPlugin() {
         }`}
         onClick={() => formatText('bold')}
       >
-        <b>B</b>
+        <FaBold />
       </button>
 
       {/* Itálico */}
@@ -116,7 +123,7 @@ export default function ToolbarPlugin() {
         }`}
         onClick={() => formatText('italic')}
       >
-        <i>I</i>
+        <FaItalic />
       </button>
 
       {/* Sublinhado */}
@@ -129,7 +136,7 @@ export default function ToolbarPlugin() {
         }`}
         onClick={() => formatText('underline')}
       >
-        <u>U</u>
+        <FaUnderline />
       </button>
 
       {/* Lista não ordenada */}
@@ -142,7 +149,7 @@ export default function ToolbarPlugin() {
         }`}
         onClick={() => insertList('bullet')}
       >
-        • Lista
+        <FaList />
       </button>
 
       {/* Lista numerada */}
@@ -155,7 +162,7 @@ export default function ToolbarPlugin() {
         }`}
         onClick={() => insertList('number')}
       >
-        1. Lista
+        <FaListOl />
       </button>
     </div>
   );

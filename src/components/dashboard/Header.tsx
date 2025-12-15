@@ -17,12 +17,10 @@ function Header({
     lg: 'md:h-1/4 p-10',
   };
 
-  const justifyClass = size === 'md' ? 'justify-between' : 'justify-center';
-
   return (
     <header
       className={`flex w-full h-auto md:flex-row flex-col rounded-3xl items-center
-        bg-gradient-to-t from-[#D9D9D959] to-[#FAFAFAE0] text-primary-dark p-4  ${sizeClasses[size]} ${justifyClass}`}
+        bg-gradient-to-t from-[#D9D9D959] to-[#FAFAFAE0] text-primary-dark p-4  ${sizeClasses[size]} justify-between`}
     >
       <div className="mr-4 text-center md:text-left">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">{name}</h1>
@@ -35,8 +33,8 @@ function Header({
           alt=""
           className={
             size === 'md'
-              ? 'm-0 md:m-0 h-20 object-contain w-20 rounded-full'
-              : 'm-4 md:m-6 h-20 object-contain w-20 rounded-full'
+              ? 'p-2 h-20 w-20 object-cover'
+              : 'p-2 h-25 w-25 object-cover'
           }
           height={400}
           width={400}

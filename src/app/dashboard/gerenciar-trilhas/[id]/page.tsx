@@ -175,7 +175,7 @@ function TrailDetails({ params }: PageProps) {
 
         <div className="mt-4">
           <h2 className="font-bold text-lg mb-2">Mais Informações</h2>
-          <p>{trail.description || trail.shortDescription}</p>
+          <p>{trail.shortDescription}</p>
         </div>
 
         <div className="mt-4">
