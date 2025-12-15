@@ -13,8 +13,8 @@ function Header({
 }) {
   const sizeClasses: Record<string, string> = {
     sm: 'md:h-20',
-    md: 'md:h-25',
-    lg: 'md:h-1/4 md:p-10',
+    md: 'md:h-25 p-10',
+    lg: 'md:h-1/4 p-10',
   };
 
   const justifyClass = size === 'md' ? 'justify-between' : 'justify-center';
@@ -35,11 +35,11 @@ function Header({
           alt=""
           className={
             size === 'md'
-              ? 'm-0 md:m-0 h-15 object-cover w-15 rounded-full'
+              ? 'm-0 md:m-0 h-20 object-cover w-20 rounded-full'
               : 'm-4 md:m-6 h-20 object-cover w-20 rounded-full'
           }
-          height={80}
-          width={80}
+          height={400}
+          width={400}
           quality={95}
         />
       </div>

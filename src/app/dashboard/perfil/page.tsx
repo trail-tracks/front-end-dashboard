@@ -272,7 +272,7 @@ export default function EntityProfile() {
             className="cursor-pointer block w-full h-full"
           >
             <Image
-              src={getImageUrl(authData.logoUrl)}
+              src={getImageUrl(authData.coverUrl)}
               alt="Logo"
               width={150}
               height={150}
