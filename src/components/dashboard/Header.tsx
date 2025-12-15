@@ -35,12 +35,12 @@ function Header({
           alt=""
           className={
             size === 'md'
-              ? 'm-0 md:m-0 h-20 object-cover w-20 rounded-full'
-              : 'm-4 md:m-6 h-20 object-cover w-20 rounded-full'
+              ? 'm-0 md:m-0 h-20 object-contain w-20 rounded-full'
+              : 'm-4 md:m-6 h-20 object-contain w-20 rounded-full'
           }
           height={400}
           width={400}
-          quality={95}
+          quality={100}
         />
       </div>
     </header>
