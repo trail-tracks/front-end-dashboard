@@ -3,7 +3,7 @@ import { ChangePasswordForm } from '@/components/config-acesso/ChangePasswordFor
 
 const breadcrumbItems = [
   { label: 'Home', href: '/dashboard' },
-  { label: 'Configurações de acesso', href: '/dashboard/configuracoes' },
+  { label: 'Configurações de acesso', href: '/dashboard/config-acesso' },
   { label: 'Alterar senha' },
 ];
 

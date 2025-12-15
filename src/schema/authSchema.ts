@@ -9,7 +9,7 @@ export const registerSchema = z.object({
     .string()
     .max(50, 'O complemento deve ter no máximo 20 caracteres')
     .optional(),
-  email: z.email('Email inválido'),
+  email: z.email('Email inválido').toLowerCase(),
   password: z
     .string('A senha é obrigatória')
     .min(8, 'A senha deve ter pelo menos 8 caracteres')
@@ -63,7 +63,7 @@ export const addressSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.email('Email inválido'),
+  email: z.email('Email inválido').toLowerCase(),
   password: z
     .string()
     .min(8, 'A senha deve ter pelo menos 8 caracteres')

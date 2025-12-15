@@ -83,7 +83,7 @@ function Page() {
         try {
           await uploadPhotosMutation.mutateAsync({ trailId, photos });
           toast.success('Trilha criada e fotos enviadas com sucesso!');
-        } catch (error) {
+        } catch {
           toast.warning('Trilha criada, mas houve erro no upload de fotos');
         }
       } else {
@@ -93,10 +93,8 @@ function Page() {
       queryClient.invalidateQueries({ queryKey: ['trails'] });
       router.push('/dashboard/gerenciar-trilhas');
     },
-    onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || 'Erro ao criar a trilha: ' + error,
-      );
+    onError: (error: Error) => {
+      toast.error('Erro ao criar a trilha: ' + error.message);
     },
   });
 

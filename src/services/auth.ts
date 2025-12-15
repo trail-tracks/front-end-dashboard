@@ -6,8 +6,35 @@ type ChangeEmailData = {
   password: string;
 };
 
+type ChangePasswordData = {
+  password: string;
+  newPassword: string;
+};
+
+type EditProfileData = {
+  name: string;
+  nameComplement?: string | null;
+  zipCode: string;
+  address: string;
+  number: number;
+  city: string;
+  state: string;
+  addressComplement?: string | null;
+  phone: string;
+};
+
 export const authChangeEmail = async (data: ChangeEmailData) => {
   const response = await axiosHttp.patch('/auth/change-email', data);
+  return response.data;
+};
+
+export const authChangePassword = async (data: ChangePasswordData) => {
+  const response = await axiosHttp.patch('/auth/change-password', data);
+  return response.data;
+};
+
+export const editProfile = async (data: EditProfileData) => {
+  const response = await axiosHttp.put('/auth/edit', data);
   return response.data;
 };
 

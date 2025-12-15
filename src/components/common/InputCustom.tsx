@@ -6,7 +6,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
   variant?: 'primary' | 'secondary';
   className?: string;
-  boldLabel?: boolean; // <— new prop
+  boldLabel?: boolean;
 }
 
 const variants = {

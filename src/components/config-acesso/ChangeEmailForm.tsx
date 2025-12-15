@@ -7,11 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FormEvent } from 'react';
 import { toast } from 'sonner';
 
-interface ChangeEmailFormProps {
-  userEmail: string;
-}
-
-export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
+export function ChangeEmailForm() {
   const changeEmailMutation = useMutation({
     mutationFn: authChangeEmail,
     onSuccess: () => {
@@ -49,7 +45,6 @@ export function ChangeEmailForm({ userEmail }: ChangeEmailFormProps) {
         placeholder="Email atual"
         type="email"
         autoComplete="email"
-        defaultValue={userEmail}
         required
       />
       <InputCustom

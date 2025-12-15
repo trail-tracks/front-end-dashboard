@@ -8,7 +8,6 @@ const breadcrumbItems = [
 ];
 
 export default function AlterarEmailPage() {
-  const userEmail = 'usuario@exemplo.com'; // Substituir pela resposta do backend ou contexto de autenticação
   return (
     <>
       <AccessFormWrapper
@@ -16,7 +15,7 @@ export default function AlterarEmailPage() {
         breadcrumbText="Você está em: Home > Configurações de acesso > Alterar email"
         title="Alterar email"
       >
-        <ChangeEmailForm userEmail={userEmail} />
+        <ChangeEmailForm />
       </AccessFormWrapper>
     </>
   );
