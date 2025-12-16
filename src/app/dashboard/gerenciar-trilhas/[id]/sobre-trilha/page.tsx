@@ -58,7 +58,7 @@ function TrailInfo({ params }: { params: Promise<{ id: string }> }) {
     mutationFn: (data: { description: string }) =>
       editTrail({
         id,
-        ...data,
+        description: data.description,
       }),
     onSuccess: async () => {
       toast.success('Descrição atualizada com sucesso!');

@@ -146,10 +146,7 @@ function TrailDetails({ params }: PageProps) {
 
       <div>
         <Image
-          src={
-            getImageUrl(trail.coverUrl) ||
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop'
-          }
+          src={getImageUrl(trail.coverUrl)}
           alt={trail.name}
           className="object-fill rounded-lg h-85 w-full"
           width={1280}
