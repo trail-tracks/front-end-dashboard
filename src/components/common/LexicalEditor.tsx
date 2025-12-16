@@ -8,6 +8,9 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { ListPlugin } from '@lexical/react/LexicalListPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { $generateHtmlFromNodes } from '@lexical/html';
+import { $generateNodesFromDOM } from '@lexical/html';
+import { $getRoot, $insertNodes } from 'lexical';
 
 import { ListItemNode, ListNode } from '@lexical/list';
 import { EditorState, ParagraphNode, TextNode } from 'lexical';
@@ -27,8 +30,21 @@ function InitialStatePlugin({ value }: { value: string | undefined | null }) {
   useEffect(() => {
     if (value && value.length > 0 && !hasLoadedRef.current) {
       try {
-        const editorState = editor.parseEditorState(value);
-        editor.setEditorState(editorState);
+        if (value.trim().startsWith('<')) {
+          editor.update(() => {
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(value, 'text/html');
+            const nodes = $generateNodesFromDOM(editor, dom);
+
+            const root = $getRoot();
+            root.clear();
+            root.select();
+            $insertNodes(nodes);
+          });
+        } else {
+          const editorState = editor.parseEditorState(value);
+          editor.setEditorState(editorState);
+        }
         hasLoadedRef.current = true;
       } catch (error) {
         console.error('Error parsing editor state:', error);
@@ -37,6 +53,30 @@ function InitialStatePlugin({ value }: { value: string | undefined | null }) {
   }, [editor, value]);
 
   return null;
+}
+
+function OnChangeHandlerPlugin({
+  onChange,
+}: {
+  onChange: (html: string) => void;
+}) {
+  const [editor] = useLexicalComposerContext();
+  const lastValueRef = useRef<string>('');
+
+  const handleChange = useCallback(
+    (editorState: EditorState) => {
+      editorState.read(() => {
+        const html = $generateHtmlFromNodes(editor);
+        if (html !== lastValueRef.current) {
+          lastValueRef.current = html;
+          onChange(html);
+        }
+      });
+    },
+    [editor, onChange],
+  );
+
+  return <OnChangePlugin onChange={handleChange} />;
 }
 
 const LexicalEditor = memo(function LexicalEditor({ value, onChange }: Props) {
@@ -64,21 +104,6 @@ const LexicalEditor = memo(function LexicalEditor({ value, onChange }: Props) {
     [],
   );
 
-  const lastValueRef = useRef<string>('');
-
-  const handleChange = useCallback(
-    (editorState: EditorState) => {
-      editorState.read(() => {
-        const jsonString = JSON.stringify(editorState.toJSON());
-        if (jsonString !== lastValueRef.current) {
-          lastValueRef.current = jsonString;
-          onChange(jsonString);
-        }
-      });
-    },
-    [onChange],
-  );
-
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <div className="border rounded-md relative">
@@ -98,7 +123,7 @@ const LexicalEditor = memo(function LexicalEditor({ value, onChange }: Props) {
 
         <HistoryPlugin />
         <ListPlugin />
-        <OnChangePlugin onChange={handleChange} />
+        <OnChangeHandlerPlugin onChange={onChange} />
         <InitialStatePlugin value={value} />
       </div>
     </LexicalComposer>
