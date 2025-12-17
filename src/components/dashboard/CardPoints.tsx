@@ -1,19 +1,47 @@
 import { getImageUrl } from '@/lib/utils';
+import { deletePoint } from '@/services/points';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { HiMiniTrash } from 'react-icons/hi2';
+import { toast } from 'sonner';
 
 interface CardPointsProps {
   name: string;
   coverUrl?: string;
-  id?: string;
+  id: string;
 }
 
 function CardPoints({ name, coverUrl, id }: CardPointsProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const deletePointMutation = useMutation({
+    mutationFn: deletePoint,
+    onSuccess: () => {
+      toast.success('Ponto de interesse deletado com sucesso!');
+      queryClient.invalidateQueries({
+        queryKey: ['pointsOfInterest', id],
+      });
+    },
+    onError: (error: Error) => {
+      toast.error('Erro ao deletar ponto de interesse: ' + error.message);
+    },
+  });
+
   const handleClick = () => {
     router.push(`pontos-interesse/${id}`);
   };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!id) return;
+
+    if (window.confirm(`Deseja realmente deletar o ponto "${name}"?`)) {
+      deletePointMutation.mutate(id);
+    }
+  };
+
   return (
     <div className="h-50 w-50 border-2 border-black rounded-lg bg-[#D9D9D9] overflow-hidden">
       <button
@@ -22,12 +50,17 @@ function CardPoints({ name, coverUrl, id }: CardPointsProps) {
       >
         <div className="w-full h-full relative">
           <div
-            className="absolute top-2 right-2 p-2 rounded-full bg-white cursor-pointer hover:bg-gray-100 transition-colors z-10"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
+            className="absolute top-2 right-2 p-2 rounded-full bg-white cursor-pointer hover:bg-red-50 hover:text-red-500 transition-colors z-10"
+            onClick={handleDelete}
           >
-            <HiMiniTrash size={20} className="text-primary-dark" />
+            <HiMiniTrash
+              size={20}
+              className={
+                deletePointMutation.isPending
+                  ? 'text-gray-400'
+                  : 'text-primary-dark'
+              }
+            />
           </div>
           <Image
             src={getImageUrl(coverUrl)}

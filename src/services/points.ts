@@ -59,3 +59,9 @@ export const editPoint = async ({ id, ...updateData }: EditPointParams) => {
 
   return response.data;
 };
+
+export const deletePoint = async (id: string) => {
+  const response = await axiosHttp.delete(`/points-of-interest/${id}`);
+
+  return response.data;
+};
