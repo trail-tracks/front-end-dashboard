@@ -5,7 +5,6 @@ export const runtime = 'edge';
 import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { usePhoto } from '@/hooks/use-photo';
-import { lexicalJsonToHtml } from '@/lib/lexicalConverter';
 import { getImageUrl } from '@/lib/utils';
 import { getPoint } from '@/services/points';
 import { postAttachments } from '@/services/postAttachments';
@@ -158,7 +157,7 @@ function PointDetailsPage({ params }: PageProps) {
           <div
             className="[&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6"
             dangerouslySetInnerHTML={{
-              __html: lexicalJsonToHtml(point.description),
+              __html: point.description,
             }}
           />
         </div>

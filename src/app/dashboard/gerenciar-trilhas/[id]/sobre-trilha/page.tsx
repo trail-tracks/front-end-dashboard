@@ -1,18 +1,15 @@
 'use client';
 export const runtime = 'edge';
 import { AppBreadcrumb } from '@/components/common/AppBreadcrumb';
-import { use as usePromise } from 'react';
-import LexicalEditor from '@/components/common/LexicalEditor';
 import FormError from '@/components/common/FormError';
-import { useState, useCallback, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { getTrailById } from '@/services/trails';
-import { useQuery } from '@tanstack/react-query';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { editTrail } from '@/services/trails';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import LexicalEditor from '@/components/common/LexicalEditor';
 import { Button } from '@/components/ui/button';
+import { editTrail, getTrailById } from '@/services/trails';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, use as usePromise, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 function TrailInfo({ params }: { params: Promise<{ id: string }> }) {
   const { id } = usePromise(params);
@@ -58,6 +55,11 @@ function TrailInfo({ params }: { params: Promise<{ id: string }> }) {
     mutationFn: (data: { description: string }) =>
       editTrail({
         id,
+        name: trail.name,
+        shortDescription: trail.shortDescription,
+        distance: Number(trail.distance),
+        duration: Number(trail.duration),
+        difficulty: trail.difficulty,
         description: data.description,
       }),
     onSuccess: async () => {
