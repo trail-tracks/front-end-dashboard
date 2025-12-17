@@ -30,28 +30,44 @@ export default function EntityProfile() {
     resolver: zodResolver(editProfileSchema),
   });
 
-  const uploadPhotoMutation = useMutation({
-    mutationFn: async (file: File) => {
+  const uploadImageMutation = useMutation({
+    mutationFn: async ({
+      file,
+      type,
+    }: {
+      file: File;
+      type: 'cover' | 'poster';
+    }) => {
       return postAttachments({
         file,
-        type: 'cover',
+        type,
       });
     },
-    onSuccess: () => {
-      toast.success('Foto atualizada com sucesso!');
+    onSuccess: (_, variables) => {
+      const message =
+        variables.type === 'cover'
+          ? 'Logo atualizada com sucesso!'
+          : 'Imagem representativa atualizada com sucesso!';
+      toast.success(message);
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
-    onError: (error: Error) => {
-      toast.error('Erro ao atualizar foto: ' + error.message);
+    onError: (error: Error, variables) => {
+      const message =
+        variables.type === 'cover'
+          ? 'Erro ao atualizar logo: '
+          : 'Erro ao atualizar imagem representativa: ';
+      toast.error(message + error.message);
     },
   });
 
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const file = e.target.files[0];
-      await uploadPhotoMutation.mutateAsync(file);
-    }
-  };
+  const handleImageUpload =
+    (type: 'cover' | 'poster') =>
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const file = e.target.files[0];
+        await uploadImageMutation.mutateAsync({ file, type });
+      }
+    };
 
   const { data: authData, isLoading } = useQuery({
     queryKey: ['auth'],
@@ -268,7 +284,7 @@ export default function EntityProfile() {
 
         <div className="rounded-xl w-37 h-37 border-[#113D31] border relative">
           <label
-            htmlFor="file-upload"
+            htmlFor="logo-upload"
             className="cursor-pointer block w-full h-full"
           >
             <Image
@@ -281,12 +297,12 @@ export default function EntityProfile() {
           </label>
 
           <input
-            id="file-upload"
+            id="logo-upload"
             type="file"
             accept="image/png, image/jpeg, image/jpg, image/svg+xml"
             className="hidden"
-            onChange={handlePhotoUpload}
-            disabled={uploadPhotoMutation.isPending}
+            onChange={handleImageUpload('cover')}
+            disabled={uploadImageMutation.isPending}
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -302,7 +318,29 @@ export default function EntityProfile() {
           </div>
         </div>
 
-        <div className="rounded-xl w-37 h-37 border-[#113D31] border" />
+        <div className="rounded-xl w-37 h-37 border-[#113D31] border relative">
+          <label
+            htmlFor="poster-upload"
+            className="cursor-pointer block w-full h-full"
+          >
+            <Image
+              src={getImageUrl(authData.posterUrl)}
+              alt="Imagem Representativa"
+              width={150}
+              height={150}
+              className="object-cover rounded-xl w-full h-full"
+            />
+          </label>
+
+          <input
+            id="poster-upload"
+            type="file"
+            accept="image/png, image/jpeg, image/jpg, image/svg+xml"
+            className="hidden"
+            onChange={handleImageUpload('poster')}
+            disabled={uploadImageMutation.isPending}
+          />
+        </div>
       </div>
     </div>
   );

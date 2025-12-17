@@ -42,3 +42,8 @@ export const getAuth = async () => {
   const response = await axiosHttp.get('/auth');
   return response.data.entity;
 };
+
+export const authLogout = async () => {
+  const response = await axiosHttp.post('/auth/logout');
+  return response.data;
+};
