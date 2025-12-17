@@ -59,6 +59,7 @@ function PointsOfInterest({ params }: { params: Promise<{ id: string }> }) {
               id={point.id}
               name={point.name}
               coverUrl={point.coverUrl}
+              trailId={id}
             />
           ))}
 

@@ -10,9 +10,10 @@ interface CardPointsProps {
   name: string;
   coverUrl?: string;
   id: string;
+  trailId: string;
 }
 
-function CardPoints({ name, coverUrl, id }: CardPointsProps) {
+function CardPoints({ name, coverUrl, id, trailId }: CardPointsProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -21,7 +22,7 @@ function CardPoints({ name, coverUrl, id }: CardPointsProps) {
     onSuccess: () => {
       toast.success('Ponto de interesse deletado com sucesso!');
       queryClient.invalidateQueries({
-        queryKey: ['pointsOfInterest', id],
+        queryKey: ['pointsOfInterest', trailId],
       });
     },
     onError: (error: Error) => {
