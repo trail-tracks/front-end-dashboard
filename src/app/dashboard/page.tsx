@@ -19,7 +19,7 @@ function DashboardPage() {
 
   return (
     <div className="w-full min-h-full flex flex-col lg:flex-row gap-6">
-      <div className="flex flex-col w-full lg:w-1/2 items-center justify-center">
+      <div className="flex flex-col w-full lg:w-1/2">
         <div className="flex flex-col sm:flex-row gap-5 gap-h-full w-full h-auto sm:h-1/3 mb-6">
           <Card
             value={homeData?.trailsCount || 0}
@@ -32,14 +32,14 @@ function DashboardPage() {
             className="h-auto"
           />
         </div>
-        <div className="flex flex-col w-full h-auto sm:h-2/3 items-center justify-center border border-primary-medium/25 rounded-3xl gap-5 sm:gap-10">
+        {/* <div className="flex flex-col w-full h-auto sm:h-2/3 items-center justify-center border border-primary-medium/25 rounded-3xl gap-5 sm:gap-10">
           <Card
             value="120"
             label="Usuários cadastrados"
             className="border-none"
           />
           <Card value="45" label="Usuários ativos" className="border-none" />
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col w-full lg:w-1/2 h-min-full border border-primary-medium/25 rounded-3xl p-6">
         <Button
