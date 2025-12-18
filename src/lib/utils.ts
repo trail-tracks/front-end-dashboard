@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getImageUrl(path?: string): string {
   if (!path) {
-    return 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1280&h=720&fit=crop';
+    return '/noImage.svg';
   }
 
   if (path.startsWith('http://') || path.startsWith('https://')) {

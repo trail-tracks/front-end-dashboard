@@ -5,10 +5,7 @@ const currentEmail = 'fulanodetal@gmail.com'; // TODO: obter do backend
 
 export default function ConfiguracoesDeAcessoPage() {
   return (
-    <AccessSettingsPanel
-      breadcrumbText="Você está em: Home > Configurações de acesso"
-      heading="Configurações de acesso"
-    >
+    <AccessSettingsPanel heading="Configurações de acesso">
       <AccessSettingsCard
         title="Alterar senha"
         description="Altere a senha quando quiser"

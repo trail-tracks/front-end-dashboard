@@ -32,8 +32,8 @@ function TrailCard({
         <div className="w-full h-35 mb-2">
           <Image
             src={imageUrl}
-            alt=""
-            className="object-cover rounded-lg h-full w-full"
+            alt={`Imagem Principal da Trilha ${name}`}
+            className="object-fill rounded-lg h-full w-full items-center justify-center"
             width={400}
             height={200}
             quality={95}

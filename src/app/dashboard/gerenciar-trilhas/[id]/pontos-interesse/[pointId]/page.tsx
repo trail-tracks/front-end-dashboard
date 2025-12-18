@@ -32,7 +32,7 @@ interface GalleryPhoto {
 function PointDetailsPage({ params }: PageProps) {
   const { id: trailId, pointId } = use(params);
   const { handleFileChange, removePhoto, clearPhotos } = usePhoto({
-    maxPhotos: 5,
+    maxPhotos: 20,
     queryKey: ['point', pointId],
   });
   const router = useRouter();
@@ -67,8 +67,8 @@ function PointDetailsPage({ params }: PageProps) {
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentPhotoCount = point?.gallery?.length || 0;
-    if (currentPhotoCount >= 5) {
-      toast.error('Você já atingiu o limite máximo de 5 fotos.');
+    if (currentPhotoCount >= 20) {
+      toast.error('Você já atingiu o limite máximo de 20 fotos.');
       return;
     }
 
@@ -96,7 +96,7 @@ function PointDetailsPage({ params }: PageProps) {
   }
 
   const currentPhotoCount = point.gallery?.length || 0;
-  const canAddMore = currentPhotoCount < 5;
+  const canAddMore = currentPhotoCount < 20;
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">
@@ -167,7 +167,7 @@ function PointDetailsPage({ params }: PageProps) {
         <h2 className="text-xl font-semibold mb-2">Imagens do Ponto</h2>
         <p className="text-md text-primary-dark mb-4">
           Essas imagens irão aparecer quando o usuário for visualizar o ponto de
-          interesse (máximo de 5 fotos - {currentPhotoCount}/5)
+          interesse
         </p>
         <div className="flex flex-wrap gap-2 w-full">
           {point.gallery.map((photo: GalleryPhoto, index: number) => (
@@ -252,7 +252,7 @@ function PointDetailsPage({ params }: PageProps) {
           className="flex mt-4"
           onClick={() =>
             router.push(
-              `/dashboard/gerenciar-trilhas/${trailId}/pontos-interesse`,
+              `/dashboard/gerenciar-trilhas/${trailId}/pontos-interesse/add-pontos`,
             )
           }
         >

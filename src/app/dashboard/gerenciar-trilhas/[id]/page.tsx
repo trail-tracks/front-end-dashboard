@@ -37,7 +37,7 @@ interface GalleryPhoto {
 function TrailDetails({ params }: PageProps) {
   const { id } = use(params);
   const { handleFileChange, removePhoto, clearPhotos } = usePhoto({
-    maxPhotos: 5,
+    maxPhotos: 20,
     queryKey: ['trail', id],
   });
   const router = useRouter();
@@ -77,8 +77,8 @@ function TrailDetails({ params }: PageProps) {
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentPhotoCount = trail?.gallery?.length || 0;
-    if (currentPhotoCount >= 5) {
-      toast.error('Você já atingiu o limite máximo de 5 fotos.');
+    if (currentPhotoCount >= 20) {
+      toast.error('Você já atingiu o limite máximo de 20 fotos.');
       return;
     }
 
@@ -98,7 +98,7 @@ function TrailDetails({ params }: PageProps) {
   }
 
   const currentPhotoCount = trail.gallery?.length || 0;
-  const canAddMore = currentPhotoCount < 5;
+  const canAddMore = currentPhotoCount < 20;
 
   return (
     <div className="flex flex-col gap-6 border rounded-3xl border-primary-medium/25 p-8 w-full min-h-full text-primary-dark">

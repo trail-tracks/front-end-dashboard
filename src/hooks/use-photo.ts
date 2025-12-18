@@ -12,7 +12,7 @@ type UsePhotoOptions = {
 
 export function usePhoto(options: UsePhotoOptions = {}) {
   const {
-    maxPhotos = 3,
+    maxPhotos = 20,
     maxSizeInMB = 5,
     acceptedFormats = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml'],
     queryKey = [],
