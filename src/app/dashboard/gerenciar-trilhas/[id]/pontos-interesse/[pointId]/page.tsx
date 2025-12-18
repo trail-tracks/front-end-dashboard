@@ -144,7 +144,7 @@ function PointDetailsPage({ params }: PageProps) {
 
       <div>
         <h2 className="text-xl font-semibold mb-2">
-          Breve sescrição sobre o ponto
+          Breve descrição sobre o ponto
         </h2>
         <p className="text-primary-dark">{point.shortDescription}</p>
       </div>
